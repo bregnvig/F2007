@@ -1,3 +1,0 @@
-#!/bin/sh
-APPDIR=`dirname $0`;
-java -XstartOnFirstThread -cp "$APPDIR/src/main/java:$APPDIR/src/main/resources:$APPDIR/bin:/usr/local/gwt-mac-1.4.60/gwt-user.jar:/usr/local/gwt-mac-1.4.60/gwt-dev-mac.jar" com.google.gwt.dev.GWTShell -logLevel DEBUG -noserver -port 8080 "$@" f2007/F2007.html;
