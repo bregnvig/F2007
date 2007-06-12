@@ -1,4 +1,4 @@
-package dk.bregnvig.formula1.model;
+package dk.bregnvig.formula1;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -29,6 +28,7 @@ public class Season {
 	
 	private String name;
 	private Set<Race> races = new HashSet<Race>(21);
+	private Set<Driver> drivers = new HashSet<Driver>(25);
 	private Set<Player> players = new HashSet<Player>(17);
 	
 	@Id
@@ -72,11 +72,11 @@ public class Season {
 	}
 	
 	public void addRace(Race race) {
+		race.setSeason(this);
 		races.add(race);
 	}
 	
-	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(name="season_id")
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="season")
 	public Set<Race> getRaces() {
 		return races;
 	}
@@ -84,6 +84,21 @@ public class Season {
 		this.races = races;
 	}
 	
+	public void addDriver(Driver driver) {
+		drivers.add(driver);
+	}
 	
-	
+	public void removeDriver(Driver driver) {
+		drivers.remove(driver);
+	}
+
+	@ManyToMany(fetch=FetchType.EAGER, cascade= {CascadeType.MERGE, CascadeType.REFRESH})
+	@JoinTable(name="season_driver")
+	public Set<Driver> getDrivers() {
+		return drivers;
+	}
+
+	public void setDrivers(Set<Driver> drivers) {
+		this.drivers = drivers;
+	}
 }
