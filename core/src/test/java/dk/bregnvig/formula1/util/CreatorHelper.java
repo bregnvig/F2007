@@ -2,8 +2,9 @@ package dk.bregnvig.formula1.util;
 
 import java.util.Calendar;
 
-import dk.bregnvig.formula1.model.Player;
-import dk.bregnvig.formula1.model.Race;
+import dk.bregnvig.formula1.Driver;
+import dk.bregnvig.formula1.Player;
+import dk.bregnvig.formula1.Race;
 
 public class CreatorHelper {
 
@@ -18,10 +19,17 @@ public class CreatorHelper {
 		return player;
 	}
 	
+	public Driver getDriver(int number, String name) {
+		Driver driver = new Driver();
+		driver.setName(name);
+		driver.setNumber(number);
+		return driver;
+	}
+	
 	public Race getRace(String name) {
 		Race race = new Race();
 		race.setName(name);
-		race.setOpen(Calendar.getInstance());
+		race.setBegin(Calendar.getInstance());
 		Calendar close = Calendar.getInstance();
 		close.add(Calendar.WEEK_OF_YEAR, 1);
 		race.setClose(close);

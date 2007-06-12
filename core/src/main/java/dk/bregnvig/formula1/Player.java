@@ -1,4 +1,4 @@
-package dk.bregnvig.formula1.model;
+package dk.bregnvig.formula1;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
