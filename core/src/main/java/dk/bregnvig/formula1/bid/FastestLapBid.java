@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -17,7 +18,7 @@ import dk.bregnvig.formula1.Driver;
 public class FastestLapBid extends AbstractBid {
 	
 	private Driver driver;
-	private int points;
+	private int pointsDriver;
 	private Long id;
 
 	@Id
@@ -35,8 +36,8 @@ public class FastestLapBid extends AbstractBid {
 		return driver;
 	}
 		
-	public void setDriver(Driver position1) {
-		this.driver = position1;
+	public void setDriver(Driver driver) {
+		this.driver = driver;
 	}
 	
 	@Override
@@ -71,11 +72,16 @@ public class FastestLapBid extends AbstractBid {
 			
 	}
 
+	@Transient
 	public int getPoints() {
-		return points;
+		return pointsDriver;
 	}
 
-	public void setPoints(int points) {
-		this.points = points;
+	public int getPointsDriver() {
+		return pointsDriver;
+	}
+
+	public void setPointsDriver(int driverPoints) {
+		this.pointsDriver = driverPoints;
 	}	
 }

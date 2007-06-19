@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -16,8 +17,8 @@ import dk.bregnvig.formula1.Driver;
 @Table(name="bid_first_crash")
 public class FirstCrashBid extends AbstractBid {
 	
-	private Driver firstCrash;
-	private int points;
+	private Driver crash1;
+	private int pointsCrash1;
 	private Long id;
 
 	@Id
@@ -31,25 +32,25 @@ public class FirstCrashBid extends AbstractBid {
 	}
 	
 	@ManyToOne(optional=false)
-	public Driver getFirstCrash() {
-		return firstCrash;
+	public Driver getCrash1() {
+		return crash1;
 	}
 		
-	public void setFirstCrash(Driver firstCrash) {
-		this.firstCrash = firstCrash;
+	public void setCrash1(Driver firstCrash) {
+		this.crash1 = firstCrash;
 	}
 	
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)
-			.append("Driver", firstCrash)
+			.append("Driver", crash1)
 			.toString();
 	}
 	
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-			.append(firstCrash)
+			.append(crash1)
 			.toHashCode();
 	}
 
@@ -67,15 +68,22 @@ public class FirstCrashBid extends AbstractBid {
 		FirstCrashBid other = (FirstCrashBid) obj;
 		
 		return new EqualsBuilder()
-			.append(firstCrash, other.firstCrash)
+			.append(crash1, other.crash1)
 			.isEquals();
 	}
 
+	@Transient
 	public int getPoints() {
-		return points;
+		return pointsCrash1;
 	}
 
-	public void setPoints(int points) {
-		this.points = points;
-	}	
+	public int getPointsCrash1() {
+		return pointsCrash1;
+	}
+
+	public void setPointsCrash1(int pointsCrash1) {
+		this.pointsCrash1 = pointsCrash1;
+	}
+	
+	
 }

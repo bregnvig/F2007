@@ -1,6 +1,9 @@
 package dk.bregnvig.formula1;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +47,8 @@ public class Race {
 	private Calendar close;
 	private boolean completed;
 	private Driver selectedDriver;
-	private Set<Bid> bids;
+	private Set<Bid> bids = new HashSet<Bid>();
+	private Set<Player> playersThatSubmitted = new HashSet<Player>();
 	private RaceResult raceResult;
 	private ResultStrategy resultStrategy;
 
@@ -100,12 +104,34 @@ public class Race {
 		return begin.before(now) && close.after(now);
 	}
 
+	/**
+	 * Returns true if the game has been opened and no is closed
+	 * @return
+	 */
+	@Transient
+	public boolean isClosed() {
+		Calendar now = Calendar.getInstance();
+		return close.before(now);
+	}
+	
 	private void validateDates(Calendar begin, Calendar close) {
 		if (begin == null || close == null) {
 			return;
 		}
 		if (begin.after(close)) {
 			throw new IllegalStateException("Race " + name + " starts after is ends");
+		}
+	}
+	
+	private void validateOpen() {
+		if (isOpen() == false) {
+			throw new IllegalStateException("Race " + name + " is not open");
+		}
+	}
+	
+	private void validateClosed() {
+		if (isClosed() == false) {
+			throw new IllegalStateException("Race " + name + " has not been closed");
 		}
 	}
 	
@@ -179,6 +205,25 @@ public class Race {
 
 	public void setBids(Set<Bid> bids) {
 		this.bids = bids;
+		for (Bid bid : bids) {
+			playersThatSubmitted.add(bid.getPlayer());
+		}
+	}
+	
+	/**
+	 * Adds a single bid to this race
+	 * @param bid
+	 */
+	public void addBid(Bid bid) {
+		validateOpen();
+		if (season.getPlayers().contains(bid.getPlayer()) == false) {
+			throw new IllegalStateException(bid.getPlayer() + " is not part of this season");
+		}
+		if (playersThatSubmitted.contains(bid.getPlayer())) {
+			throw new IllegalStateException(bid.getPlayer() + " has already submitted a bid");
+		}
+		bids.add(bid);
+		playersThatSubmitted.add(bid.getPlayer());
 	}
 	
 	/**
@@ -187,27 +232,38 @@ public class Race {
 	 */
 	@Transient
 	public List<Bid> getResult() {
-		if (isCompleted() == false) {
-			throw new IllegalStateException("The race is not complete");
-		}
-		// TODO How to get the result?!
-		return null;
+		validateCompleted();
+		Comparator<Bid> comparator = new ResultComparator(raceResult);
+		List<Bid> result = new ArrayList<Bid>(bids);
+		Collections.sort(result, Collections.reverseOrder(comparator));
+		return result;
 	}
 
-	@OneToOne
+
+	@OneToOne(cascade = CascadeType.ALL)
 	public RaceResult getRaceResult() {
 		return raceResult;
 	}
 
 	public void setRaceResult(RaceResult raceResult) {
- 		this.raceResult = raceResult;
- 		setCompleted(true);
+		if (raceResult != null) {
+			validateClosed();
+			this.raceResult = raceResult;
+	 		setCompleted(true);
+	 		resultStrategy.calculateResult(raceResult, bids);
+		}
 	}
 
 	public boolean isCompleted() {
 		return completed;
 	}
 
+	private void validateCompleted() {
+		if (isCompleted() == false) {
+			throw new IllegalStateException("The race is not complete");
+		}
+	}
+	
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
 	}
@@ -219,5 +275,32 @@ public class Race {
 
 	public void setResultStrategy(ResultStrategy resultStrategy) {
 		this.resultStrategy = resultStrategy;
+	}
+	
+	private class ResultComparator implements Comparator<Bid> {
+		
+		private RaceResult raceResult;
+		
+		public ResultComparator(RaceResult raceResult) {
+			this.raceResult = raceResult;
+		}
+
+		public int compare(Bid bid1, Bid bid2) {
+			if (bid1.getPoints() < bid2.getPoints()) {
+				return -1;
+			}
+			if (bid1.getPoints() > bid2.getPoints()) {
+				return 1;
+			}
+			int off1 = Math.abs(raceResult.getPolePositionTimeMillis() - bid1.getPolePositionTimeMillis()); 
+			int off2 = Math.abs(raceResult.getPolePositionTimeMillis() - bid2.getPolePositionTimeMillis());
+			if (off1 > off2) {
+				return -1;
+			}
+			if (off1 < off2) {
+				return 1;
+			}
+			return 0;
+		}
 	}
 }
