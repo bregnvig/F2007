@@ -15,6 +15,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * This class is a entire season of formula 1
  * @author bregnvig
@@ -22,6 +25,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="season")
+@Transactional(propagation=Propagation.REQUIRED)
 public class Season {
 	
 	private Long id;
