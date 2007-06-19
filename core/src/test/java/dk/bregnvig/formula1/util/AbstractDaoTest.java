@@ -1,11 +1,17 @@
 package dk.bregnvig.formula1.util;
 
+import java.util.Calendar;
+
 import javax.persistence.EntityManager;
 
 import org.springframework.test.jpa.AbstractJpaTests;
 
+import dk.bregnvig.formula1.Bid;
 import dk.bregnvig.formula1.Driver;
 import dk.bregnvig.formula1.Player;
+import dk.bregnvig.formula1.Race;
+import dk.bregnvig.formula1.RaceResult;
+import dk.bregnvig.formula1.Season;
 
 
 
@@ -14,10 +20,24 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 	protected Driver kimi;
 	protected Driver massa;
 	protected Driver hamilton;
+	protected Driver alonso;
+	protected Driver heidfeld;
+	protected Driver kubica;
+	protected Driver button;
 	
 	protected Player flb;
 	protected Player mba;
 	protected Player ttp;
+	
+	protected Race monza;
+	protected Race spa;
+	
+	protected Season season;
+	
+	protected Bid flbBid;
+	protected Bid mbaBid;
+	protected Bid ttpBid;
+	protected RaceResult raceResult;
 	
 	protected CreatorHelper helper = new CreatorHelper();
 	
@@ -32,13 +52,60 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
+		
+		
 		getEntityManager().persist(kimi = helper.getDriver(6, "Kimi Raikonen"));
 		getEntityManager().persist(massa = helper.getDriver(5, "Felipe Massa"));
 		getEntityManager().persist(hamilton = helper.getDriver(2, "Lewis Hamilton"));
+		getEntityManager().persist(alonso = helper.getDriver(1, "Wanker Alonso"));
+		getEntityManager().persist(heidfeld = helper.getDriver(7, "Nick Heidfeld"));
+		getEntityManager().persist(kubica = helper.getDriver(8, "Robert Kubica"));
+		getEntityManager().persist(button = helper.getDriver(19, "Jenson Button"));
 		
 		getEntityManager().persist(flb = helper.getPlayer("flb"));
 		getEntityManager().persist(mba = helper.getPlayer("mba"));
 		getEntityManager().persist(ttp = helper.getPlayer("ttp"));
+
+		season = new Season();
+		season.setName("F1 2007");
+		season.addDriver(kimi);
+		season.addDriver(massa);
+		season.addDriver(hamilton);
+		season.addDriver(alonso);
+		season.addDriver(heidfeld);
+		season.addDriver(kubica);
+		
+		season.addPlayer(flb);
+		season.addPlayer(mba);
+		season.addPlayer(ttp);
+		
+		monza = new Race();
+		monza.setSelectedDriver(kimi);
+		monza.setName("Monza");
+		monza.setBegin(Calendar.getInstance());
+		Calendar close = Calendar.getInstance();
+		close.add(Calendar.MINUTE, 2);
+		monza.setClose(close);
+		
+		spa = new Race();
+		spa.setSelectedDriver(massa);
+		spa.setName("Spa");
+		Calendar begin = Calendar.getInstance();
+		begin.add(Calendar.MINUTE, 5);
+		spa.setBegin(begin);
+		Calendar close2 = Calendar.getInstance();
+		close2.add(Calendar.MINUTE, 7);
+		spa.setClose(close2);
+		
+		season.addRace(monza);
+		season.addRace(spa);
+		
+		flbBid = helper.getBid(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, 1, 1, 10000);
+		mbaBid = helper.getBid(mba, massa, kimi, hamilton, alonso, kubica, heidfeld, 2, 2, 20000);
+		ttpBid = helper.getBid(ttp, heidfeld, kubica, alonso, hamilton, kimi, massa, 3, 3, 20000);
+		raceResult = helper.getRaceResult(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, button, 1, 1, 10000);
+
+		getEntityManager().persist(season);
 	}
 	
 	

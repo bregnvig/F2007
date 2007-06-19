@@ -1,12 +1,18 @@
 package dk.bregnvig.formula1;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import dk.bregnvig.formula1.bid.FastestLapBid;
 import dk.bregnvig.formula1.bid.FirstCrashBid;
@@ -26,7 +32,7 @@ public class Bid {
 	private PodiumBid podium;
 	private SelectedDriverBid selectedDriver;
 	private FirstCrashBid firstCrash;
-	private int points;
+	private int polePositionTimeMillis;
 
 	@Id
 	@GeneratedValue
@@ -47,7 +53,7 @@ public class Bid {
 		this.player = player;
 	}
 
-	@OneToOne(optional=false)
+	@OneToOne(optional=false, cascade=CascadeType.ALL)
 	public FastestLapBid getFastestLap() {
 		return fastestLap;
 	}
@@ -56,7 +62,7 @@ public class Bid {
 		this.fastestLap = fastestLap;
 	}
 
-	@OneToOne(optional=false)
+	@OneToOne(optional=false, cascade=CascadeType.ALL)
 	public FirstCrashBid getFirstCrash() {
 		return firstCrash;
 	}
@@ -65,7 +71,7 @@ public class Bid {
 		this.firstCrash = firstCrash;
 	}
 
-	@OneToOne(optional=false)
+	@OneToOne(optional=false, cascade=CascadeType.ALL)
 	public GridBid getGrid() {
 		return grid;
 	}
@@ -74,7 +80,7 @@ public class Bid {
 		this.grid = grid;
 	}
 
-	@OneToOne(optional=false)
+	@OneToOne(optional=false, cascade=CascadeType.ALL)
 	public PodiumBid getPodium() {
 		return podium;
 	}
@@ -83,7 +89,7 @@ public class Bid {
 		this.podium = podium;
 	}
 
-	@OneToOne(optional=false)
+	@OneToOne(optional=false, cascade=CascadeType.ALL)
 	public SelectedDriverBid getSelectedDriver() {
 		return selectedDriver;
 	}
@@ -92,12 +98,67 @@ public class Bid {
 		this.selectedDriver = selectedDriver;
 	}
 
+	@Transient
 	public int getPoints() {
-		return points;
+		return grid.getPoints()+fastestLap.getPoints()+podium.getPoints()+selectedDriver.getPoints()+firstCrash.getPoints();
 	}
 
-	public void setPoints(int points) {
-		this.points = points;
+	@Column(nullable=false)
+	public int getPolePositionTimeMillis() {
+		return polePositionTimeMillis;
+	}
+
+	public void setPolePositionTimeMillis(int polePositionTimeInMilis) {
+		this.polePositionTimeMillis = polePositionTimeInMilis;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj instanceof Bid == false) {
+			return false;
+		}
+		
+		Bid other = (Bid) obj;
+		
+		return new EqualsBuilder()
+			.append(player, other.player)
+			.append(grid, other.grid)
+			.append(fastestLap, other.fastestLap)
+			.append(podium, other.podium)
+			.append(selectedDriver, other.selectedDriver)
+			.append(firstCrash, other.firstCrash)
+			.append(polePositionTimeMillis, other.polePositionTimeMillis)
+			.isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+			.append(player)
+			.append(grid)
+			.append(fastestLap)
+			.append(podium)
+			.append(selectedDriver)
+			.append(firstCrash)
+			.append(polePositionTimeMillis)
+			.toHashCode();
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)
+			.append(player)
+			.append(grid)
+			.append(fastestLap)
+			.append(podium)
+			.append(selectedDriver)
+			.append(firstCrash)
+			.append("Pole position time", polePositionTimeMillis)
+			.toString();
 	}
 
 }

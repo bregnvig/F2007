@@ -1,5 +1,7 @@
 package dk.bregnvig.formula1;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,7 +16,7 @@ import dk.bregnvig.formula1.bid.PodiumResult;
 import dk.bregnvig.formula1.bid.SelectedDriverBid;
 
 @Entity
-@Table(name = "bid")
+@Table(name = "race_result")
 public class RaceResult {
 
 	private Long id;
@@ -25,6 +27,7 @@ public class RaceResult {
 	private PodiumResult podium;
 	private SelectedDriverBid selectedDriver;
 	private FirstCrashResult firstCrash;
+	private int polePositionTimeMillis;
 
 	@Id
 	@GeneratedValue
@@ -45,7 +48,7 @@ public class RaceResult {
 		this.player = player;
 	}
 
-	@OneToOne(optional=false)
+	@OneToOne(cascade=CascadeType.ALL, optional=false)
 	public FastestLapBid getFastestLap() {
 		return fastestLap;
 	}
@@ -54,7 +57,7 @@ public class RaceResult {
 		this.fastestLap = fastestLap;
 	}
 
-	@OneToOne(optional=false)
+	@OneToOne(cascade=CascadeType.ALL,optional=false)
 	public FirstCrashResult getFirstCrash() {
 		return firstCrash;
 	}
@@ -63,7 +66,7 @@ public class RaceResult {
 		this.firstCrash = firstCrash;
 	}
 
-	@OneToOne(optional=false)
+	@OneToOne(cascade=CascadeType.ALL,optional=false)
 	public GridResult getGrid() {
 		return grid;
 	}
@@ -72,7 +75,7 @@ public class RaceResult {
 		this.grid = grid;
 	}
 
-	@OneToOne(optional=false)
+	@OneToOne(cascade=CascadeType.ALL,optional=false)
 	public PodiumResult getPodium() {
 		return podium;
 	}
@@ -81,7 +84,7 @@ public class RaceResult {
 		this.podium = podium;
 	}
 
-	@OneToOne(optional=false)
+	@OneToOne(cascade=CascadeType.ALL, optional=false)
 	public SelectedDriverBid getSelectedDriver() {
 		return selectedDriver;
 	}
@@ -90,4 +93,13 @@ public class RaceResult {
 		this.selectedDriver = selectedDriver;
 	}
 
+
+	@Column(nullable=false)
+	public int getPolePositionTimeMillis() {
+		return polePositionTimeMillis;
+	}
+
+	public void setPolePositionTimeMillis(int polePositionTimeInMilis) {
+		this.polePositionTimeMillis = polePositionTimeInMilis;
+	}
 }
