@@ -4,8 +4,6 @@
 		<configExtension>xml</configExtension>
 	</configExtensions>
 	<configs>
-		<config>src/main/resources/contexts/service/serviceContext.xml</config>
-		<config>src/main/resources/contexts/data/dataLayerContext.xml</config>
 	</configs>
 	<configSets>
 	</configSets>
