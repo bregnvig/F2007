@@ -23,7 +23,7 @@ public class CreatorHelper {
 		player.setPlayername(playername);
 		player.setFirstName("first"+playername);
 		player.setLastName("last"+playername);
-		player.setEmail("bob@bob.dk");
+		player.setEmail("flemming@bregnvig.dk");
 		player.setSms("12345678");
 		
 		return player;
@@ -39,7 +39,7 @@ public class CreatorHelper {
 	public Race getRace(String name) {
 		Race race = new Race();
 		race.setName(name);
-		race.setBegin(Calendar.getInstance());
+		race.setOpen(Calendar.getInstance());
 		Calendar close = Calendar.getInstance();
 		close.add(Calendar.WEEK_OF_YEAR, 1);
 		race.setClose(close);

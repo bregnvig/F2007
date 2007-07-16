@@ -82,7 +82,7 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 		monza = new Race();
 		monza.setSelectedDriver(kimi);
 		monza.setName("Monza");
-		monza.setBegin(Calendar.getInstance());
+		monza.setOpen(Calendar.getInstance());
 		Calendar close = Calendar.getInstance();
 		close.add(Calendar.MINUTE, 2);
 		monza.setClose(close);
@@ -92,7 +92,7 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 		spa.setName("Spa");
 		Calendar begin = Calendar.getInstance();
 		begin.add(Calendar.MINUTE, 5);
-		spa.setBegin(begin);
+		spa.setOpen(begin);
 		Calendar close2 = Calendar.getInstance();
 		close2.add(Calendar.MINUTE, 7);
 		spa.setClose(close2);

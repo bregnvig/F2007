@@ -1,14 +1,18 @@
 package dk.bregnvig.formula1;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
+import dk.bregnvig.formula1.account.Account;
 
 @Entity
 @Table(name="player")
@@ -21,6 +25,7 @@ public class Player {
 	private String lastName;
 	private String email;
 	private String sms;
+	private Account account = new Account();
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -72,6 +77,14 @@ public class Player {
 	}
 	public void setSms(String sms) {
 		this.sms = sms;
+	}
+	
+	@OneToOne(optional = false, cascade=CascadeType.ALL)
+	public Account getAccount() {
+		return account;
+	}
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 	
 	@Override

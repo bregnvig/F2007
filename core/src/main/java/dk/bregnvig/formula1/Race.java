@@ -1,12 +1,16 @@
 package dk.bregnvig.formula1;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,6 +31,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import dk.bregnvig.formula1.bid.ResultStrategy;
+import dk.bregnvig.formula1.event.AbstractRaceListener;
+import dk.bregnvig.formula1.event.RaceTimer;
 
 /**
  * Contains a single
@@ -38,12 +44,14 @@ import dk.bregnvig.formula1.bid.ResultStrategy;
 @Table(name="race")
 @Configurable
 public class Race {
+	
+	private static BigDecimal bettingAmount = new BigDecimal(20);
 
 	private Long id;
 
 	private Season season;
 	private String name;
-	private Calendar begin;
+	private Calendar open;
 	private Calendar close;
 	private boolean completed;
 	private Driver selectedDriver;
@@ -51,6 +59,9 @@ public class Race {
 	private Set<Player> playersThatSubmitted = new HashSet<Player>();
 	private RaceResult raceResult;
 	private ResultStrategy resultStrategy;
+	private List<AbstractRaceListener> listeners = new ArrayList<AbstractRaceListener>();
+	private List<RaceTimer> timers = new ArrayList<RaceTimer>();
+	private Timer timer;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)	
@@ -78,34 +89,36 @@ public class Race {
 	}
 
 	public void setClose(Calendar close) {
-		validateDates(this.begin, close);
+		validateDates(this.open, close);
 		this.close = close;
+		createRaceListeners();
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable=false)
-	public Calendar getBegin() {
-		return begin;
+	public Calendar getOpen() {
+		return open;
 	}
 
-	public void setBegin(Calendar open) {
+	public void setOpen(Calendar open) {
 		validateDates(open, this.close);
-		this.begin = open;
-		
+		this.open = open;
+		createRaceTimers();
+		createRaceListeners();
 	}
 	
 	/**
-	 * Returns true if the game is open§
+	 * Returns true if the game is opened and not closed yet
 	 * @return
 	 */
 	@Transient
-	public boolean isOpen() {
+	public boolean isOpened() {
 		Calendar now = Calendar.getInstance();
-		return begin.before(now) && close.after(now);
+		return open.before(now) && close.after(now);
 	}
 
 	/**
-	 * Returns true if the game has been opened and no is closed
+	 * Returns true if the game has been opened and now is closed
 	 * @return
 	 */
 	@Transient
@@ -113,18 +126,44 @@ public class Race {
 		Calendar now = Calendar.getInstance();
 		return close.before(now);
 	}
+
+	@Transient
+	public List<RaceTimer> getTimers() {
+		return timers;
+	}
+
+	/**
+	 * Sets the timers that the race has to deal with
+	 * @param timers
+	 */
+	public void setTimers(List<RaceTimer> timers) {
+		this.timers = timers;
+	}
+
+	@Transient
+	public List<AbstractRaceListener> getListeners() {
+		return listeners;
+	}
 	
-	private void validateDates(Calendar begin, Calendar close) {
-		if (begin == null || close == null) {
+	/**
+	 * Sets the listeners that the race has to deal with
+	 * @param listeners
+	 */
+	public void setListeners(List<AbstractRaceListener> listeners) {
+		this.listeners = listeners;
+	}
+	
+	private void validateDates(Calendar open, Calendar close) {
+		if (open == null || close == null) {
 			return;
 		}
-		if (begin.after(close)) {
-			throw new IllegalStateException("Race " + name + " starts after is ends");
+		if (open.after(close)) {
+			throw new IllegalStateException("Race " + name + " opens after it closes");
 		}
 	}
 	
 	private void validateOpen() {
-		if (isOpen() == false) {
+		if (isOpened() == false) {
 			throw new IllegalStateException("Race " + name + " is not open");
 		}
 	}
@@ -222,6 +261,7 @@ public class Race {
 		if (playersThatSubmitted.contains(bid.getPlayer())) {
 			throw new IllegalStateException(bid.getPlayer() + " has already submitted a bid");
 		}
+		bid.getPlayer().getAccount().withdraw("Deltagelse i " + getName(), getBettingAmount());
 		bids.add(bid);
 		playersThatSubmitted.add(bid.getPlayer());
 	}
@@ -251,11 +291,27 @@ public class Race {
 			this.raceResult = raceResult;
 	 		setCompleted(true);
 	 		resultStrategy.calculateResult(raceResult, bids);
+	 		for (AbstractRaceListener listener : listeners) {
+	 			listener.raceCompleted();
+			}
 		}
 	}
 
+	/**
+	 * If the race has been completed
+	 * @return
+	 */
 	public boolean isCompleted() {
 		return completed;
+	}
+	
+	/**
+	 * Returns true if the race has not yet been opened
+	 * @return
+	 */
+	@Transient
+	public boolean isWaiting() {
+		return Calendar.getInstance().before(open);
 	}
 
 	private void validateCompleted() {
@@ -275,6 +331,51 @@ public class Race {
 
 	public void setResultStrategy(ResultStrategy resultStrategy) {
 		this.resultStrategy = resultStrategy;
+	}
+	
+	private void createRaceTimers() {
+		if (timer != null) {
+			timer.cancel();
+		}
+		
+		if (isWaiting() == false || timers == null || timers.size() == 0) {
+			return; 
+		}
+		
+		timer = new Timer();
+		Date now = new Date();
+		for (RaceTimer raceTimer : timers) {
+			raceTimer.setRace(this);
+			Date when  = open.getTime();
+			when.setTime(when.getTime()-raceTimer.getBeforeInMillis());
+			if (when.after(now)) {
+				timer.schedule(new InternalRaceTimer(raceTimer), when);
+			}
+		}
+	}
+	
+	private void createRaceListeners() {
+		if (open == null || close == null || isCompleted()) {
+			return;
+		}
+		for (AbstractRaceListener listener : listeners) {
+			listener.setRace(this);
+		}
+	}
+	
+	private class InternalRaceTimer extends TimerTask {
+		
+		private RaceTimer raceTimer;
+		
+		public InternalRaceTimer(RaceTimer raceTimer) {
+			this.raceTimer = raceTimer;
+		}
+
+		@Override
+		public void run() {
+			raceTimer.invoke();
+		}
+		
 	}
 	
 	private class ResultComparator implements Comparator<Bid> {
@@ -303,4 +404,14 @@ public class Race {
 			return 0;
 		}
 	}
+
+	@Transient
+	public static BigDecimal getBettingAmount() {
+		return bettingAmount;
+	}
+
+	public static void setBettingAmount(BigDecimal bettingAmount) {
+		Race.bettingAmount = bettingAmount;
+	}
+
 }

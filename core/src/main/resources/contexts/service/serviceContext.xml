@@ -23,11 +23,44 @@
        class="dk.bregnvig.formula1.Race"
        lazy-init="true">
        <property name="resultStrategy" ref="resultStrategy"/>
+       <property name="timers">
+       		<list>
+       			<ref bean="timerEmailWarning"/>
+       		</list>
+       </property>
+       <property name="listeners">
+       		<list>
+       			<ref bean="wbcListener"/>
+       		</list>
+       </property>
+    </bean>
+    
+    <bean id="timerEmailWarning" class="dk.bregnvig.formula1.event.EmailReminderService" scope="prototype">
+    	<property name="days" value="7"/>
     </bean>
 
     <!-- service used by the Account bean -->
     <bean id="resultStrategy"
       class="dk.bregnvig.formula1.bid.DefaultResultStrategy">
+    </bean>
+
+    <bean id="wbcListener" class="dk.bregnvig.formula1.wbc.WBCListener" scope="prototype"/>
+    
+    <bean 
+       class="dk.bregnvig.formula1.wbc.WBC"
+       lazy-init="true">
+       <property name="points">
+       		<list>
+       			<value>10</value>
+       			<value>8</value>
+       			<value>6</value>
+       			<value>5</value>
+       			<value>4</value>
+       			<value>3</value>
+       			<value>2</value>
+       			<value>1</value>
+       		</list>
+       </property>
     </bean>
 
 </beans>
