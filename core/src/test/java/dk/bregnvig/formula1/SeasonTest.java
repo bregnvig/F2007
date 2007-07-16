@@ -10,13 +10,9 @@ import dk.bregnvig.formula1.util.AbstractDaoTest;
 public class SeasonTest extends AbstractDaoTest {
 	
 	
-	private Season season;
-	
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
 		super.onSetUpInTransaction();
-		season = new Season();
-		season.setName("F1 2007");
 	}
 	
 	public void testEntityManagerThere() {
@@ -24,13 +20,6 @@ public class SeasonTest extends AbstractDaoTest {
 	}
 	
 	public void testPlayersAdded() {
-		season.addPlayer(flb);
-		season.addPlayer(mba);
-		season.addPlayer(ttp);
-		
-		getEntityManager().persist(season);
-		
-		getEntityManager().flush();
 
 		season = getEntityManager().find(Season.class, season.getId());
 		
@@ -40,13 +29,6 @@ public class SeasonTest extends AbstractDaoTest {
 	}
 
 	public void testDriversAdded() {
-		season.addDriver(kimi);
-		season.addDriver(massa);
-		season.addDriver(hamilton);
-		
-		getEntityManager().persist(season);
-		
-		getEntityManager().flush();
 
 		season = getEntityManager().find(Season.class, season.getId());
 		
@@ -56,11 +38,6 @@ public class SeasonTest extends AbstractDaoTest {
 	}
 
 	public void testPlayersStay() {
-		season.addPlayer(flb);
-		season.addPlayer(mba);
-		season.addPlayer(ttp);
-		
-		getEntityManager().persist(season);
 		
 		assertNotNull(getEntityManager().find(Player.class, flb.getId()));
 
@@ -85,11 +62,6 @@ public class SeasonTest extends AbstractDaoTest {
 	}
 	
 	public void testPlayersDisappearsFromSeason() {
-		season.addPlayer(flb);
-		season.addPlayer(mba);
-		season.addPlayer(ttp);
-		
-		getEntityManager().persist(season);
 		
 		season.removePlayer(flb);
 		getEntityManager().remove(flb);
@@ -100,9 +72,6 @@ public class SeasonTest extends AbstractDaoTest {
 	}
 	
 	public void testRacesCreated() {
-		season.addPlayer(flb);
-		season.addPlayer(mba);
-		season.addPlayer(ttp);
 		
 		Race montreal = helper.getRace("Montreal");
 		montreal.setSelectedDriver(kimi);

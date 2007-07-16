@@ -13,10 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import dk.bregnvig.formula1.wbc.WBC;
 
 /**
  * This class is a entire season of formula 1
@@ -31,6 +34,7 @@ public class Season {
 	private Long id;
 	
 	private String name;
+	private WBC wbc = new WBC();
 	private Set<Race> races = new HashSet<Race>(21);
 	private Set<Driver> drivers = new HashSet<Driver>(25);
 	private Set<Player> players = new HashSet<Player>(17);
@@ -104,5 +108,14 @@ public class Season {
 
 	public void setDrivers(Set<Driver> drivers) {
 		this.drivers = drivers;
+	}
+
+	@OneToOne(cascade=CascadeType.ALL)
+	public WBC getWBC() {
+		return wbc;
+	}
+
+	public void setWBC(WBC wbc) {
+		this.wbc = wbc;
 	}
 }
