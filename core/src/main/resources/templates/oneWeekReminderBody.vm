@@ -1,0 +1,18 @@
+<html>
+<body>
+<h3>Hej ${player.firstName}</h3>
+
+<div>
+<p>
+Det er snart tid til at spille på ${race.name}.<br/>
+Spillet lukker ${weekday} klokken ${time}
+</p>
+<p>
+Du kan spille <a href="http://formel1.codeweasels.net/f1?race=${race.id}">her</a>.
+</p>
+</div>
+
+Wrouumm,<br/>
+F1emming
+</body>
+</html>
