@@ -134,7 +134,7 @@ public class RaceTest extends AbstractDaoTest {
     public void testRaceResultNonClosedGame() {
     	
     	try {
-    		monza.setRaceResult(raceResult);
+    		monza.setRaceResult(raceResultMonza);
     	} catch (IllegalStateException expected) {
     	}
     }
@@ -143,32 +143,32 @@ public class RaceTest extends AbstractDaoTest {
     	Thread.sleep(200);
     	monza.setClose(Calendar.getInstance());
     	Thread.sleep(200);
-   		monza.setRaceResult(raceResult);
+   		monza.setRaceResult(raceResultMonza);
    		getEntityManager().flush();
-   		assertNotNull(raceResult.getId());
+   		assertNotNull(raceResultMonza.getId());
     }
 
     public void testResult() throws Exception{
-    	monza.addBid(flbBid);
-    	monza.addBid(mbaBid);
-    	monza.addBid(ttpBid);
+    	monza.addBid(flbMonzaBid);
+    	monza.addBid(mbaMonzaBid);
+    	monza.addBid(ttpMonzaBid);
     	
     	Thread.sleep(200);
     	monza.setClose(Calendar.getInstance());
     	Thread.sleep(200);
-   		monza.setRaceResult(raceResult);
+   		monza.setRaceResult(raceResultMonza);
    		getEntityManager().flush();
     	
-   		assertNotNull(flbBid.getId());
-   		assertNotNull(mbaBid.getId());
-   		assertNotNull(ttpBid.getId());
- 		assertNotNull(raceResult.getId());
+   		assertNotNull(flbMonzaBid.getId());
+   		assertNotNull(mbaMonzaBid.getId());
+   		assertNotNull(ttpMonzaBid.getId());
+ 		assertNotNull(raceResultMonza.getId());
  		
  		List<Bid> result = monza.getResult();
  		assertEquals(3, result.size());
- 		assertEquals(flbBid, result.get(0));
- 		assertEquals(mbaBid, result.get(1));
- 		assertEquals(ttpBid, result.get(2));
+ 		assertEquals(flbMonzaBid, result.get(0));
+ 		assertEquals(mbaMonzaBid, result.get(1));
+ 		assertEquals(ttpMonzaBid, result.get(2));
     }
     
     public void testRaceTimersAreNotified() throws Exception {
@@ -227,7 +227,7 @@ public class RaceTest extends AbstractDaoTest {
     	spa.setOpen(open);
     	spa.setClose(close);
     	Thread.sleep(4000);
-    	spa.setRaceResult(raceResult);
+    	spa.setRaceResult(raceResultMonza);
     	
     	assertEquals(spa.getOpen().get(Calendar.SECOND), listener.getOpened().get(Calendar.SECOND));
     	assertEquals(spa.getClose().get(Calendar.SECOND), listener.getClosed().get(Calendar.SECOND));
@@ -271,27 +271,27 @@ public class RaceTest extends AbstractDaoTest {
 	
 
     public void testResultBetterPole() throws Exception{
-    	monza.addBid(flbBid);
-    	mbaBid = helper.getBid(mba, kimi, massa, hamilton, alonso, heidfeld, kubica, 1, 1, 11000);
+    	monza.addBid(flbMonzaBid);
+    	mbaMonzaBid = helper.getBid(mba, kimi, massa, hamilton, alonso, heidfeld, kubica, 1, 1, 11000);
 		
-    	monza.addBid(mbaBid);
-    	monza.addBid(ttpBid);
+    	monza.addBid(mbaMonzaBid);
+    	monza.addBid(ttpMonzaBid);
     	
     	Thread.sleep(200);
     	monza.setClose(Calendar.getInstance());
     	Thread.sleep(200);
-   		monza.setRaceResult(raceResult);
+   		monza.setRaceResult(raceResultMonza);
    		getEntityManager().flush();
     	
-   		assertNotNull(flbBid.getId());
-   		assertNotNull(mbaBid.getId());
-   		assertNotNull(ttpBid.getId());
- 		assertNotNull(raceResult.getId());
+   		assertNotNull(flbMonzaBid.getId());
+   		assertNotNull(mbaMonzaBid.getId());
+   		assertNotNull(ttpMonzaBid.getId());
+ 		assertNotNull(raceResultMonza.getId());
  		
  		List<Bid> result = monza.getResult();
  		assertEquals(3, result.size());
- 		assertEquals(flbBid, result.get(0));
- 		assertEquals(mbaBid, result.get(1));
- 		assertEquals(ttpBid, result.get(2));
+ 		assertEquals(flbMonzaBid, result.get(0));
+ 		assertEquals(mbaMonzaBid, result.get(1));
+ 		assertEquals(ttpMonzaBid, result.get(2));
     }
 }

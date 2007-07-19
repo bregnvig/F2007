@@ -23,7 +23,7 @@ public class Player {
 	private String playername;
 	private String firstName;
 	private String lastName;
-	private String email;
+	private String emailAddress;
 	private String sms;
 	private Account account = new Account();
 	
@@ -37,12 +37,12 @@ public class Player {
 	}
 	
 	@Column(length=40)
-	public String getEmail() {
-		return email;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 	
-	public void setEmail(String email) {
-		this.email = email;
+	public void setEmailAddress(String email) {
+		this.emailAddress = email;
 	}
 	
 	@Column(length=25, nullable=false)

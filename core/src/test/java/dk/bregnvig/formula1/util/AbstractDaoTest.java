@@ -34,10 +34,14 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 	
 	protected Season season;
 	
-	protected Bid flbBid;
-	protected Bid mbaBid;
-	protected Bid ttpBid;
-	protected RaceResult raceResult;
+	protected Bid flbMonzaBid;
+	protected Bid mbaMonzaBid;
+	protected Bid ttpMonzaBid;
+	protected Bid flbSpaBid;
+	protected Bid mbaSpaBid;
+	protected Bid ttpSpaBid;
+	protected RaceResult raceResultMonza;
+	protected RaceResult raceResultSpa;
 	
 	protected CreatorHelper helper = new CreatorHelper();
 	
@@ -100,10 +104,14 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 		season.addRace(monza);
 		season.addRace(spa);
 		
-		flbBid = helper.getBid(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, 1, 1, 10000);
-		mbaBid = helper.getBid(mba, massa, kimi, hamilton, alonso, kubica, heidfeld, 2, 2, 20000);
-		ttpBid = helper.getBid(ttp, heidfeld, kubica, alonso, hamilton, kimi, massa, 3, 3, 20000);
-		raceResult = helper.getRaceResult(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, button, 1, 1, 10000);
+		flbMonzaBid = helper.getBid(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, 1, 1, 10000);
+		mbaMonzaBid = helper.getBid(mba, massa, kimi, hamilton, alonso, kubica, heidfeld, 2, 2, 20000);
+		ttpMonzaBid = helper.getBid(ttp, heidfeld, kubica, alonso, hamilton, kimi, massa, 3, 3, 20000);
+		flbSpaBid = helper.getBid(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, 1, 1, 10000);
+		mbaSpaBid = helper.getBid(mba, massa, kimi, hamilton, alonso, kubica, heidfeld, 2, 2, 20000);
+		ttpSpaBid = helper.getBid(ttp, heidfeld, kubica, alonso, hamilton, kimi, massa, 3, 3, 20000);
+		raceResultMonza = helper.getRaceResult(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, button, 1, 1, 10000);
+		raceResultSpa = helper.getRaceResult(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, button, 1, 1, 10000);
 
 		getEntityManager().persist(season);
 	}

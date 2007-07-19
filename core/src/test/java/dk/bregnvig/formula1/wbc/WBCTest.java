@@ -22,16 +22,17 @@ public class WBCTest extends AbstractDaoTest {
 		List<Integer> points = new ArrayList<Integer>(3);
 		points.add(10);
 		points.add(8);
+		points.add(6);
 		season.getWBC().setPoints(points);
 		
-    	monza.addBid(flbBid);
-    	monza.addBid(mbaBid);
-    	monza.addBid(ttpBid);
+    	monza.addBid(flbMonzaBid);
+    	monza.addBid(mbaMonzaBid);
+    	monza.addBid(ttpMonzaBid);
     	
     	Thread.sleep(200);
     	monza.setClose(Calendar.getInstance());
     	Thread.sleep(200);
-   		monza.setRaceResult(raceResult);
+   		monza.setRaceResult(raceResultMonza);
    		getEntityManager().flush();
     	
    		assertEquals(season.getWBC().getPreviousRace(), monza);
@@ -39,7 +40,7 @@ public class WBCTest extends AbstractDaoTest {
    		List<WBC.Entry> entries = season.getWBC().getPreviousRaceEntries();
    		assertEquals(10, entries.get(0).getPoints());
    		assertEquals(8, entries.get(1).getPoints());
-   		assertEquals(0, entries.get(2).getPoints());
+   		assertEquals(6, entries.get(2).getPoints());
    		
    		assertEquals(flb, entries.get(0).getPlayer());
    		assertEquals(mba, entries.get(1).getPlayer());
@@ -52,13 +53,29 @@ public class WBCTest extends AbstractDaoTest {
 	
 	public void testStanding() throws Exception {
 		testWBC();
+
+		spa.setOpen(Calendar.getInstance());
+    	Thread.sleep(100);
+		
+    	spa.addBid(flbSpaBid);
+    	spa.addBid(mbaSpaBid);
+    	spa.addBid(ttpSpaBid);
+    	
+    	Thread.sleep(200);
+    	spa.setClose(Calendar.getInstance());
+    	Thread.sleep(200);
+   		spa.setRaceResult(raceResultSpa);
+   		getEntityManager().flush();
+    	
+   		assertEquals(season.getWBC().getPreviousRace(), spa);
+   		assertEquals(6, season.getWBC().getEntries().size());
 		
 		assertEquals(3, season.getWBC().getStanding().size());
 		
    		List<WBC.Entry> entries = season.getWBC().getStanding();
-   		assertEquals(10, entries.get(0).getPoints());
-   		assertEquals(8, entries.get(1).getPoints());
-   		assertEquals(0, entries.get(2).getPoints());
+   		assertEquals(20, entries.get(0).getPoints());
+   		assertEquals(16, entries.get(1).getPoints());
+   		assertEquals(12, entries.get(2).getPoints());
    		
    		assertEquals(flb, entries.get(0).getPlayer());
    		assertEquals(mba, entries.get(1).getPlayer());
