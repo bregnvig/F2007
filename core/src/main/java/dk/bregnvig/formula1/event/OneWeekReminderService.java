@@ -33,12 +33,7 @@ public class OneWeekReminderService extends AbstractRaceTimer {
 
 		Collection<Player> players = getNonplayingPlayers();
 		for (Player player : players) {
-			try {
-				sendConfirmationEmail(player);
-			} catch (MailException e) {
-				System.err.println(e.getMessage());
-				// TODO Add logging
-			}
+			sendConfirmationEmail(player);
 		}
 	}
 
@@ -75,7 +70,12 @@ public class OneWeekReminderService extends AbstractRaceTimer {
 				message.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "templates/oneWeekReminderBody.vm", model), true);
 			}
 		};
-		this.mailSender.send(preparator);
+		try {
+			this.mailSender.send(preparator);
+		} catch (MailException e) {
+			System.err.println(e.getMessage());
+			// TODO Add logging
+		}
 	}
 
 	public void setFromAddress(String fromAddress) {

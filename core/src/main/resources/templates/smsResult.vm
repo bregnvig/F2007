@@ -1,0 +1,1 @@
+Hej ${entry.player.firstName}. Så er ${entry.race.name} lige afsluttet. Du har fået ${entry.points} point til WBC mesterskabet :-)

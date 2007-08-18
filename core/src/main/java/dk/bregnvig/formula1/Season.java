@@ -118,4 +118,17 @@ public class Season {
 	public void setWBC(WBC wbc) {
 		this.wbc = wbc;
 	}
+	
+	/**
+	 * Returns the currently opened race. Null if no race is opened.
+	 * @return
+	 */
+	public Race getOpenRace() {
+		for (Race race : races) {
+			if (race.isOpened()) {
+				return race;
+			}
+		}
+		return null;
+	}
 }

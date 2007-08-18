@@ -86,6 +86,11 @@ public class WBC {
 		entries.add(entry);
 	}
 	
+	/**
+	 * Returns the result of the previous race. The first entry in the list is 
+	 * the item with most points
+	 * @return
+	 */
 	@Transient
 	public List<Entry> getPreviousRaceEntries() {
 		return getRaceEntries(getPreviousRace());
