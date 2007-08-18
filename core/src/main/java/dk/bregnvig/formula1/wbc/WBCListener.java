@@ -3,7 +3,7 @@ package dk.bregnvig.formula1.wbc;
 import dk.bregnvig.formula1.event.AbstractRaceListener;
 
 public class WBCListener extends AbstractRaceListener{
-
+	
 	@Override
 	public void raceClosed() {
 	}

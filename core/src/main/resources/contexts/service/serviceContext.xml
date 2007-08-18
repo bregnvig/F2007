@@ -27,7 +27,11 @@
 		</property>
 		<property name="listeners">
 			<list>
-				<ref bean="wbcListener" />
+				<bean class="dk.bregnvig.formula1.wbc.WBCListener"/>
+				<bean class="dk.bregnvig.formula1.wbc.SMSCongratulator">
+					<property name="sMSService" ref="smsService"/>
+					<property name="velocityEngine" ref="velocityEngine"/>
+				</bean>
 			</list>
 		</property>
 	</bean>
@@ -49,9 +53,6 @@
 	<bean id="resultStrategy"
 		class="dk.bregnvig.formula1.bid.DefaultResultStrategy">
 	</bean>
-
-	<bean id="wbcListener" class="dk.bregnvig.formula1.wbc.WBCListener"
-		scope="prototype" />
 
 	<bean class="dk.bregnvig.formula1.wbc.WBC" lazy-init="true">
 		<property name="points">
