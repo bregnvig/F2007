@@ -15,6 +15,7 @@
 
 	<tx:annotation-driven />
 
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/f2007"/>
 
 	<bean name="transactionManager"
 		class="org.springframework.orm.jpa.JpaTransactionManager">
