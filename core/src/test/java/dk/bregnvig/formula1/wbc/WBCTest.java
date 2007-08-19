@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import dk.bregnvig.formula1.event.AbstractRaceListener;
 import dk.bregnvig.formula1.util.AbstractDaoTest;
+import dk.bregnvig.formula1.util.SMSServiceDummyImpl;
 
 public class WBCTest extends AbstractDaoTest {
 
@@ -80,5 +82,35 @@ public class WBCTest extends AbstractDaoTest {
    		assertEquals(flb, entries.get(0).getPlayer());
    		assertEquals(mba, entries.get(1).getPlayer());
    		assertEquals(ttp, entries.get(2).getPlayer());
+	}
+	
+	public void testSMSSending() throws Exception {
+
+		List<AbstractRaceListener> listeners =  monza.getListeners();
+		
+		SMSCongratulator congratulator = null;
+		for (AbstractRaceListener listener : listeners) {
+			if (listener instanceof SMSCongratulator) {
+				congratulator = (SMSCongratulator) listener;
+			}
+		}
+		
+		SMSServiceDummyImpl service = new SMSServiceDummyImpl();
+		congratulator.setSMSService(service);
+		
+    	monza.addBid(flbMonzaBid);
+    	monza.addBid(mbaMonzaBid);
+    	monza.addBid(ttpMonzaBid);
+    	
+    	Thread.sleep(200);
+    	monza.setClose(Calendar.getInstance());
+    	Thread.sleep(200);
+   		monza.setRaceResult(raceResultMonza);
+   		getEntityManager().flush();
+   		
+   		assertTrue(service.containsTheseValues("flb", Integer.toString(10)));
+   		assertTrue(service.containsTheseValues("mba", Integer.toString(8)));
+   		assertTrue(service.containsTheseValues("ttp", Integer.toString(6)));
+		
 	}
 }

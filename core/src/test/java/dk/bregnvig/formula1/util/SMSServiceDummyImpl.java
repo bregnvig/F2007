@@ -19,4 +19,13 @@ public class SMSServiceDummyImpl implements SMSService {
 	public List<String> getMessages() {
 		return messages;
 	}
+	
+	public boolean containsTheseValues(String userId, String points) {
+		for (String message : messages) {
+			if (message.contains(userId) && message.contains(points)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -12,8 +12,7 @@
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<bean name="dataSource"
-		class="com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
-		destroy-method="close">
+		class="com.mysql.jdbc.jdbc2.optional.MysqlDataSource">
 		<property name="url">
 			<value>jdbc:mysql://localhost/f2007</value>
 		</property>

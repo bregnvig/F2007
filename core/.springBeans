@@ -8,6 +8,7 @@
 		<config>src/main/resources/contexts/data/daoContext.xml</config>
 		<config>src/main/resources/contexts/data/dataLayerContext.xml</config>
 		<config>src/test/resources/contexts/service/serviceTestContext.xml</config>
+		<config>src/test/resources/contexts/data/daoITestContext.xml</config>
 	</configs>
 	<configSets>
 	</configSets>

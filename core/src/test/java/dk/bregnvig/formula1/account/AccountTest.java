@@ -54,14 +54,14 @@ public class AccountTest extends AbstractDaoTest {
 	}
 
 	public void testTransfer() {
-		accountA.transfer("Overf¿rt til account b af Flemming", new BigDecimal(100), accountB);
+		accountA.transfer("Overført til account b af Flemming", new BigDecimal(100), accountB);
 		getEntityManager().flush();
 		assertEquals(new BigDecimal(0), getEntityManager().find(Account.class, accountA.getId()).getBalance());
 		assertEquals(new BigDecimal(110), getEntityManager().find(Account.class, accountB.getId()).getBalance());
 		Account.Entry entryA = accountA.getEntries().iterator().next();
 		Account.Entry entryB = accountB.getEntries().iterator().next();
 		assertTrue(entryA == entryB);
-		assertEquals("Overf¿rt til account b af Flemming", entryA.getMessage());
+		assertEquals("Overført til account b af Flemming", entryA.getMessage());
 		assertEquals(new BigDecimal(100), entryA.getAmount());
 	}
 }

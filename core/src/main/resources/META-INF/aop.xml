@@ -4,6 +4,6 @@
 <aspectj>
 	<weaver>
 		<include within="dk.bregnvig.formula1.Race" />
-		<include within="dk.bregnvig.formula1.wbc.*" />
+		<include within="dk.bregnvig.formula1.wbc.WBC" />
 	</weaver>
 </aspectj>
