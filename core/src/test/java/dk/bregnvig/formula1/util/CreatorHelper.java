@@ -24,7 +24,7 @@ public class CreatorHelper {
 		player.setFirstName("first"+playername);
 		player.setLastName("last"+playername);
 		player.setEmailAddress("flemming@bregnvig.dk");
-		player.setSms("12345678");
+		player.setSms("28712234");
 		
 		return player;
 	}
