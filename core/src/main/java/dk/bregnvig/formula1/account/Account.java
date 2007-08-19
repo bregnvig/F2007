@@ -62,11 +62,11 @@ public class Account {
 	}
 	
 	public boolean verifyWithdraw(BigDecimal amount) {
-		return balance.subtract(amount.abs()).intValue() > getMinBalance();
+		return balance.subtract(amount.abs()).intValue() >= getMinBalance();
 	}
 	
 	public void transfer(String message, BigDecimal amount, Account toAccount) {
-		if (verifyWithdraw(amount)) {
+		if (verifyWithdraw(amount) == false) {
 			throw new NotEnoughMoney("Transfer to: " + toAccount.id, balance, amount);
 		}
 		

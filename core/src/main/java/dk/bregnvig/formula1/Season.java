@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -123,6 +124,7 @@ public class Season {
 	 * Returns the currently opened race. Null if no race is opened.
 	 * @return
 	 */
+	@Transient
 	public Race getOpenRace() {
 		for (Race race : races) {
 			if (race.isOpened()) {
