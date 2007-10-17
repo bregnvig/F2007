@@ -29,6 +29,12 @@
 			<artifactId>commons-logging</artifactId>
 			<version>1.0.4</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>1.4.60</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>f2007</finalName>
