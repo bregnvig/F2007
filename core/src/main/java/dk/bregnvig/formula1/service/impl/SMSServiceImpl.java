@@ -1,16 +1,16 @@
-package dk.bregnvig.formula1.util.impl;
+package dk.bregnvig.formula1.service.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import dk.bregnvig.formula1.util.SMSService;
+import dk.bregnvig.formula1.service.SMSService;
 
 /**
  * This class handles the sending of the SMS for real. Will only work if the service is available
  * The sending of SMS is not deemed very important so failures to send should not cause the problem to fail. 
  * It should be logged though 
- * $Revision: 1.2 $
- * $Date: 2007-08-19 12:25:37 $
+ * $Revision: 1.1 $
+ * $Date: 2007-10-20 14:46:11 $
  * @author 4u603ctpsz9
  */
 public class SMSServiceImpl implements SMSService {
