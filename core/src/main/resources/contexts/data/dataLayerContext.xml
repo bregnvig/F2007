@@ -32,11 +32,11 @@
 				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 				<property name="databasePlatform"
 					value="org.hibernate.dialect.MySQLDialect" />
-				<property name="showSql" value="false" />
+				<property name="showSql" value="true" />
 			</bean>
 		</property>
 		<property name="jpaProperties">
-			<value>hibernate.hbm2ddl.auto=create-drop</value>
+			<value>hibernate.hbm2ddl.auto=create</value>
 		</property>
 	</bean>
 </beans>
