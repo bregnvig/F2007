@@ -7,7 +7,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import dk.bregnvig.formula1.event.AbstractRaceListener;
-import dk.bregnvig.formula1.util.SMSService;
+import dk.bregnvig.formula1.service.SMSService;
 import dk.bregnvig.formula1.wbc.WBC.Entry;
 
 public class SMSCongratulator extends AbstractRaceListener{
