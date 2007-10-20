@@ -3,6 +3,8 @@ package dk.bregnvig.formula1.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.bregnvig.formula1.service.SMSService;
+
 public class SMSServiceDummyImpl implements SMSService {
 
 	private List<String> numbers = new ArrayList<String>();

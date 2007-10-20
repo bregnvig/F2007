@@ -1,4 +1,4 @@
-package dk.bregnvig.formula1.util;
+package dk.bregnvig.formula1.service;
 
 public interface SMSService {
 	
