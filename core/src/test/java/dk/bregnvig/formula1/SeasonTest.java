@@ -9,6 +9,9 @@ import dk.bregnvig.formula1.util.AbstractDaoTest;
 
 public class SeasonTest extends AbstractDaoTest {
 	
+	public SeasonTest() {
+		setDefaultRollback(true);
+	}
 	
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
