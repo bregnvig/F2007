@@ -35,6 +35,11 @@
 			<version>1.4.60</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>1.4.60</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>f2007</finalName>
