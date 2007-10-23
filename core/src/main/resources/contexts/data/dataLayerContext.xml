@@ -35,8 +35,5 @@
 				<property name="showSql" value="true" />
 			</bean>
 		</property>
-		<property name="jpaProperties">
-			<value>hibernate.hbm2ddl.auto=create</value>
-		</property>
 	</bean>
 </beans>

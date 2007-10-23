@@ -17,7 +17,7 @@ public class SpringStarter {
 	static {
 		configLocations.add("classpath:contexts/data/dataLayerContext.xml");
 		configLocations.add("classpath:contexts/data/daoContext.xml");
-		configLocations.add("classpath:contexts/data/daoITestContext.xml");
+		configLocations.add("classpath:contexts/data/testDataLayerContext.xml");
 		configLocations.add("classpath:contexts/service/serviceContext.xml");
 		configLocations.add("classpath:contexts/service/serviceTestContext.xml");
 	};
