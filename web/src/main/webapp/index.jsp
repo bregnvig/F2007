@@ -10,6 +10,8 @@
   for (String name : context.getBeanDefinitionNames()) {
 	  out.write(name + "\n");
   }
+  out.write("<br/>");
+  out.write("+"+application.getAttribute("season"));
 %>
 </body>
 </html>

@@ -8,10 +8,29 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath*:/contexts/**/*Context.xml</param-value>
 	</context-param>
+	
+	<context-param>
+		<param-name>seasonName</param-name>
+		<param-value>F1 2007</param-value>
+	</context-param>
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	
+	<listener>
+		<listener-class>dk.bregnvig.formula1.server.listener.Initialize</listener-class>
+	</listener>
+	
+	<servlet>
+		<servlet-name>seasonService</servlet-name>
+		<servlet-class>dk.bregnvig.formula1.server.SeasonServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>seasonService</servlet-name>
+		<url-pattern>/season</url-pattern>
+	</servlet-mapping>
 
 	<resource-ref>
 		<description>F2007 Core connection</description>
