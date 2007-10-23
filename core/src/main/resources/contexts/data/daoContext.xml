@@ -10,6 +10,8 @@
 						http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
 
 	<bean id="seasonDao" class="dk.bregnvig.formula1.dao.impl.SeasonJpaDaoImpl">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
+		<property name="entityManagerFactory">
+			<idref bean="entityManagerFactory"/>
+		</property>
 	</bean>
 </beans>
