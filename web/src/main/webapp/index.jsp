@@ -11,7 +11,7 @@
 	  out.write(name + "\n");
   }
   out.write("<br/>");
-  out.write("+"+application.getAttribute("season"));
+  out.write("+"+application.getAttribute("seasonAttribute"));
 %>
 </body>
 </html>
