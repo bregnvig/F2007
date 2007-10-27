@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+              http://www.springframework.org/schema/beans/spring-beans.xsd
+              http://www.springframework.org/schema/aop 
+              http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- this element causes spring to configure the
+		AnnotationBeanConfigurer aspect in spring-aspects.jar
+		so that it has a reference to the bean factory 
+	-->
+	<aop:aspectj-autoproxy />
+
+	<bean id="authorizationAspect" class="dk.bregnvig.formula1.server.security.AuthorizationAspect"></bean>
+
+	<bean id="webContextAspect" class="dk.bregnvig.formula1.server.context.WebContextAspect">
+		<property name="context" ref="webContext"/>
+	</bean>
+
+	<bean id="webContext" class="dk.bregnvig.formula1.server.context.impl.WebContextImpl">
+		<property name="seasonName" value="F1 2007"/>
+	</bean>
+
+	<bean id="seasonRPCService" class="dk.bregnvig.formula1.server.SeasonServiceImpl">
+		<property name="context" ref="webContext"/>
+	</bean>
+
+</beans>
