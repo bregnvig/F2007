@@ -7,6 +7,8 @@ public class SeasonServiceImpl extends AbstractService implements SeasonService 
 	private static final long serialVersionUID = 3283834885586579712L;
 
 	public String getSeasonName() {
-		return getSeason().getName();
+		System.out.println("+++++"+this.toString());
+		return getContext().getSeason().getName();
 	}
+
 }

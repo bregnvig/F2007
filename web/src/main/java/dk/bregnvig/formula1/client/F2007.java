@@ -56,7 +56,7 @@ public class F2007 implements EntryPoint {
 		SeasonServiceAsync service = (SeasonServiceAsync) GWT.create(SeasonService.class);
 
 		ServiceDefTarget endpoint = (ServiceDefTarget) service;
-		String moduleRelativeURL = GWT.getModuleBaseURL() + "season";
+		String moduleRelativeURL = GWT.getModuleBaseURL() + "rpc/season";
 		endpoint.setServiceEntryPoint(moduleRelativeURL);
 
 		AsyncCallback callback = new AsyncCallback() {

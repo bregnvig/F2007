@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app id="f2007" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<web-app id="f2007" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
 	<display-name>F2007 Application</display-name>
@@ -8,7 +7,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath*:/contexts/**/*Context.xml</param-value>
 	</context-param>
-	
+
 	<context-param>
 		<param-name>seasonName</param-name>
 		<param-value>F1 2007</param-value>
@@ -17,20 +16,22 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
-	<listener>
-		<listener-class>dk.bregnvig.formula1.server.listener.Initialize</listener-class>
-	</listener>
-	
+
 	<servlet>
-		<servlet-name>seasonService</servlet-name>
-		<servlet-class>dk.bregnvig.formula1.server.SeasonServiceImpl</servlet-class>
+		<servlet-name>handler</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
+
 	<servlet-mapping>
-		<servlet-name>seasonService</servlet-name>
-		<url-pattern>/season</url-pattern>
+		<servlet-name>handler</servlet-name>
+		<url-pattern>/rpc/*</url-pattern>
 	</servlet-mapping>
+
+	<!-- servlet-mapping>
+		<servlet-name>spring</servlet-name>
+		<url-pattern>/season/*</url-pattern>
+	</servlet-mapping -->
 
 	<resource-ref>
 		<description>F2007 Core connection</description>
