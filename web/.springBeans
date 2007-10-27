@@ -13,8 +13,8 @@
 			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
 			<incomplete>false</incomplete>
 			<configs>
-				<config>src/main/resources/contexts/web/webContext.xml</config>
 				<config>src/main/webapp/WEB-INF/handler-servlet.xml</config>
+				<config>src/main/resources/contexts/web/webContext.xml</config>
 			</configs>
 		</configSet>
 	</configSets>
