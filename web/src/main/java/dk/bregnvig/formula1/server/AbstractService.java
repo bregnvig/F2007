@@ -1,17 +1,18 @@
 package dk.bregnvig.formula1.server;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import dk.bregnvig.formula1.server.context.WebContext;
 
-import dk.bregnvig.formula1.Season;
-
-public class AbstractService extends RemoteServiceServlet {
+public class AbstractService {
 	
 	private static final long serialVersionUID = 6954680002967911646L;
-
-	public static final String SEASON = "seasonAttribute";
 	
-	Season getSeason() {
-		return (Season) getServletContext().getAttribute(SEASON);
+	private WebContext context;
+
+	protected WebContext getContext() {
+		return context;
 	}
 
+	public void setContext(WebContext context) {
+		this.context = context;
+	}
 }
