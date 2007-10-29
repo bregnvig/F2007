@@ -32,11 +32,11 @@ public class AccountTest extends AbstractDaoTest {
 	}
 	
 	public void testDeposit() {
-		accountA.deposit("Overf¿rt af Flemming", new BigDecimal(100));
+		accountA.deposit("Overført af Flemming", new BigDecimal(100));
 		getEntityManager().flush();
 		assertEquals(new BigDecimal(200), getEntityManager().find(Account.class, accountA.getId()).getBalance());
 		Account.Entry entry = accountA.getEntries().iterator().next();
-		assertEquals("Overf¿rt af Flemming", entry.getMessage());
+		assertEquals("Overført af Flemming", entry.getMessage());
 		assertEquals(new BigDecimal(100), entry.getAmount());
 	}
 

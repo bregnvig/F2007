@@ -47,6 +47,7 @@ public class RaceTest extends AbstractDaoTest {
 		player.setFirstName("Fie");
 		player.setLastName("Pedersen");
 		player.setPlayername("fie");
+		player.setPassword("fie");
 		getEntityManager().persist(player);
 		
 		assertNotNull(player.getId());
