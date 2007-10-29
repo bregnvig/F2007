@@ -1,10 +1,13 @@
 package dk.bregnvig.formula1.util;
 
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import dk.bregnvig.formula1.Bid;
 import dk.bregnvig.formula1.Driver;
 import dk.bregnvig.formula1.Player;
+import dk.bregnvig.formula1.PlayerRole;
 import dk.bregnvig.formula1.Race;
 import dk.bregnvig.formula1.RaceResult;
 import dk.bregnvig.formula1.bid.FastestLapBid;
@@ -15,6 +18,7 @@ import dk.bregnvig.formula1.bid.GridResult;
 import dk.bregnvig.formula1.bid.PodiumBid;
 import dk.bregnvig.formula1.bid.PodiumResult;
 import dk.bregnvig.formula1.bid.SelectedDriverBid;
+import dk.bregnvig.formula1.dao.impl.PersistentRole;
 
 public class CreatorHelper {
 
@@ -25,7 +29,22 @@ public class CreatorHelper {
 		player.setLastName("last"+playername);
 		player.setEmailAddress("flemming@bregnvig.dk");
 		player.setSms("28712234");
-		
+		player.setPassword("mypassword");
+		Set<PersistentRole> roles = new HashSet<PersistentRole>();
+		PersistentRole role = new PersistentRole();
+		role.setRole(PlayerRole.PLAYER);
+		roles.add(role);
+		if (playername.equals("flb") || playername.equals("ttp")) {
+			PersistentRole adminRole = new PersistentRole();
+			adminRole.setRole(PlayerRole.PLAYER_ADMIN);
+			roles.add(adminRole);
+		}
+		if (playername.equals("flb")) {
+			PersistentRole accountRole = new PersistentRole();
+			accountRole.setRole(PlayerRole.ACCOUNT_ADMIN);
+			roles.add(accountRole);
+		}
+		player.setPersistentRoles(roles);
 		return player;
 	}
 	
