@@ -29,6 +29,14 @@ public class PlayerTest extends AbstractDaoTest {
 		assertFalse(mba.isPlayerInRole(null));
 	}
 
+	public void testPlayerInRoles() {
+		PlayerRole[] roles = {PlayerRole.ACCOUNT_ADMIN, PlayerRole.PLAYER_ADMIN};
+		assertTrue(flb.isPlayerInRoles(roles));
+		assertTrue(ttp.isPlayerInRoles(roles));
+		assertFalse(mba.isPlayerInRoles(roles));
+	}
+
+	
 	public void testPassword() {
 		
 		flb.setPassword(null);
