@@ -1,10 +1,7 @@
 package dk.bregnvig.formula1;
 
-import org.springframework.transaction.UnexpectedRollbackException;
+import javax.persistence.PersistenceException;
 
-import dk.bregnvig.formula1.Player;
-import dk.bregnvig.formula1.Race;
-import dk.bregnvig.formula1.Season;
 import dk.bregnvig.formula1.util.AbstractDaoTest;
 
 public class SeasonTest extends AbstractDaoTest {
@@ -18,8 +15,9 @@ public class SeasonTest extends AbstractDaoTest {
 		super.onSetUpInTransaction();
 	}
 	
-	public void testEntityManagerThere() {
+	public void testInitialized() {
 		assertNotNull(getEntityManager());
+		assertNotNull(season.getDao());
 	}
 	
 	public void testPlayersAdded() {
@@ -38,6 +36,10 @@ public class SeasonTest extends AbstractDaoTest {
 		assertTrue(season.getDrivers().contains(kimi));
 		assertTrue(season.getDrivers().contains(massa));
 		assertTrue(season.getDrivers().contains(hamilton));
+	}
+	
+	public void testFindPlayer() {
+		assertNotNull(season.getPlayer("flb"));
 	}
 
 	public void testPlayersStay() {
@@ -99,11 +101,12 @@ public class SeasonTest extends AbstractDaoTest {
 	}
 	
 	public void testMustHaveName() {
-		season.setName("w");
+		season.setName(null);
 		try {
-			getEntityManager().persist(season);
-//			fail("Must have name");
-		} catch (UnexpectedRollbackException expected) {
+			getEntityManager().merge(season);
+			getEntityManager().flush();
+			fail("Must have name");
+		} catch (PersistenceException expected) {
 			
 		}
 	}

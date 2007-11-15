@@ -29,6 +29,8 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import dk.bregnvig.formula1.bid.ResultStrategy;
 import dk.bregnvig.formula1.event.AbstractRaceListener;
@@ -253,6 +255,7 @@ public class Race {
 	 * Adds a single bid to this race
 	 * @param bid
 	 */
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 	public void addBid(Bid bid) {
 		validateOpen();
 		if (season.getPlayers().contains(bid.getPlayer()) == false) {
@@ -285,6 +288,7 @@ public class Race {
 		return raceResult;
 	}
 
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 	public void setRaceResult(RaceResult raceResult) {
 		if (raceResult != null) {
 			validateClosed();

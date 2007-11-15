@@ -9,7 +9,7 @@
 						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
 						http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
 
-	<bean id="seasonDao" class="dk.bregnvig.formula1.dao.impl.SeasonJpaDaoImpl">
+	<bean id="seasonDao" class="dk.bregnvig.formula1.dao.impl.GameJpaDaoImpl">
 		<property name="entityManagerFactory" ref="entityManagerFactory"/>
 	</bean>
 </beans>

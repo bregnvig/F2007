@@ -17,9 +17,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Configurable;
 
+import dk.bregnvig.formula1.dao.GameDao;
 import dk.bregnvig.formula1.wbc.WBC;
 
 /**
@@ -29,7 +29,7 @@ import dk.bregnvig.formula1.wbc.WBC;
  */
 @Entity
 @Table(name="season")
-@Transactional(propagation=Propagation.REQUIRED)
+@Configurable
 public class Season {
 	
 	private Long id;
@@ -39,6 +39,8 @@ public class Season {
 	private Set<Race> races = new HashSet<Race>(21);
 	private Set<Driver> drivers = new HashSet<Driver>(25);
 	private Set<Player> players = new HashSet<Player>(17);
+	
+	private GameDao dao;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -74,6 +76,11 @@ public class Season {
 	}
 	public void setPlayers(Set<Player> players) {
 		this.players = players;
+	}
+	
+	@Transient
+	public Player getPlayer(String playerName) {
+		return dao.findPlayerByName(playerName);
 	}
 	
 	public void removePlayer(Player player) {
@@ -132,5 +139,14 @@ public class Season {
 			}
 		}
 		return null;
+	}
+
+	public void setDao(GameDao dao) {
+		this.dao = dao;
+	}
+	
+	@Transient
+	GameDao getDao() {
+		return dao;
 	}
 }
