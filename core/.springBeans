@@ -5,27 +5,25 @@
 	</configExtensions>
 	<configs>
 		<config>src/main/resources/contexts/service/serviceContext.xml</config>
-		<config>src/main/resources/contexts/data/daoContext.xml</config>
 		<config>src/main/resources/contexts/data/dataLayerContext.xml</config>
 		<config>src/test/resources/contexts/service/serviceTestContext.xml</config>
 	</configs>
 	<configSets>
-		<configSet>
-			<name><![CDATA[Service]]></name>
-			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
-			<incomplete>false</incomplete>
-			<configs>
-				<config>src/main/resources/contexts/data/daoContext.xml</config>
-				<config>src/main/resources/contexts/service/serviceContext.xml</config>
-			</configs>
-		</configSet>
 		<configSet>
 			<name><![CDATA[Data]]></name>
 			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
 			<incomplete>false</incomplete>
 			<configs>
 				<config>src/main/resources/contexts/data/dataLayerContext.xml</config>
-				<config>src/main/resources/contexts/data/daoContext.xml</config>
+			</configs>
+		</configSet>
+		<configSet>
+			<name><![CDATA[Service]]></name>
+			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
+			<incomplete>false</incomplete>
+			<configs>
+				<config>src/main/resources/contexts/service/serviceContext.xml</config>
+				<config>src/main/resources/contexts/data/dataLayerContext.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

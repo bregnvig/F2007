@@ -31,4 +31,8 @@
 			</bean>
 		</property>
 	</bean>
+
+	<bean id="seasonDao" class="dk.bregnvig.formula1.dao.impl.GameJpaDaoImpl">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
 </beans>
