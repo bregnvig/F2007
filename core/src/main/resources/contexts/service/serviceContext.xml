@@ -22,7 +22,11 @@
 		</property>
 	</bean>
 	
-	<bean id="seasonService" class="dk.bregnvig.formula1.service.impl.SeasonServiceImpl">
+	<bean id="seasonService" class="dk.bregnvig.formula1.service.impl.GameServiceImpl">
+		<property name="dao" ref="seasonDao"/>
+	</bean>
+
+	<bean class="dk.bregnvig.formula1.Season" lazy-init="true">
 		<property name="dao" ref="seasonDao"/>
 	</bean>
 

@@ -2,11 +2,11 @@ package dk.bregnvig.formula1.service;
 
 import dk.bregnvig.formula1.util.AbstractDaoTest;
 
-public class SeasonServiceTest extends AbstractDaoTest {
+public class GameServiceTest extends AbstractDaoTest {
 	
-	private SeasonService service;
+	private GameService service;
 	
-	public SeasonServiceTest() {
+	public GameServiceTest() {
 		setDefaultRollback(true);
 	}
 	
@@ -31,7 +31,7 @@ public class SeasonServiceTest extends AbstractDaoTest {
 		assertTrue(season.getPlayers().contains(ttp));
 	}
 
-	public void setService(SeasonService service) {
+	public void setService(GameService service) {
 		this.service = service;
 	}
 }
