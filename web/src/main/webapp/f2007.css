@@ -1,0 +1,38 @@
+body,td,a,div,.p {
+	font-family: arial, sans-serif
+}
+
+div,td {
+	color: #000000
+}
+
+a:link,.w,.w a:link {
+	color: #0000cc
+}
+
+a:visited {
+	color: #551a8b
+}
+
+a:active {
+	color: #ff0000
+}
+
+.gwt-Label-title {
+	font-weight: bold;
+	font-size: 36px;
+}
+
+.gwt-Label-error {
+	color: #50001E;
+	font-weight: bold;
+	font-size: 24px;
+}
+
+.gwt-Label-form {
+	font-size: 14px;
+}
+
+.gwt-Label {
+	color: #AFCCFF;
+}

@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Before;
 import org.gwtwidgets.server.spring.ServletUtils;
 import org.springframework.core.annotation.Order;
 
-import dk.bregnvig.formula1.server.security.User;
+import dk.bregnvig.formula1.Player;
 
 /**
  * This aspect makes sure that items store in the thread local are removed when the call has completed.
@@ -21,8 +21,7 @@ public class WebContextAspect {
 
 	@Before("execution(* dk.bregnvig.formula1.server.*ServiceImpl.*(..))")
 	public void storeContext() {
-		context.setUser((User) ServletUtils.getRequest().getSession().getAttribute("user"));
-		System.out.println("************************** " + ServletUtils.getRequest().getSession().getAttribute("user"));
+		context.setPlayer((Player) ServletUtils.getRequest().getSession().getAttribute(SessionAttributes.PLAYER));
 	}
 
 
@@ -30,7 +29,6 @@ public class WebContextAspect {
 	@After("execution(* dk.bregnvig.formula1.server.*ServiceImpl.*(..))")
 	public void removeContext() {
 		context.remove();
-		System.out.println("************************** " + ServletUtils.getRequest().getSession().getAttribute("user"));
 	}
 	
 	public void setContext(WebContext context) {
