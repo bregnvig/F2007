@@ -4,13 +4,13 @@
               http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="serviceExporter" class="org.gwtwidgets.server.spring.GWTRPCServiceExporter">
-		<property name="service" ref="seasonRPCService" />
+		<property name="service" ref="gameRPCService" />
 	</bean>
 
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
 			<map>
-				<entry key="/season" value-ref="serviceExporter" />
+				<entry key="/game" value-ref="serviceExporter" />
 			</map>
 		</property>
 	</bean>

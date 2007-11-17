@@ -1,10 +1,10 @@
 package dk.bregnvig.formula1.server.context;
 
+import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Season;
-import dk.bregnvig.formula1.server.security.User;
 
 /**
- * These methods exposes the context the F2007 application has
+ * Usermethods exposes the context the F2007 application has
  * @author 4u603ctpsz9
  *
  */
@@ -17,16 +17,16 @@ public interface WebContext {
 	Season getSeason();
 	
 	/**
-	 * Sets the current user
+	 * Sets the current player
 	 * @param user
 	 */
-	void setUser(User user);
+	void setPlayer(Player player);
 	
 	/**
-	 * Gets the current user. Null if no user is logged in
+	 * Gets the current player. Null if no player is logged in
 	 * @return
 	 */
-	User getUser();
+	Player getPlayer();
 	
 	/**
 	 * Remove any thread local variables
