@@ -64,6 +64,10 @@ public class Race {
 	private List<AbstractRaceListener> listeners = new ArrayList<AbstractRaceListener>();
 	private List<RaceTimer> timers = new ArrayList<RaceTimer>();
 	private Timer timer;
+	
+	public Race() {
+		System.out.println("Here*****");
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)	

@@ -25,6 +25,7 @@ public class GameServiceTest extends AbstractDaoTest {
 		season = service.findByName("F1 2007");
 		
 		assertNotNull(season);
+		assertNotNull(season.getDao());
 		
 		assertTrue(season.getPlayers().contains(flb));
 		assertTrue(season.getPlayers().contains(mba));
