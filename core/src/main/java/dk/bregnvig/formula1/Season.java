@@ -146,7 +146,7 @@ public class Season {
 	}
 	
 	@Transient
-	GameDao getDao() {
+	public GameDao getDao() {
 		return dao;
 	}
 }
