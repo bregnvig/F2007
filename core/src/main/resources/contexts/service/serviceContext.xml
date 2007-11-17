@@ -11,6 +11,7 @@
 		AnnotationBeanConfigurer aspect in spring-aspects.jar
 		so that it has a reference to the bean factory 
 	-->
+	
 	<aop:spring-configured/>
 
 	<bean id="smsService" class="dk.bregnvig.formula1.service.impl.SMSServiceImpl">
@@ -22,7 +23,7 @@
 		</property>
 	</bean>
 	
-	<bean id="seasonService" class="dk.bregnvig.formula1.service.impl.GameServiceImpl">
+	<bean id="gameService" class="dk.bregnvig.formula1.service.impl.GameServiceImpl">
 		<property name="dao" ref="seasonDao"/>
 	</bean>
 
