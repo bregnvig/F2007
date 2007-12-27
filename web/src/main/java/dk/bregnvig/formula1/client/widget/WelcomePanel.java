@@ -16,13 +16,11 @@ public class WelcomePanel extends VerticalPanel {
 	public WelcomePanel(F2007 mediator, ClickListener listener) {
 		this.mediator = mediator;
 		
-		setHeight("100%");
-		setWidth("100%");
-		
 		title = new Label();
 		title.addStyleDependentName("title");
 		title.addClickListener(listener);
 		add(title);
+		setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 		setCellHorizontalAlignment(title, HasAlignment.ALIGN_CENTER);
 	}
 

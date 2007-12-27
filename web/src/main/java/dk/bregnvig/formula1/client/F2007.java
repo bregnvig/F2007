@@ -4,12 +4,16 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import dk.bregnvig.formula1.client.domain.ClientPlayer;
+import dk.bregnvig.formula1.client.domain.ClientSeason;
 import dk.bregnvig.formula1.client.service.GameService;
 import dk.bregnvig.formula1.client.service.GameServiceAsync;
 import dk.bregnvig.formula1.client.widget.ErrorPanel;
+import dk.bregnvig.formula1.client.widget.MainPanel;
 import dk.bregnvig.formula1.client.widget.LoginPanel;
 import dk.bregnvig.formula1.client.widget.WelcomePanel;
 
@@ -19,8 +23,9 @@ import dk.bregnvig.formula1.client.widget.WelcomePanel;
 public class F2007 implements EntryPoint, GWT.UncaughtExceptionHandler {
 	
 	private WelcomePanel welcome;
-	private boolean loggedIn = false;
+	private ClientPlayer player;
 	private GameServiceAsync service;
+	private ClientSeason season;
 	
 	public F2007() {
 		GWT.setUncaughtExceptionHandler(this);
@@ -38,9 +43,11 @@ public class F2007 implements EntryPoint, GWT.UncaughtExceptionHandler {
 		// to hard-code IDs. Instead, you could, for example, search for all
 		// elements with a particular CSS class and replace them with widgets.
 		//
+		RootPanel.get("slot1").setWidth("100%");
+		RootPanel.get("slot1").setHeight("100%");
+		RootPanel.get("slot1").setStyleName("f2007-root-panel");
 		loadGameService();
-		
-		if (loggedIn == false) {
+		if (isLoggedIn() == false) {
 			resetView();
 		} else {
 			// Display main content
@@ -48,36 +55,49 @@ public class F2007 implements EntryPoint, GWT.UncaughtExceptionHandler {
 	}
 	
 	public void resetView() {
-		RootPanel.get("slot1").clear();
-		RootPanel.get("slot1").add(welcome);
+		clear();
+		add(welcome);
 	}
 	
 	public void reportError(String errorMessage) {
-		RootPanel.get("slot1").clear();
-		RootPanel.get("slot1").add(new ErrorPanel(this, errorMessage));
+		clear();
+		add(new ErrorPanel(this, errorMessage));
 	}
 	
 	private class LoginClickListener implements ClickListener {
 
 		public void onClick(Widget noOneCares) {
-			RootPanel.get("slot1").clear();
-			RootPanel.get("slot1").add(new LoginPanel(F2007.this));
+			clear();
+			add(new LoginPanel(F2007.this));
 		}
 	}
 	
-	public void setLoggedIn(boolean loogedIn) {
-		if (loogedIn == true) {
-			reportError("Ha ha. loggedIn");
+	public void setLoggedIn(ClientPlayer player) {
+		this.player = player;
+		if (player != null) {
+			setGamePage();
 		}
-		this.loggedIn = loogedIn;
 	}
 	
-	private void loadGameService() {
-		service = (GameServiceAsync) GWT.create(GameService.class);
+	public boolean isLoggedIn() {
+		return player != null;
+	}
+	
+	public ClientPlayer getPlayer() {
+		return player;
+	}
 
-		ServiceDefTarget endpoint = (ServiceDefTarget) service;
-		String moduleRelativeURL = GWT.getModuleBaseURL() + "rpc/game";
-		endpoint.setServiceEntryPoint(moduleRelativeURL);		
+	private void setGamePage() {
+		clear();
+		add(new MainPanel(this));
+	}
+	
+	private void clear() {
+		RootPanel.get("slot1").clear();
+	}
+	
+	private void add(Panel panel) {
+		RootPanel.get("slot1").add(panel);
 	}
 	
 	public GameServiceAsync getGameService() {
@@ -87,5 +107,22 @@ public class F2007 implements EntryPoint, GWT.UncaughtExceptionHandler {
 	public void onUncaughtException(Throwable throwable) {
 		GWT.log("Oh no!", throwable);
 		reportError(throwable.getMessage());
+	}
+
+	
+	private void loadGameService() {
+		service = (GameServiceAsync) GWT.create(GameService.class);
+
+		ServiceDefTarget endpoint = (ServiceDefTarget) service;
+		String moduleRelativeURL = GWT.getModuleBaseURL() + "rpc/game";
+		endpoint.setServiceEntryPoint(moduleRelativeURL);		
+	}
+
+	public ClientSeason getSeason() {
+		return season;
+	}
+
+	public void setSeason(ClientSeason season) {
+		this.season = season;
 	}
 }

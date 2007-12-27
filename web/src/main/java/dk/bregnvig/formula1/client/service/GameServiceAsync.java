@@ -11,4 +11,11 @@ public interface GameServiceAsync {
 	void getSeasonName(AsyncCallback callback); 
 
 	void login(String playerName, String password, AsyncCallback callback);
+	
+	void getSeason(AsyncCallback callback);
+	
+	void getOpenRace(AsyncCallback callback);
+
+	void getAccount(AsyncCallback callback);
+
 }
