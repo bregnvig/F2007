@@ -28,5 +28,8 @@
 
 	<bean id="gameRPCService" class="dk.bregnvig.formula1.server.GameServiceImpl">
 		<property name="context" ref="webContext"/>
+		<property name="objectFactory">
+			<bean class="dk.bregnvig.formula1.server.mapping.impl.ObjectFactoryImpl"/>
+		</property>
 	</bean>
 </beans>

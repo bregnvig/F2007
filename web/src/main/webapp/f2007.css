@@ -1,5 +1,6 @@
-body,td,a,div,.p {
-	font-family: arial, sans-serif
+body,tr,a,.p {
+	font-family: calibri, arial, sans-serif;
+	background-color: #C3D9FF;
 }
 
 div,td {
@@ -18,11 +19,6 @@ a:active {
 	color: #ff0000
 }
 
-.gwt-Label-title {
-	font-weight: bold;
-	font-size: 36px;
-}
-
 .gwt-Label-error {
 	color: #50001E;
 	font-weight: bold;
@@ -33,6 +29,75 @@ a:active {
 	font-size: 14px;
 }
 
+.gwt-Label-big {
+	font-size: 22px;
+}
+
 .gwt-Label {
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+.gwt-Label-form-title {
+	font-weight: bold;
+	font-size: 32px;
+	background-color: #FFFFFF;
+	border: 2px solid #3366CC;
 	color: #AFCCFF;
+}
+
+.gwt-Label-title {
+	font-weight: bold;
+	font-size: 40px;
+}
+
+.f2007-input-panel {
+   background-color: #AACCFF;
+   border: 2px solid #3366CC;
+   font-weight: bold;
+}
+
+/* Apply padding to every element within the input panel */
+.f2007-input-panel * {
+   padding: 3px;
+}
+
+.gwt-MenuBar { 
+}
+
+.gwt-MenuBar .gwt-MenuItem { 
+	color: #FFFFFF;
+	font-weight: bold;
+	background-color: #C3D9FF;
+	border: 1px dotted #FFFFFF;
+	/*	border: 1px solid #87B3FF; */
+}
+.gwt-MenuBar .gwt-MenuItem-selected {
+	background-color: #9FC4FF; 
+}
+
+.north {
+	border-bottom: 1px solid #87B3FF;
+}
+
+.accountHeader {
+	background-color: #9FC6FF;
+	border: 1px solid #FFFFFF;
+}
+
+.accountEntryRow {
+	background-color: #DFECFF;
+}
+
+.accountEntryRow:hover {
+	background-color: #CFE3FF;
+}
+
+.accountEntry {
+	color: #301c00;
+	font-size: 12px;
+}
+
+.amount {
+	text-align: right;
 }
