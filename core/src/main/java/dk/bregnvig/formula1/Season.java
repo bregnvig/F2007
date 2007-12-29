@@ -92,7 +92,7 @@ public class Season {
 		races.add(race);
 	}
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="season")
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="season", fetch=FetchType.EAGER)
 	public Set<Race> getRaces() {
 		return races;
 	}

@@ -2,8 +2,10 @@ package dk.bregnvig.formula1.account;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +13,7 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -27,7 +30,7 @@ public class Account {
 	
 	private Long id;
 	private BigDecimal balance = BigDecimal.ZERO;
-	private Set<Entry> entries = new HashSet<Entry>();
+	private List<Entry> entries = new LinkedList<Entry>();
 
 	@Id
 	@GeneratedValue
@@ -83,7 +86,7 @@ public class Account {
 	private void addEntry(Entry entry, String message, BigDecimal amount) {
 		entry.setMessage(message);
 		entry.setAmount(amount);
-		entries.add(entry);
+		entries.add(0, entry);
 	}
 	
 	@Entity
@@ -174,14 +177,23 @@ public class Account {
 			this.fromAccount = fromAccount;
 		}
 	}
+	
+	private class EntryDateComparator implements Comparator<Entry> {
 
-	@ManyToMany(cascade=CascadeType.ALL)
+		public int compare(Entry entry0, Entry entry1) {
+			return entry0.getDate().compareTo(entry1.getDate());
+		}
+		
+	}
+
+	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinTable(name="account_entry_link")
-	public Set<Entry> getEntries() {
+	public List<Entry> getEntries() {
+		Collections.sort(this.entries, Collections.reverseOrder(new EntryDateComparator()));
 		return entries;
 	}
 
-	public void setEntries(Set<Entry> entries) {
+	public void setEntries(List<Entry> entries) {
 		this.entries = entries;
 	}
 	
