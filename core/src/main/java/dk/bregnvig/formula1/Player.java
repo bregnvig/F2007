@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -124,7 +125,7 @@ public class Player {
 	}
 	
 	// Not visible outside the package. Still works with JPA
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name="player_id")
 	Set<PersistentRole> getPersistentRoles() {
 		return this.roles;
@@ -142,7 +143,7 @@ public class Player {
 		this.smsNumber = sms;
 	}
 	
-	@OneToOne(optional = false, cascade=CascadeType.ALL)
+	@OneToOne(optional = false, cascade= {CascadeType.ALL}, fetch = FetchType.EAGER)
 	public Account getAccount() {
 		return account;
 	}

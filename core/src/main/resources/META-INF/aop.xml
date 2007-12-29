@@ -4,6 +4,7 @@
 <aspectj>
 	<weaver>
 		<include within="dk.bregnvig.formula1.*" />
+		<include within="dk.bregnvig.formula1.service..*" />
 		<include within="dk.bregnvig.formula1.wbc.WBC" />
 	</weaver>
 </aspectj>

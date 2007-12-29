@@ -1,5 +1,6 @@
 package dk.bregnvig.formula1.service;
 
+import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Season;
 
 /**
@@ -14,4 +15,10 @@ public interface GameService {
 	 * @return
 	 */
 	Season findByName(String name);
+	
+	/**
+	 * Updates this player. This is accross seasons.
+	 * @param player
+	 */
+	void updatePlayer(Player player);
 }

@@ -65,10 +65,6 @@ public class Race {
 	private List<RaceTimer> timers = new ArrayList<RaceTimer>();
 	private Timer timer;
 	
-	public Race() {
-		System.out.println("Here*****");
-	}
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)	
 	public Long getId() {
