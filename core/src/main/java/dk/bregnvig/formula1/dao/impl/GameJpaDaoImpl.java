@@ -33,7 +33,13 @@ public class GameJpaDaoImpl extends JpaDaoSupport implements GameDao {
 		}
 		return players.get(0);
 	}
-	
+
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
+	public void updatePlayer(Player player) {
+		getJpaTemplate().merge(player);
+	}
+
+
 	private boolean isEmpty(List<?> list) {
 		return list == null || list.size() == 0;
 	}

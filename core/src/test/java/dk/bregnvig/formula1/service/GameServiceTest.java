@@ -20,6 +20,11 @@ public class GameServiceTest extends AbstractDaoTest {
 		assertNotNull(getEntityManager());
 	}
 	
+	public void testSeason() {
+		season = service.findByName("F1 2007");
+		assertNotNull(season);
+	}
+	
 	public void testPlayersAdded() {
 
 		season = service.findByName("F1 2007");
@@ -31,6 +36,24 @@ public class GameServiceTest extends AbstractDaoTest {
 		assertTrue(season.getPlayers().contains(mba));
 		assertTrue(season.getPlayers().contains(ttp));
 	}
+	
+	public void testUpdatePlayer() {
+		
+		assertFalse("newpass".equals(flb.getPassword()));
+		
+		flb.setPassword("newpass");
+		
+		service.updatePlayer(flb);
+		
+		getEntityManager().flush();
+		
+		season = service.findByName("F1 2007");
+		flb = season.getPlayer("flb");
+		
+		assertNotNull(flb);
+		assertEquals("newpass", flb.getPassword());
+	}
+
 
 	public void setService(GameService service) {
 		this.service = service;
