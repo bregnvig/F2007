@@ -21,6 +21,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	private static final long serialVersionUID = 3283834885586579712L;
 	
 	private ObjectFactory objectFactory;
+	private dk.bregnvig.formula1.service.GameService service;
 
 	public String getSeasonName() {
 		return getContext().getSeason().getName();
@@ -54,8 +55,25 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		return objectFactory.create(getContext().getPlayer().getAccount());
 	}
 
+	@Authorization(roles = {PlayerRole.PLAYER})
+	public void updatePassword(String password) {
+		getContext().getPlayer().setPassword(password);
+		service.updatePlayer(getContext().getPlayer());
+	}
+	
+	@Authorization(roles = {PlayerRole.PLAYER})
+	public void updatePlayer(ClientPlayer player) {
+		objectFactory.map(player, getContext().getPlayer());
+		service.updatePlayer(getContext().getPlayer());
+	}
+	
+		
 
 	public void setObjectFactory(ObjectFactory objectFactory) {
 		this.objectFactory = objectFactory;
+	}
+
+	public void setService(dk.bregnvig.formula1.service.GameService service) {
+		this.service = service;
 	}
 }

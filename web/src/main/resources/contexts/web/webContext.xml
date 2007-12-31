@@ -31,5 +31,6 @@
 		<property name="objectFactory">
 			<bean class="dk.bregnvig.formula1.server.mapping.impl.ObjectFactoryImpl"/>
 		</property>
+		<property name="service" ref="gameService"/>
 	</bean>
 </beans>

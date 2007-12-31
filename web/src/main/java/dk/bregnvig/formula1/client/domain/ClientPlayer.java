@@ -11,6 +11,7 @@ public class ClientPlayer implements IsSerializable {
 	private String firstName;
 	private String lastName;
 	private String emailAddress;
+	private String smsNumber;
 
 	public String getPlayername() {
 		return playername;
@@ -35,5 +36,11 @@ public class ClientPlayer implements IsSerializable {
 	}
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
+	}
+	public String getSms() {
+		return smsNumber;
+	}
+	public void setSms(String smsNumber) {
+		this.smsNumber = smsNumber;
 	}	
 }
