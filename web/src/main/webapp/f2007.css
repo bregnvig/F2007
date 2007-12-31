@@ -19,10 +19,17 @@ a:active {
 	color: #ff0000
 }
 
-.gwt-Label-error {
-	color: #50001E;
-	font-weight: bold;
-	font-size: 24px;
+.gwt-TextBox-error {
+	border-style: groove;
+	border-width: 2px;
+	border-color: red;
+	margin: 2px;
+}
+
+.gwt-PasswordTextBox-error {
+	border-style: dotted;
+	border-width: 1px;
+	border-color: red;
 }
 
 .gwt-Label-form {
@@ -38,12 +45,21 @@ a:active {
 	font-weight: bold;
 }
 
+
+.gwt-Label-error {
+	color: #F00000;
+	font-weight: bold;
+	font-size: 16px;
+}
+
 .gwt-Label-form-title {
 	font-weight: bold;
-	font-size: 32px;
+	font-size: 22px;
 	background-color: #FFFFFF;
-	border: 2px solid #3366CC;
+	border: 2px solid #9FC4FF;
 	color: #AFCCFF;
+	margin-bottom: 5px;
+	text-align: center;
 }
 
 .gwt-Label-title {
@@ -100,4 +116,9 @@ a:active {
 
 .amount {
 	text-align: right;
+}
+
+.form {
+	margin-left: 50px;
+	border: 1px solid #FFFFFF;
 }

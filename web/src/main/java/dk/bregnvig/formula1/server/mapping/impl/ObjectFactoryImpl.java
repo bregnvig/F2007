@@ -86,4 +86,11 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		return clientEntry;
 	}
 
+	public void map(ClientPlayer source, Player target) {
+		target.setFirstName(source.getFirstName());
+		target.setLastName(source.getLastName());
+		target.setEmailAddress(source.getEmailAddress());
+		target.setSms(source.getSms());
+	}
+
 }
