@@ -15,6 +15,7 @@
 			<configs>
 				<config>src/main/webapp/WEB-INF/handler-servlet.xml</config>
 				<config>src/main/resources/contexts/web/webContext.xml</config>
+				<config>/core/src/main/resources/contexts/service/serviceContext.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

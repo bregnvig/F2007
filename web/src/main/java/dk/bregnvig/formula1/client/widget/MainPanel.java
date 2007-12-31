@@ -105,7 +105,7 @@ public class MainPanel extends DockPanel {
 	    
 		MenuBar playerMenu = new MenuBar(true);
 		playerMenu.addItem("Konto", new OpenAccountCommand());
-		playerMenu.addItem("Oplysninger", cmd);
+		playerMenu.addItem("Oplysninger", new OpenUserCommand());
 
 		MenuBar mainMenu = new MenuBar();
 		mainMenu.addItem("Løb", getRaceMenuBar());
@@ -151,6 +151,12 @@ public class MainPanel extends DockPanel {
     private class OpenAccountCommand implements Command {
 		public void execute() {
 			setCenterPanel(new AccountPanel(mediator, MainPanel.this));
+		}
+    }
+
+    private class OpenUserCommand implements Command {
+		public void execute() {
+			setCenterPanel(new PlayerPanel(mediator, MainPanel.this));
 		}
     }
 }

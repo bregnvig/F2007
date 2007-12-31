@@ -18,4 +18,6 @@ public interface ObjectFactory {
 	ClientRace create(Race source);
 	
 	ClientAccount create(Account account);
+	
+	void map(ClientPlayer source, Player target);
 }
