@@ -1,9 +1,13 @@
 package dk.bregnvig.formula1.client.domain;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+
+import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 
 public class ClientRace implements IsSerializable{
 
@@ -12,6 +16,21 @@ public class ClientRace implements IsSerializable{
 	private String name;
 	private boolean completed;
 	private Date openDate;
+	private boolean participant;
+	private ClientDriver selectedDriver;
+	
+	public ClientRace() {
+		
+	}
+	
+	public ClientRace(boolean participant) {
+		this.participant = participant;
+	}
+
+	/**
+	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.bid.ClientBid>
+	 */
+	private List bids = new ArrayList();
 	
 	public Long getId() {
 		return id;
@@ -46,6 +65,30 @@ public class ClientRace implements IsSerializable{
 			
 			return race0.getOpenDate().compareTo(race1.getOpenDate());
 		}
+	}
+	
+	/**
+	 * Returns true if this player currently logged in  is already a participant
+	 * @return
+	 */
+	public boolean isParticipant() {
+		return participant;
+	}
+
+	public List getBids() {
+		return bids;
+	}
+	
+	public void addBid(ClientBid bid) {
+		bids.add(bid);
+	}
+
+	public ClientDriver getSelectedDriver() {
+		return selectedDriver;
+	}
+
+	public void setSelectedDriver(ClientDriver selectedDriver) {
+		this.selectedDriver = selectedDriver;
 	}
 	
 }

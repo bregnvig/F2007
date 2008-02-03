@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBoxBase;
 
-public class EmailRule extends AbstractRule {
+public class EmailRule extends AbstractTextRule {
 
 	public final static String EMAIL_PATTERN = "^[a-zA-Z]+(([\\'\\,\\.\\- ][a-zA-Z])?[a-zA-Z]*)*\\s+<("
 		+ "\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,4})>$|^(\\w[-._\\w]*\\w"
@@ -26,11 +26,11 @@ public class EmailRule extends AbstractRule {
 
 	public List validate() {
 		
-		if (getField().getText().length() == 0) {
+		if (getTextField().getText().length() == 0) {
 			return Collections.EMPTY_LIST;
 		}
 		
-		if (getField().getText().replaceFirst(EMAIL_PATTERN, "").length() > 0) {
+		if (getTextField().getText().replaceFirst(EMAIL_PATTERN, "").length() > 0) {
 			return getIssue();
 		}
 		return Collections.EMPTY_LIST;
