@@ -56,7 +56,7 @@ public class MainPanel extends DockPanel {
 			public void onSuccess(Object result) {
 				loadSeasonCompleted = true;
 				mediator.setSeason((ClientSeason) result);
-				createNorth();
+				initialized();
 			}
 		};
 		mediator.getGameService().getSeason(callback);
@@ -79,20 +79,28 @@ public class MainPanel extends DockPanel {
 			public void onSuccess(Object result) {
 				loadOpenRaceCompleted = true;
 				openRace = (ClientRace) result;
-				createNorth();
+				initialized();
 			}
 		};
 		mediator.getGameService().getOpenRace(callback);
 	}
-
-	private void createNorth() {
+	
+	private void initialized() {
 		if (isAsyncCompleted() == false) {
 			return;
 		}
+		
+		createNorth();
+		if (openRace != null) {
+			setCenterPanel(new RacePanel(mediator, this, openRace));
+		}
+	}
+
+	private void createNorth() {
 		HorizontalPanel panel = new HorizontalPanel();
 		panel.setWidth("97%");
 		panel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
-		panel.setStyleName("north");
+		panel.setStyleName("southBorder");
 		
 	    // Make a command that we will execute from all leaves.
 
@@ -118,7 +126,7 @@ public class MainPanel extends DockPanel {
 		setCellHeight(panel, "5px"); // Automatically adjust to minimum size required
 	}
 	
-	private void setCenterPanel(Panel panel) {
+	public void setCenterPanel(Panel panel) {
 		if (currentCenter != null) {
 			remove(currentCenter);
 		}
@@ -133,7 +141,8 @@ public class MainPanel extends DockPanel {
 		
 		while (i.hasNext()) {
 			ClientRace race = (ClientRace) i.next();
-			raceMenu.addItem(new MenuItem(race.getName(), cmd));
+			OpenRaceCommand command = new OpenRaceCommand(race);
+			raceMenu.addItem(new MenuItem(race.getName(), command));
 		}
 		return raceMenu;
 	}
@@ -159,4 +168,17 @@ public class MainPanel extends DockPanel {
 			setCenterPanel(new PlayerPanel(mediator, MainPanel.this));
 		}
     }
+    
+    private class OpenRaceCommand implements Command {
+    	
+    	private ClientRace race;
+    	
+    	public OpenRaceCommand(ClientRace race) {
+    		this.race = race;
+    	}
+    	
+		public void execute() {
+			setCenterPanel(new RacePanel(mediator, MainPanel.this, race));
+		}
+    }    
 }

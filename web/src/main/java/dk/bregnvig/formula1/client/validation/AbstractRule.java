@@ -6,22 +6,22 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBoxBase;
+import com.google.gwt.user.client.ui.Widget;
 
 public abstract class AbstractRule implements Rule {
 
-	private TextBoxBase field;
+	private Widget field;
 	private Label labelProperty;
 	private String property; 
 
-	private AbstractRule(TextBoxBase field) {
+	private AbstractRule(Widget field) {
 		if (field == null) {
 			throw new IllegalArgumentException("the field must be set");
 		}
 		this.field = field;
 	}
 	
-	public AbstractRule(TextBoxBase field, Label labelProperty) {
+	public AbstractRule(Widget field, Label labelProperty) {
 		this(field);
 		if (labelProperty == null) {
 			throw new IllegalArgumentException("The property label must be set");
@@ -30,7 +30,7 @@ public abstract class AbstractRule implements Rule {
 		this.property = labelProperty.getText();
 	}
 	
-	public AbstractRule(TextBoxBase field, String property) {
+	public AbstractRule(Widget field, String property) {
 		this(field);
 		if (property == null) {
 			throw new IllegalArgumentException("The property must be set");
@@ -46,7 +46,7 @@ public abstract class AbstractRule implements Rule {
 		return false;
 	}
 
-	protected TextBoxBase getField() {
+	protected Widget getField() {
 		return field;
 	}
 

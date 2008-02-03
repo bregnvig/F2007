@@ -41,7 +41,7 @@ public class AccountPanel extends ContentPanel {
 		setCellHeight(buttonPanel, "5%");
 	}
 	
-	String getScreenTitle() {
+	protected String getScreenTitle() {
 		return "Konto og posteringer";
 	}
 	

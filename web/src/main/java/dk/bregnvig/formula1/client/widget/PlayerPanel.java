@@ -23,7 +23,7 @@ import dk.bregnvig.formula1.client.validation.MaxLengthRule;
 import dk.bregnvig.formula1.client.validation.PhoneNumberRule;
 import dk.bregnvig.formula1.client.validation.RequiredRule;
 import dk.bregnvig.formula1.client.validation.Rule;
-import dk.bregnvig.formula1.client.widget.control.BigLabel;
+import dk.bregnvig.formula1.client.widget.control.ContentTitleLabel;
 import dk.bregnvig.formula1.client.widget.control.FormLabel;
 import dk.bregnvig.formula1.client.widget.control.FormTitleLabel;
 
@@ -34,7 +34,7 @@ public class PlayerPanel extends ContentPanel {
 	public PlayerPanel(F2007 mediator, MainPanel mainPanel) {
 		super(mediator, mainPanel);
 		// setHeight("50%");
-		addHeadline();
+		add(new ContentTitleLabel("Opdater dine oplysninger her"));
 		add(messagePanel = new MessagePanel());
 		setCellHeight(messagePanel, "18px");
 		Panel formPanel = new HorizontalPanel();
@@ -198,14 +198,7 @@ public class PlayerPanel extends ContentPanel {
 		}
 	}
 
-	
-	private void addHeadline() {
-		Label headline = new BigLabel("Opdater dine oplysninger her");
-		add(headline);
-		setCellVerticalAlignment(headline, VerticalPanel.ALIGN_MIDDLE);
-	}
-
-	String getScreenTitle() {
+	protected String getScreenTitle() {
 		return "Mine oplysninger";
 	}
 

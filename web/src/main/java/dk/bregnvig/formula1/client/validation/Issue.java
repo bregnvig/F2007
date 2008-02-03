@@ -3,15 +3,16 @@ package dk.bregnvig.formula1.client.validation;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBoxBase;
+import com.google.gwt.user.client.ui.Widget;
 
 public class Issue implements IsSerializable {
 	
-	private TextBoxBase field;
+	private Widget field;
 	private Label labelProperty;
 	private String property; 
 	private String issue;
 
-	private Issue(TextBoxBase field, String issue) {
+	private Issue(Widget field, String issue) {
 		if (field == null) {
 			throw new IllegalArgumentException("the field must be set");
 		}
@@ -22,7 +23,7 @@ public class Issue implements IsSerializable {
 		this.issue = issue;
 	}
 
-	public Issue(TextBoxBase field, String issue, Label labelProperty, String property) {
+	public Issue(Widget field, String issue, Label labelProperty, String property) {
 		this(field, issue);
 		if (labelProperty == null && property == null) {
 			throw new IllegalArgumentException("Either labelProperty or property must be set");
@@ -49,7 +50,7 @@ public class Issue implements IsSerializable {
 		this.property = property;
 	}
 
-	public TextBoxBase getField() {
+	public Widget getField() {
 		return field;
 	}
 
@@ -63,5 +64,20 @@ public class Issue implements IsSerializable {
 
 	public String getIssue() {
 		return issue;
+	}
+
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("[Issue:");
+		buffer.append(" field: ");
+		buffer.append(field);
+		buffer.append(" labelProperty: ");
+		buffer.append(labelProperty);
+		buffer.append(" property: ");
+		buffer.append(property);
+		buffer.append(" issue: ");
+		buffer.append(issue);
+		buffer.append("]");
+		return buffer.toString();
 	}
 }

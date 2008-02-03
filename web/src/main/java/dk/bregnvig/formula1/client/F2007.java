@@ -125,4 +125,8 @@ public class F2007 implements EntryPoint, GWT.UncaughtExceptionHandler {
 	public void setSeason(ClientSeason season) {
 		this.season = season;
 	}
+	
+	public boolean isTesting() {
+		return true;
+	}
 }

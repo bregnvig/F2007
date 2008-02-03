@@ -25,11 +25,15 @@
 	<bean id="webContext" class="dk.bregnvig.formula1.server.context.impl.WebContextImpl">
 		<property name="seasonName" value="F1 2007"/>
 	</bean>
+	
+	<bean id="mapper" class="dk.bregnvig.formula1.server.mapping.impl.ObjectFactoryImpl">
+		<property name="context" ref="webContext"/>
+	</bean> 
 
 	<bean id="gameRPCService" class="dk.bregnvig.formula1.server.GameServiceImpl">
 		<property name="context" ref="webContext"/>
 		<property name="objectFactory">
-			<bean class="dk.bregnvig.formula1.server.mapping.impl.ObjectFactoryImpl"/>
+			<ref local="mapper"/> 
 		</property>
 		<property name="service" ref="gameService"/>
 	</bean>
