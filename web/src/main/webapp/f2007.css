@@ -67,6 +67,15 @@ a:active {
 	font-size: 40px;
 }
 
+.gwt-Label-content-title {
+	margin-top: 20px;
+}
+
+.gwt-Label-driverSelection {
+	font-size: 14px;
+	font-weight: normal;
+}
+
 .f2007-input-panel {
    background-color: #AACCFF;
    border: 2px solid #3366CC;
@@ -92,8 +101,13 @@ a:active {
 	background-color: #9FC4FF; 
 }
 
-.north {
+.southBorder {
 	border-bottom: 1px solid #87B3FF;
+}
+
+.northBorder {
+	border-top: 1px solid #87B3FF;
+	margin-top: 10px;
 }
 
 .accountHeader {
@@ -118,7 +132,26 @@ a:active {
 	text-align: right;
 }
 
+.buttonPanel {
+	margin-top: 6px;
+}
+
 .form {
 	margin-left: 50px;
 	border: 1px solid #FFFFFF;
+}
+
+.error {
+	border-style: groove;
+	border-width: 2px;
+	border-color: red;
+	margin: 2px;
+}
+
+.gwt-ListBox-error {
+	border-style: solid;
+	border-width: 200px;
+	border-color: red;
+	margin: 2px;
+	background-color: red;
 }

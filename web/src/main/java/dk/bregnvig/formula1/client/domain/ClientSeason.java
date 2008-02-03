@@ -1,5 +1,7 @@
 package dk.bregnvig.formula1.client.domain;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -17,6 +19,11 @@ public class ClientSeason implements IsSerializable{
 	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientRace>
 	 */
 	private List races;
+
+	/**
+	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientDriver>
+	 */
+	private List drivers;
 
 	public String getName() {
 		return name;
@@ -40,5 +47,28 @@ public class ClientSeason implements IsSerializable{
 
 	public void setRaces(List races) {
 		this.races = races;
+	}
+
+	public List getDrivers() {
+		return drivers;
+	}
+	
+	/**
+	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientDriver>
+	 */
+	public List getActiveDriver() {
+		List activeDrivers = new ArrayList();
+		Iterator i = getDrivers().iterator();
+		while (i.hasNext()) {
+			ClientDriver driver = (ClientDriver) i.next();
+			if (driver.isActive()) {
+				activeDrivers.add(driver);
+			}
+		}
+		return activeDrivers;
+	}
+
+	public void setDrivers(List drivers) {
+		this.drivers = drivers;
 	}
 }

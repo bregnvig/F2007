@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBoxBase;
 
-public class MaxLengthRule extends AbstractRule {
+public class MaxLengthRule extends AbstractTextRule {
 
 	private int maxLength;
 		
@@ -26,11 +26,11 @@ public class MaxLengthRule extends AbstractRule {
 
 	public List validate() {
 		
-		if (getField().getText().length() == 0) {
+		if (getTextField().getText().length() == 0) {
 			return Collections.EMPTY_LIST;
 		}
 		
-		if (getField().getText().length() > maxLength) {
+		if (getTextField().getText().length() > maxLength) {
 			return getIssue();
 		}
 		return Collections.EMPTY_LIST;

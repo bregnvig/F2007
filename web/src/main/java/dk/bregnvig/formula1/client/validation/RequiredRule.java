@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBoxBase;
 
-public class RequiredRule extends AbstractRule {
+public class RequiredRule extends AbstractTextRule {
 	
 	private boolean suspendValidation = false; 
 
@@ -21,9 +21,10 @@ public class RequiredRule extends AbstractRule {
 	protected String getErrorMessage() {
 		return "{0} skal udfyldes";
 	}
-
+	
 	public List validate() {
-		if (getField().getText().length() == 0) {
+		
+		if (getTextField().getText().length() == 0) {
 			suspendValidation = true;
 			return getIssue();
 		}
