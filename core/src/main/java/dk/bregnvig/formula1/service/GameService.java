@@ -1,5 +1,6 @@
 package dk.bregnvig.formula1.service;
 
+import dk.bregnvig.formula1.Bid;
 import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Season;
 
@@ -21,4 +22,6 @@ public interface GameService {
 	 * @param player
 	 */
 	void updatePlayer(Player player);
+	
+	void addBid(Bid bid);
 }

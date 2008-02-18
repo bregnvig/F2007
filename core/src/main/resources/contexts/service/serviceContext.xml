@@ -38,6 +38,7 @@
 	-->
 	<bean class="dk.bregnvig.formula1.Race" lazy-init="true">
 		<property name="resultStrategy" ref="resultStrategy" />
+		<property name="dao" ref="seasonDao"/>
 		<property name="timers">
 			<list>
 				<ref bean="oneWeekReminderService" />

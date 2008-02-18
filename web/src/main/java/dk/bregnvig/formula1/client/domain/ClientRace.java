@@ -14,6 +14,7 @@ public class ClientRace implements IsSerializable{
 	private Long id;
 
 	private String name;
+	private boolean opened;
 	private boolean completed;
 	private Date openDate;
 	private boolean participant;
@@ -74,6 +75,13 @@ public class ClientRace implements IsSerializable{
 	public boolean isParticipant() {
 		return participant;
 	}
+	
+	/**
+	 * Change the participant state for the race to true
+	 */
+	public void participant() {
+		this.participant = true;
+	}
 
 	public List getBids() {
 		return bids;
@@ -89,6 +97,18 @@ public class ClientRace implements IsSerializable{
 
 	public void setSelectedDriver(ClientDriver selectedDriver) {
 		this.selectedDriver = selectedDriver;
+	}
+
+	public boolean isOpened() {
+		return opened;
+	}
+
+	public void setOpened(boolean open) {
+		this.opened = open;
+	}
+	
+	public boolean isClosed() {
+		return isOpened() == false && isCompleted() == false;
 	}
 	
 }

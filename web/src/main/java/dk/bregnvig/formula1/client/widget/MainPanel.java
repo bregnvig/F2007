@@ -82,7 +82,7 @@ public class MainPanel extends DockPanel {
 				initialized();
 			}
 		};
-		mediator.getGameService().getOpenRace(callback);
+		mediator.getGameService().getCurrentRace(callback);
 	}
 	
 	private void initialized() {

@@ -6,6 +6,7 @@ import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
+import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.exception.CredentialException;
 
 /**
@@ -39,7 +40,7 @@ public interface GameService extends RemoteService {
 	 * Returns the current race
 	 * @return
 	 */
-	ClientRace getOpenRace();
+	ClientRace getCurrentRace();
 	
 	/**
 	 * Returns the user that is currently logged in account
@@ -58,4 +59,10 @@ public interface GameService extends RemoteService {
 	 * @param player
 	 */
 	void updatePlayer(ClientPlayer player);
+	
+	/**
+	 * Adds this bid to the open race
+	 * @param bid
+	 */
+	void addBid(ClientBid bid);
 }

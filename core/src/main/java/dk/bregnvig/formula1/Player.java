@@ -164,7 +164,6 @@ public class Player {
 		Player other = (Player) obj;
 		
 		return new EqualsBuilder()
-			.appendSuper(super.equals(obj))
 			.append(playername, other.playername)
 			.isEquals();
 	}

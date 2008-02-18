@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
+import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
 import dk.bregnvig.formula1.client.service.GameService;
 import dk.bregnvig.formula1.client.service.GameServiceAsync;
@@ -26,6 +27,7 @@ public class F2007 implements EntryPoint, GWT.UncaughtExceptionHandler {
 	private ClientPlayer player;
 	private GameServiceAsync service;
 	private ClientSeason season;
+	private ClientRace selectedRace;
 	
 	public F2007() {
 		GWT.setUncaughtExceptionHandler(this);
@@ -128,5 +130,20 @@ public class F2007 implements EntryPoint, GWT.UncaughtExceptionHandler {
 	
 	public boolean isTesting() {
 		return true;
+	}
+
+	/**
+	 * If no race is selected an exception will be thrown
+	 * @return
+	 */
+	public ClientRace getSelectedRace() {
+		if (selectedRace == null) {
+			throw new IllegalStateException("No race selected. You should not try to get the current race");
+		}
+		return selectedRace;
+	}
+
+	public void setSelectedRace(ClientRace selectedRace) {
+		this.selectedRace = selectedRace;
 	}
 }

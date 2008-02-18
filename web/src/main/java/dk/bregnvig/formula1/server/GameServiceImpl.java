@@ -9,6 +9,7 @@ import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
+import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.exception.CredentialException;
 import dk.bregnvig.formula1.client.service.GameService;
 import dk.bregnvig.formula1.server.context.SessionAttributes;
@@ -37,8 +38,8 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	}
 
 	@Authorization(roles={PlayerRole.PLAYER})
-	public ClientRace getOpenRace() {
-		Race race = getContext().getSeason().getOpenRace();
+	public ClientRace getCurrentRace() {
+		Race race = getContext().getSeason().getCurrentRace();
 		if (race != null) {
 			return objectFactory.create(race);
 		}
@@ -66,7 +67,11 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		objectFactory.map(player, getContext().getPlayer());
 		service.updatePlayer(getContext().getPlayer());
 	}
-	
+
+	@Authorization(roles = {PlayerRole.PLAYER})
+	public void addBid(ClientBid bid) {
+		getContext().getSeason().getCurrentRace().addBid(objectFactory.create(bid));
+	}
 		
 
 	public void setObjectFactory(ObjectFactory objectFactory) {
@@ -76,4 +81,5 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	public void setService(dk.bregnvig.formula1.service.GameService service) {
 		this.service = service;
 	}
+
 }
