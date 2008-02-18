@@ -3,7 +3,7 @@ package dk.bregnvig.formula1.dao;
 import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Season;
 
-public interface GameDao {
+public interface GameDao extends CommonDao {
 
 	Season findByName(String name);
 	

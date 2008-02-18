@@ -25,12 +25,15 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import dk.bregnvig.formula1.dao.CommonDao;
+
 @Entity
 public class Account {
 	
 	private Long id;
 	private BigDecimal balance = BigDecimal.ZERO;
 	private List<Entry> entries = new LinkedList<Entry>();
+//	private CommonDao dao;
 
 	@Id
 	@GeneratedValue
@@ -53,7 +56,9 @@ public class Account {
 	
 	public void deposit(String message, BigDecimal amount) {
 		balance = balance.add(amount);
-		addEntry(new DepositEntry(), message, amount);
+		Entry entry = new DepositEntry();
+//		dao.persist(dao);
+		addEntry(entry, message, amount);
 	}
 
 	public void withdraw(String message, BigDecimal amount) {
@@ -61,7 +66,9 @@ public class Account {
 			throw new NotEnoughMoney(balance, amount);
 		}
 		balance = balance.subtract(amount.abs());
-		addEntry(new WithdrawEntry(), message, amount.abs().negate());
+		Entry entry = new WithdrawEntry();
+//		dao.persist(entry);
+		addEntry(entry, message, amount.abs().negate());
 	}
 	
 	public boolean verifyWithdraw(BigDecimal amount) {
@@ -75,6 +82,7 @@ public class Account {
 		
 		balance = balance.subtract(amount.abs());
 		TransferEntry entry = new TransferEntry();
+//		dao.persist(entry);
 		entry.setToAccount(toAccount);
 		entry.setFromAccount(this);
 		addEntry(entry, message, amount.abs());
@@ -186,7 +194,7 @@ public class Account {
 		
 	}
 
-	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@ManyToMany(cascade= {CascadeType.ALL}, fetch=FetchType.EAGER)
 	@JoinTable(name="account_entry_link")
 	public List<Entry> getEntries() {
 		Collections.sort(this.entries, Collections.reverseOrder(new EntryDateComparator()));
@@ -200,5 +208,9 @@ public class Account {
 	@Transient
 	public int getMinBalance() {
 		return -100;
+	}
+
+	public void setDao(CommonDao dao) {
+//		this.dao = dao;
 	}
 }

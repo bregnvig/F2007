@@ -6,7 +6,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import dk.bregnvig.formula1.client.F2007;
-import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.validation.RequiredPositionSelectorRule;
 import dk.bregnvig.formula1.client.validation.Rule;
 import dk.bregnvig.formula1.client.widget.MainPanel;
@@ -20,20 +19,20 @@ public class SelectedDriverPanel extends AbstractWizardPage {
 	private final PositionSelector startListBox;
 	private final PositionSelector endListBox;
 	
-	public SelectedDriverPanel(F2007 mediator, MainPanel mainPanel, ClientDriver selectDriver) {
+	public SelectedDriverPanel(F2007 mediator, MainPanel mainPanel) {
 		super(mediator, mainPanel);
 		
 		Grid grid = new Grid(3, 2);
 		grid.setCellPadding(10);
-		grid.setWidget(0, 1, new DriverImage(selectDriver));
-		Label driverName = new ContentTitleLabel(selectDriver.getName());
+		grid.setWidget(0, 1, new DriverImage(getMediator().getSelectedRace().getSelectedDriver()));
+		Label driverName = new ContentTitleLabel(getMediator().getSelectedRace().getSelectedDriver().getName());
 		grid.setWidget(0, 0, driverName);
 		grid.getCellFormatter().setHorizontalAlignment(0, 0, VerticalPanel.ALIGN_RIGHT);
-		grid.setWidget(1, 0, new FormLabel("Jeg tror " + selectDriver.getName() + " starter som "));
+		grid.setWidget(1, 0, new FormLabel("Jeg tror " + getMediator().getSelectedRace().getSelectedDriver().getName() + " starter som "));
 		HorizontalPanel temp = new HorizontalPanel();
 		temp.add(startListBox = new PositionSelector(mediator.getSeason().getActiveDriver().size()));
 		grid.setWidget(1, 1, temp);
-		grid.setWidget(2, 0, new FormLabel("Jeg tror " + selectDriver.getName() + " slutter som "));
+		grid.setWidget(2, 0, new FormLabel("Jeg tror " + getMediator().getSelectedRace().getSelectedDriver().getName() + " slutter som "));
 		temp = new HorizontalPanel();
 		temp.add(endListBox = new PositionSelector(mediator.getSeason().getActiveDriver().size()));
 		grid.setWidget(2, 1, temp);
@@ -48,7 +47,7 @@ public class SelectedDriverPanel extends AbstractWizardPage {
 	}
 	
 	protected String getScreenTitle() {
-		return "Gæt den udvalgte køres start- og slutposition";
+		return getMediator().getSelectedRace().isOpened() ? "Gæt den udvalgte køres start- og slutposition" : "Udvalgte køres start- og slutposition";
 	}
 
 	protected Rule[] getRules() {

@@ -10,11 +10,13 @@ import org.springframework.beans.BeanUtils;
 import dk.bregnvig.formula1.Bid;
 import dk.bregnvig.formula1.Driver;
 import dk.bregnvig.formula1.Player;
+import dk.bregnvig.formula1.PlayerRole;
 import dk.bregnvig.formula1.Race;
 import dk.bregnvig.formula1.Season;
 import dk.bregnvig.formula1.account.Account;
 import dk.bregnvig.formula1.account.Account.Entry;
 import dk.bregnvig.formula1.bid.FastestLapBid;
+import dk.bregnvig.formula1.bid.FirstCrashBid;
 import dk.bregnvig.formula1.bid.GridBid;
 import dk.bregnvig.formula1.bid.PodiumBid;
 import dk.bregnvig.formula1.bid.SelectedDriverBid;
@@ -46,6 +48,12 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	public ClientPlayer create(Player player) {
 		ClientPlayer clientPlayer = new ClientPlayer();
 		BeanUtils.copyProperties(player, clientPlayer);
+		if (player.getRoles().contains(PlayerRole.PLAYER_ADMIN)) {
+			clientPlayer.setGameAdministrator(true);
+		}
+		if (player.getRoles().contains(PlayerRole.ACCOUNT_ADMIN)) {
+			clientPlayer.setBankAdministrator(true);
+		}
 		return clientPlayer;
 	}
 	
@@ -145,14 +153,15 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		throw new IllegalStateException("Client driver does not exist in the core");
 	}
 	
-	public Bid create(ClientDriver[] grid, ClientDriver fastestLap, ClientDriver[] podium, int[] positions, int polePositionTime) {
+	public Bid create(ClientBid clientBid) {
 		Bid bid = new Bid();
 		bid.setPlayer(context.getPlayer());
-		bid.setGrid(getGridBid(grid));
-		bid.setFastestLap(getFastestLapBid(fastestLap));
-		bid.setPodium(getPodiumBid(podium));
-		bid.setSelectedDriver(getSelectedDriverBid(positions));
-		bid.setPolePositionTimeMillis(polePositionTime);
+		bid.setGrid(getGridBid(clientBid.getGrid()));
+		bid.setFastestLap(getFastestLapBid(clientBid.getFastestLap()));
+		bid.setPodium(getPodiumBid(clientBid.getPodium()));
+		bid.setSelectedDriver(getSelectedDriverBid(clientBid.getSelectedDriver()));
+		bid.setFirstCrash(getFirstCrashBid(clientBid.getFirstCrash()));
+		bid.setPolePositionTimeMillis(clientBid.getPolePositionTime());
 		return bid;
 	}
 	
@@ -186,6 +195,13 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	private FastestLapBid getFastestLapBid(ClientDriver driver) {
 		FastestLapBid bid = new FastestLapBid();
 		bid.setDriver(getDriver(driver));
+		
+		return bid;
+	}
+
+	private FirstCrashBid getFirstCrashBid(ClientDriver driver) {
+		FirstCrashBid bid = new FirstCrashBid();
+		bid.setCrash1(getDriver(driver));
 		
 		return bid;
 	}
