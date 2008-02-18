@@ -26,6 +26,7 @@ public class Bid {
 
 	private Long id;
 	private Player player;
+	private Race race;
 	
 	private GridBid grid;
 	private FastestLapBid fastestLap;
@@ -100,6 +101,9 @@ public class Bid {
 
 	@Transient
 	public int getPoints() {
+		if (race != null && race.isCompleted() == false) {
+			throw new IllegalStateException("Race not completed. Hence points not available");
+		}
 		return grid.getPoints()+fastestLap.getPoints()+podium.getPoints()+selectedDriver.getPoints()+firstCrash.getPoints();
 	}
 
@@ -159,6 +163,15 @@ public class Bid {
 			.append(firstCrash)
 			.append("Pole position time", polePositionTimeMillis)
 			.toString();
+	}
+
+	@ManyToOne()
+	public Race getRace() {
+		return race;
+	}
+
+	public void setRace(Race race) {
+		this.race = race;
 	}
 
 }

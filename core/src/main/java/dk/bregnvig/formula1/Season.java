@@ -132,13 +132,17 @@ public class Season {
 	 * @return
 	 */
 	@Transient
-	public Race getOpenRace() {
+	public Race getCurrentRace() {
+		Race secondBest = null;
 		for (Race race : races) {
 			if (race.isOpened()) {
 				return race;
 			}
+			if (race.isCompleted() == false) {
+				secondBest = race;
+			}
 		}
-		return null;
+		return secondBest;
 	}
 
 	public void setDao(GameDao dao) {

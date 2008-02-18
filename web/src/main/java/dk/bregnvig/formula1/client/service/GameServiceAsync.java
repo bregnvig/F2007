@@ -3,6 +3,7 @@ package dk.bregnvig.formula1.client.service;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
+import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 
 /**
  * {@link GameService}
@@ -16,11 +17,13 @@ public interface GameServiceAsync {
 	
 	void getSeason(AsyncCallback callback);
 	
-	void getOpenRace(AsyncCallback callback);
+	void getCurrentRace(AsyncCallback callback);
 
 	void getAccount(AsyncCallback callback);
 
 	void updatePassword(String password, AsyncCallback callback);
 
 	void updatePlayer(ClientPlayer player, AsyncCallback callback);
+	
+	void addBid(ClientBid bid, AsyncCallback callback);
 }

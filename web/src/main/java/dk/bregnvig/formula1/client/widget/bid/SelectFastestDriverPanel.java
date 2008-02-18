@@ -25,7 +25,7 @@ public class SelectFastestDriverPanel extends AbstractWizardPage {
 	}
 	
 	protected String getScreenTitle() {
-		return "Vælg hurtigste kører";
+		return getMediator().getSelectedRace().isOpened() ? "Vælg hurtigste kører" : "Hurtigste kører";
 	}
 
 	protected Rule[] getRules() {

@@ -15,10 +15,10 @@ import java.util.TimerTask;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import dk.bregnvig.formula1.bid.ResultStrategy;
+import dk.bregnvig.formula1.dao.GameDao;
 import dk.bregnvig.formula1.event.AbstractRaceListener;
 import dk.bregnvig.formula1.event.RaceTimer;
 
@@ -64,6 +65,8 @@ public class Race {
 	private List<AbstractRaceListener> listeners = new ArrayList<AbstractRaceListener>();
 	private List<RaceTimer> timers = new ArrayList<RaceTimer>();
 	private Timer timer;
+	private GameDao dao;
+	
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)	
@@ -237,18 +240,29 @@ public class Race {
 		}
 		return result;
 	}
+	
+	/**
+	 * Returns true if this player is a participant in this race
+	 * @param player
+	 * @return
+	 */
+	@Transient
+	public boolean isParticipant(Player player) {
+		if (playersThatSubmitted.isEmpty()) {
+			for (Bid bid : bids) {
+				playersThatSubmitted.add(bid.getPlayer());
+			}
+		}
+		return playersThatSubmitted.contains(player);
+	}
 
-	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(name="race_id", nullable=false)
+	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	public Set<Bid> getBids() {
 		return bids;
 	}
 
 	public void setBids(Set<Bid> bids) {
 		this.bids = bids;
-		for (Bid bid : bids) {
-			playersThatSubmitted.add(bid.getPlayer());
-		}
 	}
 	
 	/**
@@ -261,12 +275,14 @@ public class Race {
 		if (season.getPlayers().contains(bid.getPlayer()) == false) {
 			throw new IllegalStateException(bid.getPlayer() + " is not part of this season");
 		}
-		if (playersThatSubmitted.contains(bid.getPlayer())) {
+		if (isParticipant(bid.getPlayer())) {
 			throw new IllegalStateException(bid.getPlayer() + " has already submitted a bid");
 		}
 		bid.getPlayer().getAccount().withdraw("Deltagelse i " + getName(), getBettingAmount());
 		bids.add(bid);
+		bid.setRace(this);
 		playersThatSubmitted.add(bid.getPlayer());
+		dao.merge(this);
 	}
 	
 	/**
@@ -416,6 +432,10 @@ public class Race {
 
 	public static void setBettingAmount(BigDecimal bettingAmount) {
 		Race.bettingAmount = bettingAmount;
+	}
+
+	public void setDao(GameDao dao) {
+		this.dao = dao;
 	}
 
 }

@@ -1,6 +1,5 @@
 package dk.bregnvig.formula1.client.widget.control;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -15,14 +14,17 @@ public class WizardPanel extends DockPanel {
 	private AbstractWizardPage currentCenter;
 	
 	private int currentPageIndex = 1;
+	
+	private final WizardCompletedListener completedListener;
 
-	public WizardPanel(AbstractWizardPage[] pages) {
+	public WizardPanel(WizardCompletedListener completedListener, AbstractWizardPage[] pages) {
 		this.pages = pages;
 		setWidth("97%");
 		turnPage();
 		ButtonPanel buttonPanel = new ButtonPanel(); 
 		add(buttonPanel, DockPanel.SOUTH);
 		buttonPanel.changeState();
+		this.completedListener = completedListener;
 	}
 	
 	private class ButtonPanel extends HorizontalPanel {
@@ -61,7 +63,7 @@ public class WizardPanel extends DockPanel {
 			finish.addClickListener(new ClickListener() {
 				public void onClick(Widget arg0) {
 					if (currentCenter.validate()) {
-						Window.alert("Færdig...");
+						completedListener.completed(WizardPanel.this.pages);
 					}
 				}
 			});

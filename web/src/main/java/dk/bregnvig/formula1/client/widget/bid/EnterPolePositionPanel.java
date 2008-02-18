@@ -1,16 +1,12 @@
 package dk.bregnvig.formula1.client.widget.bid;
 
-import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 import dk.bregnvig.formula1.client.F2007;
-import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.validation.MaxValueRule;
 import dk.bregnvig.formula1.client.validation.Rule;
 import dk.bregnvig.formula1.client.widget.MainPanel;
@@ -21,15 +17,13 @@ import dk.bregnvig.formula1.client.widget.control.FormTextBox;
 
 public class EnterPolePositionPanel extends AbstractWizardPage {
 	
-	private ClientRace race;
 	private PolePostionPanel polePosition;
 	
-	public EnterPolePositionPanel(F2007 mediator, MainPanel mainPanel, ClientRace race) {
+	public EnterPolePositionPanel(F2007 mediator, MainPanel mainPanel) {
 		super(mediator, mainPanel);
-		this.race = race;
 		FlexTable grid = new FlexTable();
 		grid.setCellPadding(10);
-		grid.setWidget(0, 0, new BigLabel("Pole position " + race.getName()));
+		grid.setWidget(0, 0, new BigLabel("Pole position " + getMediator().getSelectedRace().getName()));
 		grid.getFlexCellFormatter().setHorizontalAlignment(0, 0, HorizontalPanel.ALIGN_CENTER);
 		grid.getFlexCellFormatter().setColSpan(0, 0, 2);
 		grid.setWidget(1, 0, new FormLabel("Forventet pole position tid"));
@@ -40,7 +34,7 @@ public class EnterPolePositionPanel extends AbstractWizardPage {
 	}
 	
 	protected String getScreenTitle() {
-		return "Gæt pole position tiden i " + race.getName();
+		return getMediator().getSelectedRace().isOpened() ? "Gæt pole position tiden i " + getMediator().getSelectedRace().getName() : "Pole position tiden i "  + getMediator().getSelectedRace().getName();
 	}
 
 	protected Rule[] getRules() {
@@ -83,6 +77,12 @@ public class EnterPolePositionPanel extends AbstractWizardPage {
 			add(seconds);
 			add(new Label(":"));
 			add(milliseconds);
+			
+			if (getMediator().isTesting()) {
+				minutes.setText("1");
+				seconds.setText("15");
+				milliseconds.setText("123");
+			}
 		}
 
 		TextBox getMinutes() {

@@ -44,4 +44,11 @@ public class GameJpaDaoImpl extends JpaDaoSupport implements GameDao {
 		return list == null || list.size() == 0;
 	}
 
+	public void merge(Object object) {
+		getJpaTemplate().merge(object);
+	}
+
+	public void persist(Object object) {
+		getJpaTemplate().persist(object);
+	}
 }

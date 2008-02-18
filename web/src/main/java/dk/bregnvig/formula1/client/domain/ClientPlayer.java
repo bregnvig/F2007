@@ -12,6 +12,8 @@ public class ClientPlayer implements IsSerializable {
 	private String lastName;
 	private String emailAddress;
 	private String smsNumber;
+	private boolean gameAdministrator;
+	private boolean bankAdministrator;
 
 	public String getPlayername() {
 		return playername;
@@ -42,5 +44,17 @@ public class ClientPlayer implements IsSerializable {
 	}
 	public void setSms(String smsNumber) {
 		this.smsNumber = smsNumber;
+	}
+	public boolean isGameAdministrator() {
+		return gameAdministrator;
+	}
+	public void setGameAdministrator(boolean gameAdministrator) {
+		this.gameAdministrator = gameAdministrator;
+	}
+	public boolean isBankAdministrator() {
+		return bankAdministrator;
+	}
+	public void setBankAdministrator(boolean bankAdministrator) {
+		this.bankAdministrator = bankAdministrator;
 	}	
 }
