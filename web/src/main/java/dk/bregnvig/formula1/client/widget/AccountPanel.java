@@ -1,5 +1,6 @@
 package dk.bregnvig.formula1.client.widget;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -73,10 +74,11 @@ public class AccountPanel extends ContentPanel {
 	
 
 	private void fillTable() {
+		DateTimeFormat formatter = DateTimeFormat.getFormat("dd.MM.yyyy");
 		table.resizeRows(getNumberOfRows()+1);
 		for (int i = 0; i < getNumberOfRows(); i++) {
 			ClientAccountEntry entry = (ClientAccountEntry) account.getEntries().get(rowsPerPage*currentPage+i);
-			Label date = new AccountLabel(entry.getDate().toString());
+			Label date = new AccountLabel(formatter.format(entry.getDate()));
 			Label message = new AccountLabel(entry.getMessage());
 			Label amount = new AccountLabel(Integer.toString(entry.getAmount())+",00");
 			amount.addStyleName("amount");
@@ -154,6 +156,7 @@ public class AccountPanel extends ContentPanel {
 		table.setWidget(0, 2, amountLabel);
 		table.setWidth("100%");
 		table.getCellFormatter().addStyleName(0, 0, "accountHeader");
+		table.getCellFormatter().setWidth(0, 0, "33%");
 		table.getCellFormatter().addStyleName(0, 1, "accountHeader");
 		table.getCellFormatter().addStyleName(0, 2, "accountHeader");
 	}
@@ -166,7 +169,7 @@ public class AccountPanel extends ContentPanel {
 		htmlLabel.addStyleName("gwt-Label");
 		htmlLabel.addStyleName("gwt-Label-big");
 		balancePanel.add(htmlLabel);
-		balancePanel.add(amount = new BigLabel());
+		balancePanel.add(amount = new BigLabel("0"));
 		balancePanel.add(new BigLabel(",00"));
 		return balancePanel;
 	}

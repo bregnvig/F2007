@@ -64,6 +64,7 @@ public class WizardPanel extends DockPanel {
 				public void onClick(Widget arg0) {
 					if (currentCenter.validate()) {
 						completedListener.completed(WizardPanel.this.pages);
+						finish.setEnabled(false);
 					}
 				}
 			});

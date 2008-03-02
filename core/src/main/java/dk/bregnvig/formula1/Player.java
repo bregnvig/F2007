@@ -143,7 +143,7 @@ public class Player {
 		this.smsNumber = sms;
 	}
 	
-	@OneToOne(optional = false, cascade= {CascadeType.ALL}, fetch = FetchType.EAGER)
+	@OneToOne(optional = false, cascade= {CascadeType.ALL})
 	public Account getAccount() {
 		return account;
 	}

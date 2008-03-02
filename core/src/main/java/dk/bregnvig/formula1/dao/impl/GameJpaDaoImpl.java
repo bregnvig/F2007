@@ -51,4 +51,8 @@ public class GameJpaDaoImpl extends JpaDaoSupport implements GameDao {
 	public void persist(Object object) {
 		getJpaTemplate().persist(object);
 	}
+	
+	public void refresh(Object object) {
+		getJpaTemplate().refresh(object);
+	}
 }

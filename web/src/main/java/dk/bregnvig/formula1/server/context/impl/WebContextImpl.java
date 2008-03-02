@@ -3,6 +3,8 @@ package dk.bregnvig.formula1.server.context.impl;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Season;
@@ -13,22 +15,21 @@ public class WebContextImpl implements ApplicationContextAware, WebContext {
 
 	private ApplicationContext context;
 	private ThreadLocal<Player> player = new ThreadLocal<Player>();
+	private GameService service;
 	private String seasonName;
 
-	private static Season season;
-
+	
+	@Transactional(propagation = Propagation.MANDATORY)
 	public Season getSeason() {
+		Season season = service.findByName(seasonName);
+		if (season == null) {
+			throw new IllegalStateException("The season: " + seasonName + " could not be found");
+		}
 		return season;
 	}
 
 	public void init() {
-		GameService service = (GameService) context.getBean("gameService");
-
-		season = service.findByName(seasonName);
-
-		if (season == null) {
-			throw new IllegalStateException("The season: " + seasonName + " could not be found");
-		}
+		service = (GameService) context.getBean("gameService");
 	}
 
 	public Player getPlayer() {

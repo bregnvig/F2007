@@ -1,8 +1,9 @@
 package dk.bregnvig.formula1.client.domain;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class ClientPlayer implements IsSerializable {
+public class ClientPlayer extends Object implements IsSerializable {
 
 	
 	private static final long serialVersionUID = 1L;
@@ -56,5 +57,31 @@ public class ClientPlayer implements IsSerializable {
 	}
 	public void setBankAdministrator(boolean bankAdministrator) {
 		this.bankAdministrator = bankAdministrator;
-	}	
+	}
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((playername == null) ? 0 : playername.hashCode());
+		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (GWT.getTypeName(this).equals(GWT.getTypeName(obj)) == false)
+			return false;
+		final ClientPlayer other = (ClientPlayer) obj;
+		if (playername == null) {
+			if (other.playername != null)
+				return false;
+		} else if (!playername.equals(other.playername))
+			return false;
+		return true;
+	}
+
+	
+	
 }

@@ -173,6 +173,7 @@ public class PlayerPanel extends ContentPanel {
 
 						};
 						getMediator().getGameService().updatePlayer(player, callback);
+						
 					}
 				}
 			});

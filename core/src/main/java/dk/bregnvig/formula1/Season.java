@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -69,7 +68,7 @@ public class Season {
 		players.add(player);
 	}
 	
-	@ManyToMany(fetch=FetchType.EAGER, cascade= {CascadeType.MERGE, CascadeType.REFRESH})
+	@ManyToMany(cascade= {CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinTable(name="season_player")
 	public Set<Player> getPlayers() {
 		return players;
@@ -92,7 +91,7 @@ public class Season {
 		races.add(race);
 	}
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="season", fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="season")
 	public Set<Race> getRaces() {
 		return races;
 	}
@@ -108,7 +107,7 @@ public class Season {
 		drivers.remove(driver);
 	}
 
-	@ManyToMany(fetch=FetchType.EAGER, cascade= {CascadeType.MERGE, CascadeType.REFRESH})
+	@ManyToMany(cascade= {CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinTable(name="season_driver")
 	public Set<Driver> getDrivers() {
 		return drivers;
