@@ -31,6 +31,10 @@
 		<property name="dao" ref="seasonDao"/>
 	</bean>
 
+	<bean class="dk.bregnvig.formula1.account.Account" lazy-init="true">
+		<property name="dao" ref="seasonDao"/>
+	</bean>
+
 	<!-- configuration of Account bean, because we don't specify an 
 		id, the class name will be used as the bean name. This 
 		conveniently matches the behaviour of @Configurable when no
@@ -38,7 +42,6 @@
 	-->
 	<bean class="dk.bregnvig.formula1.Race" lazy-init="true">
 		<property name="resultStrategy" ref="resultStrategy" />
-		<property name="dao" ref="seasonDao"/>
 		<property name="timers">
 			<list>
 				<ref bean="oneWeekReminderService" />

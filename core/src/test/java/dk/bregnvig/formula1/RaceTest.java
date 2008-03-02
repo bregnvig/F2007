@@ -1,5 +1,6 @@
 package dk.bregnvig.formula1;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -41,7 +42,8 @@ public class RaceTest extends AbstractDaoTest {
 	public void testAddBid() {
 		Bid bid = helper.getBid(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, 1, 1, 100000);
 		monza.addBid(bid);
-		assertNotNull(getBid(monza, flb).getId());
+		getEntityManager().flush();
+		assertNotNull(bid.getId());
 	}
 
 	public void testAddBidForNonPlayer() {
@@ -96,7 +98,7 @@ public class RaceTest extends AbstractDaoTest {
 		Bid bid = helper.getBid(flb, massa, kimi, hamilton, alonso, heidfeld, kubica, 1, 1, 100000);
 		monza.addBid(bid);
 		getEntityManager().flush();
-		assertNotNull(getBid(monza, flb).getId());
+		assertNotNull(bid.getId());
 		try {
 			bid = helper.getBid(flb, massa, kimi, hamilton, heidfeld, alonso, kubica, 1, 1, 100000);
 			monza.addBid(bid);
@@ -109,7 +111,8 @@ public class RaceTest extends AbstractDaoTest {
 	public void testGetPointsForNonClosedRace() {
 		Bid bid = helper.getBid(flb, massa, kimi, hamilton, alonso, heidfeld, kubica, 1, 1, 100000);
 		monza.addBid(bid);
-		assertNotNull(getBid(monza, flb).getId());
+		getEntityManager().flush();
+		assertNotNull(bid.getId());
 		try {
 			bid.getPoints();
 			fail("Points not available, since race is not completed");
@@ -149,34 +152,43 @@ public class RaceTest extends AbstractDaoTest {
     public void testRaceResultNonClosedGame() {
     	
     	try {
-    		monza.setRaceResult(raceResultMonza);
+    		monza.completeRace(raceResultMonza);
     	} catch (IllegalStateException expected) {
     	}
     }
 
     public void testRaceResultGame() throws Exception {
+    	monza.addBid(flbMonzaBid);
     	Thread.sleep(200);
     	monza.setClose(Calendar.getInstance());
     	Thread.sleep(200);
-   		monza.setRaceResult(raceResultMonza);
+   		monza.completeRace(raceResultMonza);
    		getEntityManager().flush();
    		assertNotNull(raceResultMonza.getId());
     }
 
     public void testResult() throws Exception{
+    	
+    	assertEquals(BigDecimal.ZERO, bookie.getAccount().getBalance());
+    	
     	monza.addBid(flbMonzaBid);
     	monza.addBid(mbaMonzaBid);
     	monza.addBid(ttpMonzaBid);
     	
+    	assertEquals(new BigDecimal(60), bookie.getAccount().getBalance());
+    	assertEquals(new BigDecimal(-20), flb.getAccount().getBalance());
+    	assertEquals(new BigDecimal(-20), mba.getAccount().getBalance());
+    	assertEquals(new BigDecimal(-20), ttp.getAccount().getBalance());
+    	
     	Thread.sleep(200);
     	monza.setClose(Calendar.getInstance());
     	Thread.sleep(200);
-   		monza.setRaceResult(raceResultMonza);
+   		monza.completeRace(raceResultMonza);
    		getEntityManager().flush();
     	
-   		assertNotNull(getBid(monza, flb).getId());
-   		assertNotNull(getBid(monza, mba).getId());
-   		assertNotNull(getBid(monza, ttp).getId());
+   		assertNotNull(flbMonzaBid.getId());
+   		assertNotNull(mbaMonzaBid.getId());
+   		assertNotNull(ttpMonzaBid.getId());
  		assertNotNull(raceResultMonza.getId());
  		
  		List<Bid> result = monza.getResult();
@@ -184,6 +196,11 @@ public class RaceTest extends AbstractDaoTest {
  		assertEquals(flbMonzaBid, result.get(0));
  		assertEquals(mbaMonzaBid, result.get(1));
  		assertEquals(ttpMonzaBid, result.get(2));
+ 		
+    	assertEquals(BigDecimal.ZERO, bookie.getAccount().getBalance());
+    	assertEquals(new BigDecimal(40), flb.getAccount().getBalance());
+    	assertEquals(new BigDecimal(-20), mba.getAccount().getBalance());
+    	assertEquals(new BigDecimal(-20), ttp.getAccount().getBalance());
     }
     
     public void testRaceTimersAreNotified() throws Exception {
@@ -241,8 +258,10 @@ public class RaceTest extends AbstractDaoTest {
     	spa.setListeners(listners);
     	spa.setOpen(open);
     	spa.setClose(close);
-    	Thread.sleep(4000);
-    	spa.setRaceResult(raceResultMonza);
+    	Thread.sleep(1000);
+    	spa.addBid(flbSpaBid);
+    	Thread.sleep(3000);
+    	spa.completeRace(raceResultSpa);
     	
     	assertEquals(spa.getOpen().get(Calendar.SECOND), listener.getOpened().get(Calendar.SECOND));
     	assertEquals(spa.getClose().get(Calendar.SECOND), listener.getClosed().get(Calendar.SECOND));
@@ -295,12 +314,12 @@ public class RaceTest extends AbstractDaoTest {
     	Thread.sleep(200);
     	monza.setClose(Calendar.getInstance());
     	Thread.sleep(200);
-   		monza.setRaceResult(raceResultMonza);
+   		monza.completeRace(raceResultMonza);
    		getEntityManager().flush();
     	
-   		assertNotNull(getBid(monza, flb).getId());
-   		assertNotNull(getBid(monza, mba).getId());
-   		assertNotNull(getBid(monza, ttp).getId());
+   		assertNotNull(flbMonzaBid.getId());
+   		assertNotNull(mbaMonzaBid.getId());
+   		assertNotNull(ttpMonzaBid.getId());
  		assertNotNull(raceResultMonza.getId());
  		
  		List<Bid> result = monza.getResult();
@@ -308,15 +327,6 @@ public class RaceTest extends AbstractDaoTest {
  		assertEquals(flbMonzaBid, result.get(0));
  		assertEquals(mbaMonzaBid, result.get(1));
  		assertEquals(ttpMonzaBid, result.get(2));
-    }
-    
-    private Bid getBid(Race race, Player player) {
-    	for (Bid bid : race.getBids()) {
-			if (bid.getPlayer().equals(player)) {
-				return bid;
-			}
-		}
-    	return null;
     }
     
 }

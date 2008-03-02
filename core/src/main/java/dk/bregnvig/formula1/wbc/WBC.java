@@ -68,7 +68,6 @@ public class WBC {
 	 * @param bids
 	 */
 	public void raceCompleted(Race race) {
-		
 		List<Bid> bids = race.getResult();
 		for (int i = 0; i < bids.size(); i++) {
 			Entry entry =  new Entry();
@@ -162,7 +161,7 @@ public class WBC {
 	
 	@Entity
 	@Table(name="WBCEntry")
-	public class Entry {
+	public static class Entry {
 		
 		private Long id;
 		private int points;
@@ -247,5 +246,4 @@ public class WBC {
 				.toString();
 		}
 	}
-
 }
