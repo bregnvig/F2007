@@ -4,6 +4,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
+import dk.bregnvig.formula1.client.domain.bid.ClientResult;
 
 /**
  * {@link GameService}
@@ -26,4 +27,6 @@ public interface GameServiceAsync {
 	void updatePlayer(ClientPlayer player, AsyncCallback callback);
 	
 	void addBid(ClientBid bid, AsyncCallback callback);
+	
+	void setResult(ClientResult result, AsyncCallback callback);
 }

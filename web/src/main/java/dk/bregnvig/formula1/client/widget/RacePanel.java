@@ -13,8 +13,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import dk.bregnvig.formula1.client.F2007;
+import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
+import dk.bregnvig.formula1.client.domain.bid.ClientResult;
 import dk.bregnvig.formula1.client.widget.bid.EnterPolePositionPanel;
 import dk.bregnvig.formula1.client.widget.bid.SelectFastestDriverPanel;
 import dk.bregnvig.formula1.client.widget.bid.SelectFirstCrashDriverPanel;
@@ -56,7 +58,7 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 		if (race.isOpened() == true && race.isParticipant() == false) {
 			createWizard();
 			addCommandButton("Jeg skal deltage");
-		} else if (race.isOpened() == false && race.isCompleted() == false && getMediator().getPlayer().isGameAdministrator() == true) {
+		} else if (race.isOpened() == false && race.isCompleted() == false && race.isWaiting() == false && getMediator().getPlayer().isGameAdministrator() == true) {
 			addCommandButton("Indtast resultat");
 			createWizard();
 		}
@@ -102,14 +104,9 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 	
 	
 	private void submitBid() {
-		final ClientBid bid = new ClientBid();
-		bid.setPlayer(getMediator().getPlayer());
-		bid.setGrid(selectGrid.getDrivers());
-		bid.setFastestLap(selectFastest.getDriver());
-		bid.setPodium(selectPodium.getDrivers());
-		bid.setSelectedDriver(selectedDriver.getPositions());
+		final ClientBid bid = new ClientBid(); 
+		mapCommonInformation(bid);
 		bid.setFirstCrash(selectFirstCrash.getDriver());
-		bid.setPolePositionTime(polePosition.getPolePosition());
 		AsyncCallback callback = new AsyncCallback() {
 
 			public void onFailure(Throwable exception) {
@@ -126,6 +123,36 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 
 		};
 		getMediator().getGameService().addBid(bid, callback);
+	}
+
+	private void submitResult() {
+		final ClientResult result = new ClientResult();
+		mapCommonInformation(result);
+		result.setFirstCrashes(selectFirstCrash.getDrivers());
+		AsyncCallback callback = new AsyncCallback() {
+
+			public void onFailure(Throwable exception) {
+				getMediator().reportError(exception.getMessage());
+			}
+
+			public void onSuccess(Object race) {
+				getMediator().setSelectedRace((ClientRace) race);
+				removeCommandButton();
+				participants.reset();
+				getMainPanel().setCenterPanel(RacePanel.this);
+			}
+		};
+		getMediator().getGameService().setResult(result, callback);
+	}
+	
+	private ClientBid mapCommonInformation(ClientBid bid) {
+		bid.setPlayer(getMediator().getPlayer());
+		bid.setGrid(selectGrid.getDrivers());
+		bid.setFastestLap(selectFastest.getDriver());
+		bid.setPodium(selectPodium.getDrivers());
+		bid.setSelectedDriver(selectedDriver.getPositions());
+		bid.setPolePositionTime(polePosition.getPolePosition());
+		return bid;
 	}
 	
 	private class ParticipantPanel extends VerticalPanel {
@@ -147,7 +174,8 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 			int index = 0;
 			while(i.hasNext()) {
 				ClientBid bid = (ClientBid) i.next();
-				table.setWidget(index, 0, new PlayerLabel(bid.getPlayer().getFirstName() + " " + bid.getPlayer().getLastName()));
+				ClientPlayer player = bid.getPlayer().equals(getMediator().getPlayer()) ? getMediator().getPlayer() : bid.getPlayer();
+				table.setWidget(index, 0, new PlayerLabel(player.getFirstName() + " " + player.getLastName()));
 				if (getMediator().getSelectedRace().isCompleted()) {
 					table.setWidget(index, 1, new Label(Integer.toString(bid.getPoints())));
 				}
@@ -164,10 +192,26 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 	}
 
 	protected String getScreenTitle() {
-		return getMediator().getSelectedRace().getName();
+		ClientRace race = getMediator().getSelectedRace();
+		
+		String postFix = "";
+		if (race.isOpened()) {
+			postFix = " - åbent";
+		} else if (race.isClosed() && race.isCompleted() == false) {
+			postFix = " - lukket";
+		} else if (race.isCompleted() == true){
+			postFix = " - afgjort";
+		}
+		return race.getName() + postFix;
 	}
 
 	public void completed(AbstractWizardPage[] pages) {
-		submitBid();
+		if (getMediator().getSelectedRace().isOpened() == true) {
+			submitBid();	
+		}
+		if (getMediator().getSelectedRace().isClosed() == true) {
+			submitResult();
+		}
+		
 	}
 }

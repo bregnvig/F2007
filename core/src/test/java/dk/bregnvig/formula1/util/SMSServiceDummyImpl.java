@@ -13,6 +13,7 @@ public class SMSServiceDummyImpl implements SMSService {
 	public void sendSMS(String phoneNumber, String message) {
 		numbers.add(phoneNumber);
 		messages.add(message);
+		System.out.println("Sending to " + phoneNumber + " Message: " + message);
 	}
 
 	public List<String> getNumbers() {

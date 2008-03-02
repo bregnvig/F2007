@@ -1,6 +1,5 @@
 package dk.bregnvig.formula1;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -33,7 +32,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import dk.bregnvig.formula1.bid.ResultStrategy;
-import dk.bregnvig.formula1.dao.GameDao;
 import dk.bregnvig.formula1.event.AbstractRaceListener;
 import dk.bregnvig.formula1.event.RaceTimer;
 
@@ -48,8 +46,6 @@ import dk.bregnvig.formula1.event.RaceTimer;
 @Configurable
 public class Race {
 	
-	private static BigDecimal bettingAmount = new BigDecimal(20);
-
 	private Long id;
 
 	private Season season;
@@ -65,7 +61,6 @@ public class Race {
 	private List<AbstractRaceListener> listeners = new ArrayList<AbstractRaceListener>();
 	private List<RaceTimer> timers = new ArrayList<RaceTimer>();
 	private Timer timer;
-	private GameDao dao;
 	
 	
 	@Id
@@ -256,7 +251,7 @@ public class Race {
 		return playersThatSubmitted.contains(player);
 	}
 
-	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL)
 	public Set<Bid> getBids() {
 		return bids;
 	}
@@ -278,11 +273,10 @@ public class Race {
 		if (isParticipant(bid.getPlayer())) {
 			throw new IllegalStateException(bid.getPlayer() + " has already submitted a bid");
 		}
-		bid.getPlayer().getAccount().withdraw("Deltagelse i " + getName(), getBettingAmount());
+		bid.getPlayer().getAccount().participate(this);
 		bids.add(bid);
 		bid.setRace(this);
 		playersThatSubmitted.add(bid.getPlayer());
-		dao.merge(this);
 	}
 	
 	/**
@@ -299,24 +293,46 @@ public class Race {
 	}
 
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public RaceResult getRaceResult() {
 		return raceResult;
 	}
 
-	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 	public void setRaceResult(RaceResult raceResult) {
+		this.raceResult = raceResult;
+	}
+	
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+	public void completeRace(RaceResult raceResult) {
 		if (raceResult != null) {
 			validateClosed();
 			this.raceResult = raceResult;
 	 		setCompleted(true);
 	 		resultStrategy.calculateResult(raceResult, bids);
+	 		transferWinnings();
 	 		for (AbstractRaceListener listener : listeners) {
 	 			listener.raceCompleted();
 			}
+	 		
 		}
 	}
-
+	
+	private void transferWinnings() {
+		List<Bid> result = getResult();
+		List<Bid> winners = new ArrayList<Bid>(3);
+		int winningPoints = result.get(0).getPoints(); 
+		for (Bid bid : result) {
+			if (bid.getPoints() == winningPoints) {
+				winners.add(bid);
+			} else {
+				break;
+			}
+		}
+		for (Bid winner : winners) {
+			winner.getPlayer().getAccount().winnings(this, winners.size());
+		}
+	}
+	
 	/**
 	 * If the race has been completed
 	 * @return
@@ -424,18 +440,4 @@ public class Race {
 			return 0;
 		}
 	}
-
-	@Transient
-	public static BigDecimal getBettingAmount() {
-		return bettingAmount;
-	}
-
-	public static void setBettingAmount(BigDecimal bettingAmount) {
-		Race.bettingAmount = bettingAmount;
-	}
-
-	public void setDao(GameDao dao) {
-		this.dao = dao;
-	}
-
 }

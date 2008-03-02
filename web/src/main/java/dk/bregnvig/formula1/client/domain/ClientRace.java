@@ -102,6 +102,10 @@ public class ClientRace implements IsSerializable{
 	public boolean isOpened() {
 		return opened;
 	}
+	
+	public boolean isWaiting() {
+		return new Date().before(openDate);
+	}
 
 	public void setOpened(boolean open) {
 		this.opened = open;

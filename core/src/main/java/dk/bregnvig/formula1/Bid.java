@@ -45,7 +45,7 @@ public class Bid {
 		this.id = id;
 	}
 
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=false, cascade = CascadeType.ALL)
 	public Player getPlayer() {
 		return player;
 	}

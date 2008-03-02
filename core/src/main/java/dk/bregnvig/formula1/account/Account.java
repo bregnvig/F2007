@@ -25,15 +25,24 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import dk.bregnvig.formula1.dao.CommonDao;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import dk.bregnvig.formula1.Player;
+import dk.bregnvig.formula1.Race;
+import dk.bregnvig.formula1.dao.GameDao;
 
 @Entity
+@Configurable
 public class Account {
-	
+
+	private static BigDecimal bettingAmount = new BigDecimal(20);
+
 	private Long id;
 	private BigDecimal balance = BigDecimal.ZERO;
 	private List<Entry> entries = new LinkedList<Entry>();
-//	private CommonDao dao;
+	private GameDao dao;
 
 	@Id
 	@GeneratedValue
@@ -57,7 +66,6 @@ public class Account {
 	public void deposit(String message, BigDecimal amount) {
 		balance = balance.add(amount);
 		Entry entry = new DepositEntry();
-//		dao.persist(dao);
 		addEntry(entry, message, amount);
 	}
 
@@ -67,7 +75,6 @@ public class Account {
 		}
 		balance = balance.subtract(amount.abs());
 		Entry entry = new WithdrawEntry();
-//		dao.persist(entry);
 		addEntry(entry, message, amount.abs().negate());
 	}
 	
@@ -82,7 +89,6 @@ public class Account {
 		
 		balance = balance.subtract(amount.abs());
 		TransferEntry entry = new TransferEntry();
-//		dao.persist(entry);
 		entry.setToAccount(toAccount);
 		entry.setFromAccount(this);
 		addEntry(entry, message, amount.abs());
@@ -90,6 +96,17 @@ public class Account {
 		toAccount.addEntry(entry, message, amount);
 	}
 	
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
+	public void participate(Race race) {
+		Player bookie = dao.findPlayerByName("bookie");
+		transfer("Deltagelse " + race.getName(), bettingAmount, bookie.getAccount());
+	}
+	
+	public void winnings(Race race, int winners) {
+		Player bookie = dao.findPlayerByName("bookie");
+		int amount = race.getBids().size() * bettingAmount.intValue() / winners; 
+		bookie.getAccount().transfer("Gevinst " + race.getName(), new BigDecimal(amount), this);
+	}
 
 	private void addEntry(Entry entry, String message, BigDecimal amount) {
 		entry.setMessage(message);
@@ -194,7 +211,7 @@ public class Account {
 		
 	}
 
-	@ManyToMany(cascade= {CascadeType.ALL}, fetch=FetchType.EAGER)
+	@ManyToMany(cascade= {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
 	@JoinTable(name="account_entry_link")
 	public List<Entry> getEntries() {
 		Collections.sort(this.entries, Collections.reverseOrder(new EntryDateComparator()));
@@ -210,7 +227,32 @@ public class Account {
 		return -100;
 	}
 
-	public void setDao(CommonDao dao) {
-//		this.dao = dao;
+	public void setDao(GameDao dao) {
+		this.dao = dao;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final Account other = (Account) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 }

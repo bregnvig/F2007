@@ -28,6 +28,7 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 	protected Player flb;
 	protected Player mba;
 	protected Player ttp;
+	protected Player bookie;
 	
 	protected Race monza;
 	protected Race spa;
@@ -69,6 +70,7 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 		getEntityManager().persist(flb = helper.getPlayer("flb"));
 		getEntityManager().persist(mba = helper.getPlayer("mba"));
 		getEntityManager().persist(ttp = helper.getPlayer("ttp"));
+		getEntityManager().persist(bookie = helper.getPlayer("bookie"));
 
 		season = new Season();
 		season.setName("F1 2007");

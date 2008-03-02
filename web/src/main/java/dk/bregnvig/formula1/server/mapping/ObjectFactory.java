@@ -3,6 +3,7 @@ package dk.bregnvig.formula1.server.mapping;
 import dk.bregnvig.formula1.Bid;
 import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Race;
+import dk.bregnvig.formula1.RaceResult;
 import dk.bregnvig.formula1.Season;
 import dk.bregnvig.formula1.account.Account;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
@@ -10,6 +11,7 @@ import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
+import dk.bregnvig.formula1.client.domain.bid.ClientResult;
 
 public interface ObjectFactory {
 	
@@ -23,5 +25,7 @@ public interface ObjectFactory {
 	
 	Bid create(ClientBid clientBid);
 	
+	RaceResult create(ClientResult clientResult);
+
 	void map(ClientPlayer source, Player target);
 }

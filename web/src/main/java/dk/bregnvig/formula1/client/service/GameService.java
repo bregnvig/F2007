@@ -7,6 +7,7 @@ import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
+import dk.bregnvig.formula1.client.domain.bid.ClientResult;
 import dk.bregnvig.formula1.client.exception.CredentialException;
 
 /**
@@ -65,4 +66,10 @@ public interface GameService extends RemoteService {
 	 * @param bid
 	 */
 	void addBid(ClientBid bid);
+	
+	/**
+	 * Sets the result for the closed race
+	 * @param result
+	 */
+	ClientRace setResult(ClientResult result);
 }

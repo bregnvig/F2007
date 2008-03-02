@@ -34,7 +34,7 @@ public class WBCTest extends AbstractDaoTest {
     	Thread.sleep(200);
     	monza.setClose(Calendar.getInstance());
     	Thread.sleep(200);
-   		monza.setRaceResult(raceResultMonza);
+   		monza.completeRace(raceResultMonza);
    		getEntityManager().flush();
     	
    		assertEquals(season.getWBC().getPreviousRace(), monza);
@@ -66,7 +66,7 @@ public class WBCTest extends AbstractDaoTest {
     	Thread.sleep(200);
     	spa.setClose(Calendar.getInstance());
     	Thread.sleep(200);
-   		spa.setRaceResult(raceResultSpa);
+   		spa.completeRace(raceResultSpa);
    		getEntityManager().flush();
     	
    		assertEquals(season.getWBC().getPreviousRace(), spa);
@@ -105,7 +105,7 @@ public class WBCTest extends AbstractDaoTest {
     	Thread.sleep(200);
     	monza.setClose(Calendar.getInstance());
     	Thread.sleep(200);
-   		monza.setRaceResult(raceResultMonza);
+   		monza.completeRace(raceResultMonza);
    		getEntityManager().flush();
    		
    		assertTrue(service.containsTheseValues("flb", Integer.toString(10)));
