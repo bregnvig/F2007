@@ -72,6 +72,17 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		service.updatePlayer(getContext().getPlayer());
 	}
 	
+	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void createPlayer(ClientPlayer clientPlayer) {
+		Player player = new Player(PlayerRole.PLAYER);
+		objectFactory.map(clientPlayer, player);
+		player.setPlayername(clientPlayer.getPlayername());
+		player.setPassword("skalændres");
+		service.createPlayer(player);
+		getContext().getSeason().addPlayer(player);
+	}
+
 	@Authorization(roles = {PlayerRole.PLAYER})
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updatePlayer(ClientPlayer player) {
@@ -92,6 +103,21 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		Race race = getContext().getSeason().getCurrentRace(); 
 		race.completeRace(objectFactory.create(result));
 		return objectFactory.create(race);
+	}
+
+	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void createRace(ClientRace clientRace) {
+		Race race = new Race(); 
+		objectFactory.map(clientRace, race);
+		getContext().getSeason().addRace(race);
+	}
+
+	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void updateRace(ClientRace clientRace) {
+		Race race = getContext().getSeason().getRaceById(clientRace.getId());
+		objectFactory.map(clientRace, race);
 	}
 
 	public void setObjectFactory(ObjectFactory objectFactory) {

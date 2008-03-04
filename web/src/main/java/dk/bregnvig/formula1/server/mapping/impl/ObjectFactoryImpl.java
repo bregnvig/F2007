@@ -1,7 +1,9 @@
 package dk.bregnvig.formula1.server.mapping.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
@@ -47,6 +49,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		BeanUtils.copyProperties(race, clientRace, new String[] {"selectedDriver"});
 		clientRace.setSelectedDriver(create(race.getSelectedDriver()));
 		clientRace.setOpenDate(race.getOpen().getTime());
+		clientRace.setCloseDate(race.getClose().getTime());
 		if (race.isCompleted() == false) {
 			for (Bid bid : race.getBids()) {
 				clientRace.addBid(create(clientRace.isParticipant(), bid, race.isCompleted()));
@@ -58,6 +61,19 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		}
 		
 		return clientRace;
+	}
+	
+	public void map(ClientRace source, Race target) {
+		target.setName(source.getName());
+		Calendar open = new GregorianCalendar();
+		open.setTime(source.getOpenDate());
+		Calendar close = new GregorianCalendar();
+		close.setTime(source.getCloseDate());
+				
+		target.setOpen(open);
+		target.setClose(close);
+		
+		target.setSelectedDriver(getDriver(source.getSelectedDriver()));
 	}
 
 	public ClientPlayer create(Player player) {

@@ -88,6 +88,16 @@ public class DriverSelection extends VerticalPanel {
 		return (ClientDriver) activeDrivers.get(currentDriverIndex);
 	}
 	
+	public void setDriver(ClientDriver driver) {
+		for (int i = 0; i < activeDrivers.size(); i++) {
+			ClientDriver activeDriver = (ClientDriver) activeDrivers.get(i); 
+			if (activeDriver.equals(driver)) {
+				setCurrentDriverIndex(i);
+				break;
+			}
+		}
+	}
+	
 	public void setTitle(String title) {
 		if (title == null || title.length() == 0) {
 			super.setTitle(this.title);
