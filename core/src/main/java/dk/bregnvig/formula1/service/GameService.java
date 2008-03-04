@@ -21,4 +21,10 @@ public interface GameService {
 	 * @param player
 	 */
 	void updatePlayer(Player player);
+	
+	/**
+	 * Creates the specified player. The created player will no be part of any seasons
+	 * @param player
+	 */
+	void createPlayer(Player player);
 }

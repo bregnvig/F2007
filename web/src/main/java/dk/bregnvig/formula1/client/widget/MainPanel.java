@@ -114,12 +114,19 @@ public class MainPanel extends DockPanel {
 		MenuBar playerMenu = new MenuBar(true);
 		playerMenu.addItem("Konto", new OpenAccountCommand());
 		playerMenu.addItem("Oplysninger", new OpenUserCommand());
-
+		
 		MenuBar mainMenu = new MenuBar();
 		mainMenu.addItem("Løb", getRaceMenuBar());
 		mainMenu.addItem("Min menu", playerMenu);
 		mainMenu.setAutoOpen(true);
-		
+
+		if (mediator.getPlayer().isGameAdministrator()) {
+			MenuBar adminMenu = new MenuBar(true);
+			adminMenu.addItem("Spiller", new CreateUserCommand());
+			adminMenu.addItem("Løb", new RaceAdminCommand());
+			mainMenu.addItem("Admin", adminMenu);
+		}
+
 		panel.add(mainMenu);
 		panel.setCellHorizontalAlignment(mainMenu, HorizontalPanel.ALIGN_RIGHT);
 		add(panel, DockPanel.NORTH);
@@ -165,10 +172,22 @@ public class MainPanel extends DockPanel {
 
     private class OpenUserCommand implements Command {
 		public void execute() {
-			setCenterPanel(new PlayerPanel(mediator, MainPanel.this));
+			setCenterPanel(new AdminPlayerPanel(mediator, MainPanel.this, false));
 		}
     }
-    
+
+    private class CreateUserCommand implements Command {
+		public void execute() {
+			setCenterPanel(new AdminPlayerPanel(mediator, MainPanel.this, true));
+		}
+    }
+
+    private class RaceAdminCommand implements Command {
+		public void execute() {
+			setCenterPanel(new AdminRacePanel(mediator, MainPanel.this));
+		}
+    }
+
     private class OpenRaceCommand implements Command {
     	
     	private ClientRace race;

@@ -60,6 +60,12 @@ public interface GameService extends RemoteService {
 	 * @param player
 	 */
 	void updatePlayer(ClientPlayer player);
+
+	/**
+	 * Updates this player information
+	 * @param player
+	 */
+	void createPlayer(ClientPlayer player);
 	
 	/**
 	 * Adds this bid to the open race
@@ -72,4 +78,16 @@ public interface GameService extends RemoteService {
 	 * @param result
 	 */
 	ClientRace setResult(ClientResult result);
+	
+	/**
+	 * Adds a race to the current season
+	 * @param race
+	 */
+	void createRace(ClientRace race);
+
+	/**
+	 * Updates a race
+	 * @param race
+	 */
+	void updateRace(ClientRace race);
 }

@@ -28,4 +28,6 @@ public interface ObjectFactory {
 	RaceResult create(ClientResult clientResult);
 
 	void map(ClientPlayer source, Player target);
+	
+	void map(ClientRace source, Race target);
 }

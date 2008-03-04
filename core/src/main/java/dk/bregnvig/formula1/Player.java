@@ -36,7 +36,16 @@ public class Player {
 	private String smsNumber;
 	private Account account = new Account();
 	
-	private Set<PersistentRole> roles;
+	private Set<PersistentRole> roles = new HashSet<PersistentRole>();
+	
+	public Player() {
+	}
+	
+	public Player(PlayerRole ... roles) {
+		for (PlayerRole role : roles) {
+			this.roles.add(new PersistentRole(role));
+		}
+	}
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

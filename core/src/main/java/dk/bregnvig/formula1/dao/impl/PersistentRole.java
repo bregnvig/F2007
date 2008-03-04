@@ -13,6 +13,14 @@ public class PersistentRole {
 	
 	private Long id;
 	private PlayerRole role;
+	
+	public PersistentRole() {
+		
+	}
+	
+	public PersistentRole(PlayerRole role) {
+		this.role = role;
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
