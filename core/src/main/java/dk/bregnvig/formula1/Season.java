@@ -143,6 +143,16 @@ public class Season {
 		}
 		return secondBest;
 	}
+	
+	@Transient
+	public Race getRaceById(Long id) {
+		for (Race race : races) {
+			if (race.getId().equals(id)) {
+				return race;
+			}
+		}
+		throw new IllegalArgumentException("Reguested race id: " + id + " is not part of this season");
+	}
 
 	public void setDao(GameDao dao) {
 		this.dao = dao;

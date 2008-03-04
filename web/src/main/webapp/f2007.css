@@ -141,6 +141,12 @@ a:active {
 	border: 1px solid #FFFFFF;
 }
 
+.form-Spacer {
+	border-top: 1px solid #87B3FF;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 .error {
 	border-style: groove;
 	border-width: 2px;

@@ -17,6 +17,7 @@ public class ClientRace implements IsSerializable{
 	private boolean opened;
 	private boolean completed;
 	private Date openDate;
+	private Date closeDate;
 	private boolean participant;
 	private ClientDriver selectedDriver;
 	
@@ -113,6 +114,14 @@ public class ClientRace implements IsSerializable{
 	
 	public boolean isClosed() {
 		return isOpened() == false && isCompleted() == false;
+	}
+
+	public Date getCloseDate() {
+		return closeDate;
+	}
+
+	public void setCloseDate(Date closeDate) {
+		this.closeDate = closeDate;
 	}
 	
 }

@@ -24,6 +24,11 @@ public class GameServiceImpl implements GameService {
 		dao.updatePlayer(player);
 	}
 
+	@Transactional(readOnly = false, propagation=Propagation.REQUIRED)
+	public void createPlayer(Player player) {
+		dao.persist(player);
+	}
+
 	public void setDao(GameDao dao) {
 		this.dao = dao;
 	}
