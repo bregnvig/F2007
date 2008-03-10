@@ -40,4 +40,11 @@
 		<nature>org.eclipse.jem.workbench.JavaEMFNature</nature>
 		<nature>org.maven.ide.eclipse.maven2Nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/main/webapp/f2007.css</name>
+			<type>1</type>
+			<location>/Users/4u603ctpsz9/Documents/workspace/F2007/web/src/main/resources/dk/bregnvig/formula1/public/f2007.css</location>
+		</link>
+	</linkedResources>
 </projectDescription>
