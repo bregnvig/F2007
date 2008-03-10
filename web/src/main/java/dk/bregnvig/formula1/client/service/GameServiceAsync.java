@@ -2,6 +2,7 @@ package dk.bregnvig.formula1.client.service;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
@@ -36,4 +37,10 @@ public interface GameServiceAsync {
 	void createRace(ClientRace race, AsyncCallback callback);
 
 	void updateRace(ClientRace race, AsyncCallback callback);
+
+	void createDriver(ClientDriver driver, AsyncCallback callback);
+
+	void updateDriver(ClientDriver driver, AsyncCallback callback);
+	
+	void findAllDrivers(AsyncCallback callback);
 }

@@ -2,6 +2,7 @@ package dk.bregnvig.formula1.server.mapping.impl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -75,6 +76,10 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		
 		target.setSelectedDriver(getDriver(source.getSelectedDriver()));
 	}
+	
+	public void map(ClientDriver source, Driver target) {
+		BeanUtils.copyProperties(source, target);
+	}
 
 	public ClientPlayer create(Player player) {
 		ClientPlayer clientPlayer = new ClientPlayer();
@@ -112,7 +117,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		
 		clientSeason.setRaces(getClientRaces(season));
 		clientSeason.setPlayers(getClientPlayers(season));
-		clientSeason.setDrivers(getClientDrivers(season));
+		clientSeason.setDrivers(getClientDrivers(season.getDrivers()));
 		
 		return clientSeason;
 	}
@@ -138,8 +143,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		return clientRaces;
 	}
 
-	private List<ClientDriver> getClientDrivers(Season season) {
-		Set<Driver> drivers = season.getDrivers();
+	public List<ClientDriver> getClientDrivers(Collection<Driver> drivers) {
 		
 		List<ClientDriver> clientDrivers = new ArrayList<ClientDriver>(drivers.size());
 		for (Driver driver : drivers) {
@@ -152,7 +156,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	private ClientBid create(boolean participant, Bid bid, boolean completed) {
 		ClientBid clientBid = new ClientBid();
 		clientBid.setPlayer(create(bid.getPlayer()));
-		if (participant == true) {
+		if (participant == true || completed == true) {
 			clientBid.setGrid(getDrivers(bid.getGrid(), "position", 6));
 			clientBid.setFastestLap(create(bid.getFastestLap().getDriver()));
 			clientBid.setPodium(getDrivers(bid.getPodium(), "position", 3));

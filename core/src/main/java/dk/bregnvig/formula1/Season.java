@@ -1,5 +1,6 @@
 package dk.bregnvig.formula1;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -89,6 +90,7 @@ public class Season {
 	public void addRace(Race race) {
 		race.setSeason(this);
 		races.add(race);
+		dao.flush();
 	}
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="season")
@@ -127,18 +129,25 @@ public class Season {
 	}
 	
 	/**
-	 * Returns the currently opened race. Null if no race is opened.
+	 * Returns the currently opened race. If no race is opened, the next to open is selected
 	 * @return
 	 */
 	@Transient
 	public Race getCurrentRace() {
+		
+		Date now = new Date();
+		long minimumOffset = Integer.MAX_VALUE;
 		Race secondBest = null;
 		for (Race race : races) {
 			if (race.isOpened()) {
 				return race;
 			}
 			if (race.isCompleted() == false) {
-				secondBest = race;
+				long currentOffset = Math.abs(race.getOpen().getTime().getTime() - now.getTime());
+				if (currentOffset < minimumOffset) {
+					minimumOffset = currentOffset;
+					secondBest = race;
+				}
 			}
 		}
 		return secondBest;

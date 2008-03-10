@@ -1,5 +1,8 @@
 package dk.bregnvig.formula1.dao;
 
+import java.util.List;
+
+import dk.bregnvig.formula1.Driver;
 import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Season;
 
@@ -10,4 +13,6 @@ public interface GameDao extends CommonDao {
 	Player findPlayerByName(String playerName);
 	
 	void updatePlayer(Player player);
+	
+	List<Driver> findAllDrivers();
 }

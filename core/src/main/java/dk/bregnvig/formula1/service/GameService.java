@@ -1,5 +1,8 @@
 package dk.bregnvig.formula1.service;
 
+import java.util.List;
+
+import dk.bregnvig.formula1.Driver;
 import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Season;
 
@@ -27,4 +30,22 @@ public interface GameService {
 	 * @param player
 	 */
 	void createPlayer(Player player);
+	
+	/**
+	 * Returns a list of all drivers. No mather the season
+	 * @return
+	 */
+	List<Driver> findAllDrivers();
+
+	/**
+	 * Creates a driver. Not attached to any season
+	 * @param driver
+	 */
+	void createDriver(Driver driver);
+	
+	/**
+	 * Updates this player. This is accross seasons.
+	 * @param player
+	 */
+	void updateDriver(Driver driver);
 }
