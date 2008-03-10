@@ -5,12 +5,10 @@
 	<display-name>F2007 Application</display-name>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:contexts/data/dataLayerContext.xml classpath:contexts/service/serviceContext.xml classpath:contexts/service/serviceTestContext.xml classpath:/contexts/web/webContext.xml</param-value>
-	</context-param>
-
-	<context-param>
-		<param-name>seasonName</param-name>
-		<param-value>F1 2007</param-value>
+		<param-value>
+			classpath:contexts/data/dataLayerContext.xml classpath:contexts/service/serviceContext.xml classpath:contexts/service/serviceTestContext.xml
+			classpath:/contexts/web/webContext.xml
+		</param-value>
 	</context-param>
 
 	<listener>
@@ -31,7 +29,12 @@
 	<!-- servlet-mapping>
 		<servlet-name>spring</servlet-name>
 		<url-pattern>/season/*</url-pattern>
-	</servlet-mapping -->
+		</servlet-mapping -->
+
+	<welcome-file-list>
+		<welcome-file>F2007.html</welcome-file>
+	</welcome-file-list>
+
 
 	<resource-ref>
 		<description>F2007 Core connection</description>

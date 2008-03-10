@@ -1,7 +1,10 @@
 package dk.bregnvig.formula1.client.service;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 
+import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
@@ -90,4 +93,22 @@ public interface GameService extends RemoteService {
 	 * @param race
 	 */
 	void updateRace(ClientRace race);
+
+	/**
+	 * Adds a driver to the current season
+	 * @param race
+	 */
+	void createDriver(ClientDriver driver);
+
+	/**
+	 * Updates a driver
+	 * @param race
+	 */
+	void updateDriver(ClientDriver driver);
+	
+	/**
+	 * Returns the list of all drivers in the system.
+	 * @return
+	 */
+	List findAllDrivers();
 }

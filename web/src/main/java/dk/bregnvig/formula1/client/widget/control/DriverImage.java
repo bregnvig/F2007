@@ -16,7 +16,11 @@ public class DriverImage extends Image {
 	}
 
 	public void setDriver(ClientDriver driver) {
-		setUrl("drivers/"+driver.getName()+".png");
+		if (driver == null || driver.getName() == null) {
+			setUrl(null);
+		} else {
+			setUrl("drivers/"+driver.getName()+".png");
+		}
 	}
 }
 

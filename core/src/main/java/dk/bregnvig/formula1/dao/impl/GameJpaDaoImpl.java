@@ -6,6 +6,7 @@ import org.springframework.orm.jpa.support.JpaDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import dk.bregnvig.formula1.Driver;
 import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Season;
 import dk.bregnvig.formula1.dao.GameDao;
@@ -39,6 +40,12 @@ public class GameJpaDaoImpl extends JpaDaoSupport implements GameDao {
 		getJpaTemplate().merge(player);
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	public List<Driver> findAllDrivers() {
+		List<Driver> drivers = getJpaTemplate().findByNamedQuery("driver.findAll");
+		return drivers;
+	}
 
 	private boolean isEmpty(List<?> list) {
 		return list == null || list.size() == 0;
@@ -52,7 +59,7 @@ public class GameJpaDaoImpl extends JpaDaoSupport implements GameDao {
 		getJpaTemplate().persist(object);
 	}
 	
-	public void refresh(Object object) {
-		getJpaTemplate().refresh(object);
+	public void flush() {
+		getJpaTemplate().flush();
 	}
 }
