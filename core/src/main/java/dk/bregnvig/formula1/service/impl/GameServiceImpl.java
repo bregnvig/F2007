@@ -1,8 +1,11 @@
 package dk.bregnvig.formula1.service.impl;
 
+import java.util.List;
+
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import dk.bregnvig.formula1.Driver;
 import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Season;
 import dk.bregnvig.formula1.dao.GameDao;
@@ -29,7 +32,24 @@ public class GameServiceImpl implements GameService {
 		dao.persist(player);
 	}
 
+	
+	@Transactional(readOnly = false, propagation=Propagation.REQUIRED)
+	public void createDriver(Driver driver) {
+		dao.persist(driver);
+	}
+
+	@Transactional(readOnly = false, propagation=Propagation.REQUIRED)
+	public void updateDriver(Driver driver) {
+		dao.merge(driver);
+	}
+	
+	@Transactional(readOnly = true)
+	public List<Driver> findAllDrivers() {
+		return dao.findAllDrivers();
+	}	
+
 	public void setDao(GameDao dao) {
 		this.dao = dao;
 	}
+
 }

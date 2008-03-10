@@ -6,5 +6,5 @@ public interface CommonDao {
 	
 	void merge(Object object);
 	
-	void refresh(Object object);
+	void flush();
 }

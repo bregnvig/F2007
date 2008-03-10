@@ -33,7 +33,8 @@ public class AdminRacePanel extends ContentPanel {
 	private MessagePanel messagePanel;
 	private RaceInfoForm form;
 	private boolean editing = false;
-	
+	private Button updateRaceInfo; 
+	private final ListBox races;;
 	public AdminRacePanel(F2007 mediator, MainPanel mainPanel) {
 		super(mediator, mainPanel);
 		// setHeight("50%");
@@ -42,7 +43,26 @@ public class AdminRacePanel extends ContentPanel {
 		add(messagePanel = new MessagePanel());
 		setCellHeight(messagePanel, "18px");
 		
-		add(getRaces());
+		races = new ListBox();
+		races.setStyleName("form");
+		races.addClickListener(new ClickListener() {
+			public void onClick(Widget arg0) {
+				if (races.getSelectedIndex() == 0) {
+					form.setRace(new ClientRace());
+					setEditing(false);
+					return;
+				}
+				long id  = Long.parseLong(races.getValue(races.getSelectedIndex()));
+				for (int i = 0; i < getMediator().getSeason().getRaces().size(); i++) {
+					ClientRace race = (ClientRace) getMediator().getSeason().getRaces().get(i);
+					if (race.getId().longValue() == id) {
+						setEditing(true);
+						form.setRace(race);
+					}
+				}
+			}
+		});
+		add(loadRaces());
 		
 		Panel formPanel = new FlowPanel();
 		formPanel.add(form = new RaceInfoForm());
@@ -50,34 +70,16 @@ public class AdminRacePanel extends ContentPanel {
 		setCellVerticalAlignment(formPanel, VerticalPanel.ALIGN_TOP);
 	}
 	
-	private ListBox getRaces() {
-		final ListBox races = new ListBox();
-		races.setStyleName("form");
+	private ListBox loadRaces() {
+		int previousSelection = races.getSelectedIndex();
+		previousSelection = previousSelection == -1 ? 0 : previousSelection;
+		races.clear();
 		races.addItem("Opret");
 		for (int i = 0; i < getMediator().getSeason().getRaces().size(); i++) {
 			ClientRace race = (ClientRace) getMediator().getSeason().getRaces().get(i);
 			races.addItem(race.getName(), race.getId().toString());
 		}
-		
-		races.addClickListener(new ClickListener() {
-
-			public void onClick(Widget arg0) {
-				if (races.getSelectedIndex() == 0) {
-					form.setRace(new ClientRace());
-					editing = false;
-					return;
-				}
-				long id  = Long.parseLong(races.getValue(races.getSelectedIndex()));
-				for (int i = 0; i < getMediator().getSeason().getRaces().size(); i++) {
-					ClientRace race = (ClientRace) getMediator().getSeason().getRaces().get(i);
-					if (race.getId().longValue() == id) {
-						editing = true;
-						form.setRace(race);
-					}
-				}
-			}
-		});
-		
+		races.setSelectedIndex(previousSelection);
 		return races;
 	}
 
@@ -119,7 +121,7 @@ public class AdminRacePanel extends ContentPanel {
 			setWidget(row, 0, new FormLabel("Udvalgte køre"));
 			setWidget(row++, 1, selectedDriver);
 
-			Button updatePersonalInfo = new Button("Opret", new ClickListener() {
+			updateRaceInfo = new Button("Opret", new ClickListener() {
 
 				public void onClick(Widget arg0) {
 					if (validate() == true) {
@@ -139,6 +141,10 @@ public class AdminRacePanel extends ContentPanel {
 							public void onSuccess(Object arg0) {
 								String message = isEditing() ? "Løbet er blevet opdateret" : "Løbet er blevet oprettet"; 
 								messagePanel.setStatus(message);
+								if (isEditing() == false) {
+									getMediator().getSeason().getRaces().add(race);
+									setRace(new ClientRace());
+								}
 							}
 
 						};
@@ -147,11 +153,11 @@ public class AdminRacePanel extends ContentPanel {
 						} else {
 							getMediator().getGameService().createRace(race, callback);
 						}
-						
+						loadRaces();
 					}
 				}
 			});
-			setWidget(row, 1, updatePersonalInfo);
+			setWidget(row, 1, updateRaceInfo);
 			getFlexCellFormatter().setColSpan(row++, 1, 2);
 		}
 		
@@ -185,8 +191,18 @@ public class AdminRacePanel extends ContentPanel {
 		}
 	}
 	
-	public boolean isEditing() {
+	private boolean isEditing() {
 		return editing;
+	}
+	
+	private void setEditing(boolean editing) {
+		if (editing == true) {
+			updateRaceInfo.setText("Opdater");
+		} else {
+			updateRaceInfo.setText("Opret");
+		}
+		this.editing = editing;
+
 	}
 
 	protected String getScreenTitle() {

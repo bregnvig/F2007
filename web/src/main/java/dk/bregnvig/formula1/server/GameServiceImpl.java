@@ -1,13 +1,17 @@
 package dk.bregnvig.formula1.server;
 
+import java.util.List;
+
 import org.gwtwidgets.server.spring.ServletUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import dk.bregnvig.formula1.Driver;
 import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.PlayerRole;
 import dk.bregnvig.formula1.Race;
 import dk.bregnvig.formula1.Season;
+import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
@@ -111,6 +115,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		Race race = new Race(); 
 		objectFactory.map(clientRace, race);
 		getContext().getSeason().addRace(race);
+		clientRace.setId(race.getId());
 	}
 
 	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
@@ -118,6 +123,31 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	public void updateRace(ClientRace clientRace) {
 		Race race = getContext().getSeason().getRaceById(clientRace.getId());
 		objectFactory.map(clientRace, race);
+	}
+	
+	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
+	@Transactional(readOnly = true)
+	public List<ClientDriver> findAllDrivers() {
+		List<Driver> drivers = service.findAllDrivers();
+		return objectFactory.getClientDrivers(drivers);
+	}
+	
+
+	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void createDriver(ClientDriver clientDriver) {
+		Driver driver = new Driver(); 
+		objectFactory.map(clientDriver, driver);
+		service.createDriver(driver);
+		getContext().getSeason().addDriver(driver);
+	}
+
+	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void updateDriver(ClientDriver clientDriver) {
+		Driver driver = new Driver(); 
+		objectFactory.map(clientDriver, driver);
+		service.updateDriver(driver);
 	}
 
 	public void setObjectFactory(ObjectFactory objectFactory) {

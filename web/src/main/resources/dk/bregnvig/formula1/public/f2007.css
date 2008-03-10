@@ -154,6 +154,10 @@ a:active {
 	margin: 2px;
 }
 
+.gwt-Image {
+	margin: 5px;
+}
+
 .gwt-ListBox-error {
 	border-style: solid;
 	border-width: 200px;
