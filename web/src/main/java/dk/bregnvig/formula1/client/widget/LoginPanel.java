@@ -44,8 +44,10 @@ public class LoginPanel extends VerticalPanel {
 		table.setWidget(1, 0, new FormLabel("Adgangskode"));
 		table.setWidget(1, 1, password = new PasswordTextBox());
 		
-		playerName.setText("flb");
-		password.setText("flb");
+		if (mediator.isTesting()) {
+			playerName.setText("flb");
+			password.setText("flb");
+		}
 		password.addKeyboardListener(new KeyboardListenerAdapter() {
 			public void onKeyPress(Widget widget, char keyCode, int modifiers) {
 				if (keyCode == KeyboardListener.KEY_ENTER) {

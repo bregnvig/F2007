@@ -45,6 +45,9 @@ a:active {
 	font-weight: bold;
 }
 
+.gwt-Button {  
+  margin-right: 3px;
+}
 
 .gwt-Label-error {
 	color: #F00000;
