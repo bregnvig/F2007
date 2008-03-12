@@ -25,6 +25,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,8 @@ import dk.bregnvig.formula1.dao.GameDao;
 public class Account {
 
 	private static BigDecimal bettingAmount = new BigDecimal(20);
+
+	private Log log = LogFactory.getLog(this.getClass()); 
 
 	private Long id;
 	private BigDecimal balance = BigDecimal.ZERO;
@@ -86,6 +90,8 @@ public class Account {
 		if (verifyWithdraw(amount) == false) {
 			throw new NotEnoughMoney("Transfer to: " + toAccount.id, balance, amount);
 		}
+		
+		log.info("** Transfering from id: " + getId() + " to id: " + toAccount.id);
 		
 		balance = balance.subtract(amount.abs());
 		TransferEntry entry = new TransferEntry();
@@ -211,7 +217,7 @@ public class Account {
 		
 	}
 
-	@ManyToMany(cascade= {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+	@ManyToMany(cascade= {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
 	@JoinTable(name="account_entry_link")
 	public List<Entry> getEntries() {
 		Collections.sort(this.entries, Collections.reverseOrder(new EntryDateComparator()));
