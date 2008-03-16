@@ -40,6 +40,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientPlayer login(String playerName, String password) throws CredentialException {
 		Player player = getContext().getSeason().getPlayer(playerName);
+		player.getRoles(); // Just to load them.
 		if (player == null || player.getPassword().equals(password) == false) {
 			throw new CredentialException("Player name and or password is correct");
 		}
