@@ -2,6 +2,7 @@ package dk.bregnvig.formula1.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +25,8 @@ public class GameServiceImpl implements GameService {
 
 	@Transactional(readOnly = false, propagation=Propagation.REQUIRED)
 	public void updatePlayer(Player player) {
-		dao.updatePlayer(player);
+		Player persistentPlayer = dao.findPlayerByName(player.getPlayername());
+		BeanUtils.copyProperties(player, persistentPlayer, new String[] {"account"});
 	}
 
 	@Transactional(readOnly = false, propagation=Propagation.REQUIRED)
