@@ -1,6 +1,5 @@
 package dk.bregnvig.formula1;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,93 +23,101 @@ import dk.bregnvig.formula1.wbc.WBC;
 
 /**
  * This class is a entire season of formula 1
+ * 
  * @author bregnvig
- *
+ * 
  */
 @Entity
-@Table(name="season")
+@Table(name = "season")
 @Configurable
 public class Season {
-	
+
 	private Long id;
-	
+
 	private String name;
+
 	private WBC wbc = new WBC();
+
 	private Set<Race> races = new HashSet<Race>(21);
+
 	private Set<Driver> drivers = new HashSet<Driver>(25);
+
 	private Set<Player> players = new HashSet<Player>(17);
-	
+
 	private GameDao dao;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
 		return id;
 	}
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	@Column(length=50, nullable=false, unique=true)
+
+	@Column(length = 50, nullable = false, unique = true)
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * Adds a single player to the season. The player must already be persisted
+	 * 
 	 * @param player
 	 */
 	public void addPlayer(Player player) {
 		players.add(player);
 	}
-	
-	@ManyToMany(cascade= {CascadeType.MERGE, CascadeType.REFRESH})
-	@JoinTable(name="season_player")
+
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH })
+	@JoinTable(name = "season_player")
 	public Set<Player> getPlayers() {
 		return players;
 	}
+
 	public void setPlayers(Set<Player> players) {
 		this.players = players;
 	}
-	
+
 	@Transient
 	public Player getPlayer(String playerName) {
 		return dao.findPlayerByName(playerName);
 	}
-	
+
 	public void removePlayer(Player player) {
 		players.remove(player);
 	}
-	
+
 	public void addRace(Race race) {
 		race.setSeason(this);
 		races.add(race);
 		dao.flush();
 	}
-	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="season")
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "season")
 	public Set<Race> getRaces() {
 		return races;
 	}
+
 	public void setRaces(Set<Race> races) {
 		this.races = races;
 	}
-	
+
 	public void addDriver(Driver driver) {
 		drivers.add(driver);
 	}
-	
+
 	public void removeDriver(Driver driver) {
 		drivers.remove(driver);
 	}
 
-	@ManyToMany(cascade= {CascadeType.MERGE, CascadeType.REFRESH})
-	@JoinTable(name="season_driver")
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH })
+	@JoinTable(name = "season_driver")
 	public Set<Driver> getDrivers() {
 		return drivers;
 	}
@@ -119,7 +126,7 @@ public class Season {
 		this.drivers = drivers;
 	}
 
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	public WBC getWBC() {
 		return wbc;
 	}
@@ -127,32 +134,28 @@ public class Season {
 	public void setWBC(WBC wbc) {
 		this.wbc = wbc;
 	}
-	
+
 	/**
-	 * Returns the currently opened race. If no race is opened, the next to open is selected
+	 * Returns the currently opened race. If no race is opened, the next to open
+	 * is selected
+	 * 
 	 * @return
 	 */
 	@Transient
 	public Race getCurrentRace() {
-		
-		Date now = new Date();
-		long minimumOffset = Integer.MAX_VALUE;
+
 		Race secondBest = null;
 		for (Race race : races) {
 			if (race.isOpened()) {
 				return race;
 			}
-			if (race.isCompleted() == false) {
-				long currentOffset = Math.abs(race.getOpen().getTime().getTime() - now.getTime());
-				if (currentOffset < minimumOffset) {
-					minimumOffset = currentOffset;
-					secondBest = race;
-				}
+			if (race.isClosed() == true && race.isCompleted() == false) {
+				secondBest = race;
 			}
 		}
 		return secondBest;
 	}
-	
+
 	@Transient
 	public Race getRaceById(Long id) {
 		for (Race race : races) {
@@ -166,7 +169,7 @@ public class Season {
 	public void setDao(GameDao dao) {
 		this.dao = dao;
 	}
-	
+
 	@Transient
 	public GameDao getDao() {
 		return dao;
