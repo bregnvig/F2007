@@ -17,7 +17,7 @@
 	<bean id="smsService" class="dk.bregnvig.formula1.service.impl.SMSServiceImpl">
 		<property name="service">
 			<bean class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
-				<property name="serviceUrl" value="http://127.0.0.1/Service/sms"/>
+				<property name="serviceUrl" value="http://www.ditbarn.net/Service/sms"/>
 				<property name="serviceInterface" value="net.codeweasels.service.SMSService"/>
 			</bean>
 		</property>
