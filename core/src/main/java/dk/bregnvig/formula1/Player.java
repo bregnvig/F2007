@@ -134,7 +134,7 @@ public class Player {
 	}
 	
 	// Not visible outside the package. Still works with JPA
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="player_id")
 	Set<PersistentRole> getPersistentRoles() {
 		return this.roles;
