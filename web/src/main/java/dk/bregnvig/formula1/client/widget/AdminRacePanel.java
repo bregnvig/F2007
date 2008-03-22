@@ -22,6 +22,7 @@ import dk.bregnvig.formula1.client.validation.MaxLengthRule;
 import dk.bregnvig.formula1.client.validation.RequiredRule;
 import dk.bregnvig.formula1.client.validation.Rule;
 import dk.bregnvig.formula1.client.widget.bid.DriverSelection;
+import dk.bregnvig.formula1.client.widget.control.BigLabel;
 import dk.bregnvig.formula1.client.widget.control.ContentTitleLabel;
 import dk.bregnvig.formula1.client.widget.control.DatePicker;
 import dk.bregnvig.formula1.client.widget.control.FormLabel;
@@ -205,7 +206,7 @@ public class AdminRacePanel extends ContentPanel {
 
 	}
 
-	protected String getScreenTitle() {
-		return "Administrer løb";
+	protected Widget getScreenTitle() {
+		return new  BigLabel("Administrer løb");
 	}
 }

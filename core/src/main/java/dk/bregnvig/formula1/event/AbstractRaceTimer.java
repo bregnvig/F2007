@@ -1,5 +1,8 @@
 package dk.bregnvig.formula1.event;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import dk.bregnvig.formula1.Race;
 
 public abstract class AbstractRaceTimer implements RaceTimer {
@@ -9,6 +12,8 @@ public abstract class AbstractRaceTimer implements RaceTimer {
 	private static final int HOUR = MINUTE*60;
 	private static final int DAY = HOUR*24;
 	
+	private Log log = LogFactory.getLog(AbstractRaceListener.class);
+
 	private int seconds = -1;
 	private int days = -1;
 	private int hours = -1;
@@ -31,7 +36,9 @@ public abstract class AbstractRaceTimer implements RaceTimer {
 			total += seconds*SECOND;
 		}		
 		if (total == -1) {
-			throw new IllegalStateException("Timer not set for" + this.getClass().getName());
+			String message = "Timer not set for" + this.getClass().getName();
+			log.info(message);
+			throw new IllegalStateException(message);
 		}
 		return total;
 	}

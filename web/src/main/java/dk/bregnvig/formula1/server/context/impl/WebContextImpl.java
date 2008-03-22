@@ -30,6 +30,8 @@ public class WebContextImpl implements ApplicationContextAware, WebContext {
 
 	public void init() {
 		service = (GameService) context.getBean("gameService");
+		// Starts the event and timers
+		service.findByName(seasonName).getRaces();
 	}
 
 	public Player getPlayer() {

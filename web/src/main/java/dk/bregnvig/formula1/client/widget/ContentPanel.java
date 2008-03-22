@@ -29,7 +29,7 @@ public abstract class ContentPanel extends VerticalPanel {
 		mainPanel.setScreenTitle(getScreenTitle());
 	}
 
-	protected abstract String getScreenTitle();
+	protected abstract Widget getScreenTitle();
 
 	public F2007 getMediator() {
 		return mediator;

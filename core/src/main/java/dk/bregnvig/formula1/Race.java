@@ -5,8 +5,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,6 +29,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +40,7 @@ import dk.bregnvig.formula1.event.AbstractRaceListener;
 import dk.bregnvig.formula1.event.RaceTimer;
 
 /**
- * Contains a single
+ * Contains a single race
  * 
  * @author bregnvig
  * 
@@ -45,6 +49,11 @@ import dk.bregnvig.formula1.event.RaceTimer;
 @Table(name="race")
 @Configurable
 public class Race {
+	
+	private static Map<Race, Race> timersMap = new HashMap<Race, Race>(); 
+	private static Map<Race, Race> listenersMap = new HashMap<Race, Race>(); 
+	
+	private Log log = LogFactory.getLog(Race.class);
 	
 	private Long id;
 
@@ -67,6 +76,12 @@ public class Race {
 	@GeneratedValue(strategy=GenerationType.AUTO)	
 	public Long getId() {
 		return id;
+	}
+	
+	@Transient
+	public void initialized() {
+		createRaceListeners();
+		createRaceTimers();
 	}
 
 	public void setId(Long id) {
@@ -91,7 +106,6 @@ public class Race {
 	public void setClose(Calendar close) {
 		validateDates(this.open, close);
 		this.close = close;
-		createRaceListeners();
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -103,8 +117,6 @@ public class Race {
 	public void setOpen(Calendar open) {
 		validateDates(open, this.close);
 		this.open = open;
-		createRaceTimers();
-		createRaceListeners();
 	}
 	
 	/**
@@ -370,33 +382,46 @@ public class Race {
 	}
 	
 	private void createRaceTimers() {
-		if (timer != null) {
-			timer.cancel();
+
+		if (isInitialized() == false || isClosed() == true || timers == null || timers.size() == 0) {
+			return; 
 		}
 		
-		if (isWaiting() == false || timers == null || timers.size() == 0) {
-			return; 
+		if (timersMap.containsKey(this) == true) {
+			Race timerRace = timersMap.get(this);
+			if (timerRace.timer != null) {
+				timerRace.timer.cancel();
+			}
 		}
 		
 		timer = new Timer();
 		Date now = new Date();
 		for (RaceTimer raceTimer : timers) {
 			raceTimer.setRace(this);
-			Date when  = open.getTime();
+			Date when  = close.getTime();
 			when.setTime(when.getTime()-raceTimer.getBeforeInMillis());
 			if (when.after(now)) {
+				log.info("Added timer at " + when + " for " + raceTimer.getClass().getName());
 				timer.schedule(new InternalRaceTimer(raceTimer), when);
 			}
 		}
+		timersMap.put(this, this);
 	}
 	
 	private void createRaceListeners() {
-		if (open == null || close == null || isCompleted()) {
+		if (isInitialized() == false  || isCompleted()) {
 			return;
 		}
+		listenersMap.put(this, this);
 		for (AbstractRaceListener listener : listeners) {
+			log.info("Added listener: " + listener.getClass().getName());
 			listener.setRace(this);
 		}
+	}
+	
+	@Transient
+	private boolean isInitialized() {
+		return close != null && open != null && name != null;
 	}
 	
 	private class InternalRaceTimer extends TimerTask {

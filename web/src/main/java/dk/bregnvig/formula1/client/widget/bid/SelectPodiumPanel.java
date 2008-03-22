@@ -3,6 +3,7 @@ package dk.bregnvig.formula1.client.widget.bid;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import dk.bregnvig.formula1.client.F2007;
 import dk.bregnvig.formula1.client.domain.ClientDriver;
@@ -10,6 +11,7 @@ import dk.bregnvig.formula1.client.validation.Rule;
 import dk.bregnvig.formula1.client.validation.UniqueDriverRule;
 import dk.bregnvig.formula1.client.widget.MainPanel;
 import dk.bregnvig.formula1.client.widget.control.AbstractWizardPage;
+import dk.bregnvig.formula1.client.widget.control.BigLabel;
 
 public class SelectPodiumPanel extends AbstractWizardPage {
 
@@ -66,8 +68,8 @@ public class SelectPodiumPanel extends AbstractWizardPage {
 		return image;
 	}
 
-	protected String getScreenTitle() {
-		return isBidPage() ? "Vælg podium placeringer" : "Podium resultatet";
+	protected Widget getScreenTitle() {
+		return new  BigLabel(isBidPage() ? "Gæt podium placeringer" : "Podium resultatet");
 	}
 
 	protected Rule[] getRules() {

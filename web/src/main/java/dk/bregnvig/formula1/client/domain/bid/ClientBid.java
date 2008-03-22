@@ -13,6 +13,7 @@ public class ClientBid implements IsSerializable {
 	private ClientDriver firstCrash;
 	private ClientDriver[] podium;
 	private int[] selectedDriver;
+	private int[] selectedDriverPoints;
 	private int polePositionTime;
 	
 	private int points;
@@ -79,6 +80,14 @@ public class ClientBid implements IsSerializable {
 
 	public void setFirstCrash(ClientDriver firstCrash) {
 		this.firstCrash = firstCrash;
+	}
+
+	public int[] getSelectedDriverPoints() {
+		return selectedDriverPoints;
+	}
+
+	public void setSelectedDriverPoints(int[] selectedDriverPoints) {
+		this.selectedDriverPoints = selectedDriverPoints;
 	}
 	
 	

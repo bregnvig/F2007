@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Widget;
 
 import dk.bregnvig.formula1.client.F2007;
 import dk.bregnvig.formula1.client.domain.ClientRace;
@@ -22,7 +23,8 @@ public class MainPanel extends DockPanel {
 	private boolean loadSeasonCompleted = false;
 	private boolean loadOpenRaceCompleted = false;
 	private Panel currentCenter;
-	private Label screenTitle;
+	private HorizontalPanel northPanel;
+	private Widget screenTitle;
 	
 	/**
 	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientRace>
@@ -33,7 +35,6 @@ public class MainPanel extends DockPanel {
 		this.mediator = mediator;
 		setWidth("100%");
 		setHeight("100%");
-		screenTitle = new Label();
 	}
 	
 
@@ -62,8 +63,10 @@ public class MainPanel extends DockPanel {
 		mediator.getGameService().getSeason(callback);
 	}
 	
-	public void setScreenTitle(String title) {
-		screenTitle.setText(title);
+	public void setScreenTitle(Widget title) {
+		int index = northPanel.getWidgetIndex(screenTitle);
+		northPanel.remove(index);
+		northPanel.insert(screenTitle = title, index);
 	}
 
 	/**
@@ -97,23 +100,24 @@ public class MainPanel extends DockPanel {
 	}
 
 	private void createNorth() {
-		HorizontalPanel panel = new HorizontalPanel();
-		panel.setWidth("97%");
-		panel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
-		panel.setStyleName("southBorder");
+		northPanel = new HorizontalPanel();
+		northPanel.setWidth("97%");
+		northPanel.setVerticalAlignment(HorizontalPanel.ALIGN_BOTTOM);
+		northPanel.setStyleName("southBorder");
 		
 	    // Make a command that we will execute from all leaves.
 
 	    Label welcomeLabel = new Label(mediator.getSeason().getName());
-	    panel.add(welcomeLabel);
-		panel.setCellHorizontalAlignment(welcomeLabel, HorizontalPanel.ALIGN_LEFT);
+	    northPanel.add(welcomeLabel);
+		northPanel.setCellHorizontalAlignment(welcomeLabel, HorizontalPanel.ALIGN_LEFT);
 		
-		panel.add(screenTitle);
-		panel.setCellHorizontalAlignment(screenTitle, HorizontalPanel.ALIGN_CENTER);
+		northPanel.add(screenTitle = new Label());
+		northPanel.setCellHorizontalAlignment(screenTitle, HorizontalPanel.ALIGN_CENTER);
 	    
 		MenuBar playerMenu = new MenuBar(true);
 		playerMenu.addItem("Konto", new OpenAccountCommand());
 		playerMenu.addItem("Oplysninger", new OpenUserCommand());
+		playerMenu.addItem("Regler", new OpenRulesCommand());
 		
 		MenuBar mainMenu = new MenuBar();
 		mainMenu.addItem("Løb", getRaceMenuBar());
@@ -128,10 +132,10 @@ public class MainPanel extends DockPanel {
 			mainMenu.addItem("Admin", adminMenu);
 		}
 
-		panel.add(mainMenu);
-		panel.setCellHorizontalAlignment(mainMenu, HorizontalPanel.ALIGN_RIGHT);
-		add(panel, DockPanel.NORTH);
-		setCellHeight(panel, "5px"); // Automatically adjust to minimum size required
+		northPanel.add(mainMenu);
+		northPanel.setCellHorizontalAlignment(mainMenu, HorizontalPanel.ALIGN_RIGHT);
+		add(northPanel, DockPanel.NORTH);
+		setCellHeight(northPanel, "5px"); // Automatically adjust to minimum size required
 	}
 	
 	public void setCenterPanel(Panel panel) {
@@ -174,6 +178,12 @@ public class MainPanel extends DockPanel {
     private class OpenUserCommand implements Command {
 		public void execute() {
 			setCenterPanel(new AdminPlayerPanel(mediator, MainPanel.this, false));
+		}
+    }
+
+    private class OpenRulesCommand implements Command {
+		public void execute() {
+			setCenterPanel(new RulesPanel(mediator, MainPanel.this));
 		}
     }
 

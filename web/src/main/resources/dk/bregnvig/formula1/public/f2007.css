@@ -168,3 +168,37 @@ a:active {
 	margin: 2px;
 	background-color: red;
 }
+
+.bidHeader {
+	background-color: #9FC6FF;
+	border: 1px solid #FFFFFF;
+	font-size: 12px;
+}
+
+.bidEntryRow {
+	text-align:
+	background-color: #9FC6FF;
+	border: 1px solid #FFFFFF;
+	font-size: 12px;
+}
+
+.bidEntryRow:hover {
+	background-color: #CFE3FF;
+}
+
+.gwt-Label-bidEntry {
+	color: white;
+	font-size: 12px;
+}
+
+.gwt-Label-bidEntry-3points {
+	color: #01AF00;
+}
+
+.gwt-Label-bidEntry-2points {
+	color: #FF910F;
+}
+
+.gwt-Label-bidEntry-1points {
+	color: #BEBF47;
+}

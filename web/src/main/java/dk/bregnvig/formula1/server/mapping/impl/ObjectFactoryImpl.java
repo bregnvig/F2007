@@ -165,6 +165,9 @@ public class ObjectFactoryImpl implements ObjectFactory{
 			clientBid.setPolePositionTime(bid.getPolePositionTimeMillis());
 			if (completed == true) {
 				clientBid.setPoints(bid.getPoints());
+				clientBid.getFastestLap().setPoints(bid.getFastestLap().getPoints());
+				clientBid.getFirstCrash().setPoints(bid.getFirstCrash().getPoints());
+				clientBid.setSelectedDriverPoints(new int[] {bid.getSelectedDriver().getPointsStartPosition(), bid.getSelectedDriver().getPointsEndPosition()});
 			}
 		}
 		return clientBid;
@@ -175,12 +178,16 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		for (int i = 0; i < numberOfProperties; i++) {
 			try {
 				drivers[i] = create((Driver) PropertyUtils.getSimpleProperty(bid, propertyName+(i+1)));
-				
+				drivers[i].setPoints((Integer) PropertyUtils.getSimpleProperty(bid, getPointsPropertyName(propertyName+(i+1))));
 			} catch (Exception e) {
 				throw new IllegalArgumentException("The supplied bid could not have property " + propertyName+(i+1) + " extracted", e);
 			}
 		}
 		return drivers;
+	}
+	
+	private String getPointsPropertyName(String propertyName) {
+		return "points"+propertyName.substring(0, 1).toUpperCase()+propertyName.substring(1);
 	}
 	
 	private ClientAccountEntry create(Account account, Account.Entry entry) {

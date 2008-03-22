@@ -24,6 +24,7 @@ import dk.bregnvig.formula1.client.widget.bid.SelectGridPanel;
 import dk.bregnvig.formula1.client.widget.bid.SelectPodiumPanel;
 import dk.bregnvig.formula1.client.widget.bid.SelectedDriverPanel;
 import dk.bregnvig.formula1.client.widget.control.AbstractWizardPage;
+import dk.bregnvig.formula1.client.widget.control.BigLabel;
 import dk.bregnvig.formula1.client.widget.control.ContentTitleLabel;
 import dk.bregnvig.formula1.client.widget.control.PlayerLabel;
 import dk.bregnvig.formula1.client.widget.control.WizardCompletedListener;
@@ -61,6 +62,8 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 		} else if (race.isOpened() == false && race.isCompleted() == false && race.isWaiting() == false && getMediator().getPlayer().isGameAdministrator() == true) {
 			addCommandButton("Indtast resultat");
 			createWizard();
+		} else if (race.isCompleted()) {
+			addSeeBidButton();
 		}
 		
 		HorizontalPanel panel = new HorizontalPanel();
@@ -91,6 +94,19 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 				getMainPanel().setCenterPanel(wizard);
 			}
 		});
+		addButton(commandButton);
+	}
+	
+	private void addSeeBidButton() {
+		commandButton = new Button("Se bud", new ClickListener() {
+			public void onClick(Widget arg0) {
+				getMainPanel().setCenterPanel(new BidOverviewPanel(getMediator(), getMainPanel()));
+			}
+		});
+		addButton(commandButton);
+	}
+	
+	private void addButton(Button commandButton) {
 		rightSide.add(commandButton);
 		rightSide.setCellHeight(commandButton, "50px");
 		rightSide.setCellVerticalAlignment(commandButton, VerticalPanel.ALIGN_BOTTOM);
@@ -191,7 +207,7 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 		}
 	}
 
-	protected String getScreenTitle() {
+	protected Widget getScreenTitle() {
 		ClientRace race = getMediator().getSelectedRace();
 		
 		String postFix = "";
@@ -202,7 +218,7 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 		} else if (race.isCompleted() == true){
 			postFix = " - afgjort";
 		}
-		return race.getName() + postFix;
+		return new  BigLabel(race.getName() + postFix);
 	}
 
 	public void completed(AbstractWizardPage[] pages) {

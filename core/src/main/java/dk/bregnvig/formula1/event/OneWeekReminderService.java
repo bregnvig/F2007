@@ -9,6 +9,8 @@ import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,12 +27,13 @@ public class OneWeekReminderService extends AbstractRaceTimer {
 	private static SimpleDateFormat weekday = new SimpleDateFormat("EEEEE", DA_DK);
 	private static SimpleDateFormat hours = new SimpleDateFormat("HH:mm", DA_DK);
 	
+	private Log log = LogFactory.getLog(OneWeekReminderService.class);
 	private JavaMailSender mailSender;
 	private VelocityEngine velocityEngine;
 	private String fromAddress;
 
 	public void invoke() {
-
+		log.info("OneWeekReminderService started");
 		Collection<Player> players = getNonplayingPlayers();
 		for (Player player : players) {
 			sendConfirmationEmail(player);
@@ -71,10 +74,10 @@ public class OneWeekReminderService extends AbstractRaceTimer {
 			}
 		};
 		try {
+			log.info("Sending reminder to " + player.getEmailAddress() + " for race " + getRace().getName());
 			this.mailSender.send(preparator);
 		} catch (MailException e) {
-			System.err.println(e.getMessage());
-			// TODO Add logging
+			log.error("Sending failed to " + player.getEmailAddress() + " for race " + getRace().getName());
 		}
 	}
 
