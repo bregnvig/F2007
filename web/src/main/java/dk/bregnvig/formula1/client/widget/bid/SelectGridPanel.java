@@ -4,6 +4,7 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import dk.bregnvig.formula1.client.F2007;
 import dk.bregnvig.formula1.client.domain.ClientDriver;
@@ -11,6 +12,7 @@ import dk.bregnvig.formula1.client.validation.Rule;
 import dk.bregnvig.formula1.client.validation.UniqueDriverRule;
 import dk.bregnvig.formula1.client.widget.MainPanel;
 import dk.bregnvig.formula1.client.widget.control.AbstractWizardPage;
+import dk.bregnvig.formula1.client.widget.control.BigLabel;
 
 public class SelectGridPanel extends AbstractWizardPage {
 
@@ -69,8 +71,8 @@ public class SelectGridPanel extends AbstractWizardPage {
 		return image;
 	}
 
-	protected String getScreenTitle() {
-		return isBidPage() ? "Vælg start grid" : "Start grid'en";
+	protected Widget getScreenTitle() {
+		return new  BigLabel(isBidPage() ? "Gæt qualify" : "Qualify resultatet");
 	}
 
 	protected Rule[] getRules() {

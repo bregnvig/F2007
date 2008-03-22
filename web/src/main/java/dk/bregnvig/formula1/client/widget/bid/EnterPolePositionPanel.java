@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import dk.bregnvig.formula1.client.F2007;
 import dk.bregnvig.formula1.client.validation.MaxValueRule;
@@ -33,8 +34,8 @@ public class EnterPolePositionPanel extends AbstractWizardPage {
 		setCellHorizontalAlignment(grid, VerticalPanel.ALIGN_CENTER);
 	}
 	
-	protected String getScreenTitle() {
-		return getMediator().getSelectedRace().isOpened() ? "Gæt pole position tiden i " + getMediator().getSelectedRace().getName() : "Pole position tiden i "  + getMediator().getSelectedRace().getName();
+	protected Widget getScreenTitle() {
+		return new  BigLabel(getMediator().getSelectedRace().isOpened() ? "Gæt pole position tiden i " + getMediator().getSelectedRace().getName() : "Pole position tiden i "  + getMediator().getSelectedRace().getName());
 	}
 
 	protected Rule[] getRules() {

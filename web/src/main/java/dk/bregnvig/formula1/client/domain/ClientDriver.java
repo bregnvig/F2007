@@ -10,6 +10,7 @@ public class ClientDriver implements IsSerializable {
 	private int number;
 	private String name;
 	private boolean active = true;
+	private int points;
 	
 	public Long getId() {
 		return id;
@@ -65,6 +66,12 @@ public class ClientDriver implements IsSerializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	public int getPoints() {
+		return points;
+	}
+	public void setPoints(int points) {
+		this.points = points;
 	}
 	
 

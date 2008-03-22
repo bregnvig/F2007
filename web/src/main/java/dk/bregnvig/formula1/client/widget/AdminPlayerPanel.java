@@ -23,6 +23,7 @@ import dk.bregnvig.formula1.client.validation.MaxLengthRule;
 import dk.bregnvig.formula1.client.validation.PhoneNumberRule;
 import dk.bregnvig.formula1.client.validation.RequiredRule;
 import dk.bregnvig.formula1.client.validation.Rule;
+import dk.bregnvig.formula1.client.widget.control.BigLabel;
 import dk.bregnvig.formula1.client.widget.control.ContentTitleLabel;
 import dk.bregnvig.formula1.client.widget.control.FormLabel;
 import dk.bregnvig.formula1.client.widget.control.FormTitleLabel;
@@ -235,8 +236,8 @@ public class AdminPlayerPanel extends ContentPanel {
 		}
 	}
 
-	protected String getScreenTitle() {
-		return "Mine oplysninger";
+	protected Widget getScreenTitle() {
+		return new  BigLabel("Mine oplysninger");
 	}
 
 	public final boolean isCreateMode() {

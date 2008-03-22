@@ -207,11 +207,15 @@ public class RaceTest extends AbstractDaoTest {
     	
     	final List<Race> races = new ArrayList<Race>();
     	Calendar begin = Calendar.getInstance();
-    	begin.add(Calendar.SECOND, 5);
+    	Calendar close = Calendar.getInstance();
+    	begin.add(Calendar.SECOND, 1);
+    	close.add(Calendar.SECOND, 5);
     	List<RaceTimer> timers = new ArrayList<RaceTimer>();
     	timers.add(new TestRaceTimer(races));
     	spa.setTimers(timers);
     	spa.setOpen(begin);
+    	spa.setClose(close);
+    	spa.initialized();
     	
     	Thread.sleep(5000);
     	
@@ -258,6 +262,7 @@ public class RaceTest extends AbstractDaoTest {
     	spa.setListeners(listners);
     	spa.setOpen(open);
     	spa.setClose(close);
+    	spa.initialized();
     	Thread.sleep(1000);
     	spa.addBid(flbSpaBid);
     	Thread.sleep(3000);

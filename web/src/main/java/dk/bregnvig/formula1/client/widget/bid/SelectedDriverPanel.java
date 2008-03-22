@@ -4,12 +4,14 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import dk.bregnvig.formula1.client.F2007;
 import dk.bregnvig.formula1.client.validation.RequiredPositionSelectorRule;
 import dk.bregnvig.formula1.client.validation.Rule;
 import dk.bregnvig.formula1.client.widget.MainPanel;
 import dk.bregnvig.formula1.client.widget.control.AbstractWizardPage;
+import dk.bregnvig.formula1.client.widget.control.BigLabel;
 import dk.bregnvig.formula1.client.widget.control.ContentTitleLabel;
 import dk.bregnvig.formula1.client.widget.control.DriverImage;
 import dk.bregnvig.formula1.client.widget.control.FormLabel;
@@ -46,8 +48,8 @@ public class SelectedDriverPanel extends AbstractWizardPage {
 		setCellHorizontalAlignment(grid, VerticalPanel.ALIGN_CENTER);
 	}
 	
-	protected String getScreenTitle() {
-		return getMediator().getSelectedRace().isOpened() ? "Gæt den udvalgte køres start- og slutposition" : "Udvalgte køres start- og slutposition";
+	protected Widget getScreenTitle() {
+		return new  BigLabel(getMediator().getSelectedRace().isOpened() ? "Gæt den udvalgte køres start- og slutposition" : "Udvalgte køres start- og slutposition");
 	}
 
 	protected Rule[] getRules() {
