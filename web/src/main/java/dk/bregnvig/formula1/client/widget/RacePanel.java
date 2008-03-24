@@ -30,7 +30,7 @@ import dk.bregnvig.formula1.client.widget.control.PlayerLabel;
 import dk.bregnvig.formula1.client.widget.control.WizardCompletedListener;
 import dk.bregnvig.formula1.client.widget.control.WizardPanel;
 
-public class RacePanel extends ContentPanel implements WizardCompletedListener {
+public class RacePanel extends ContentPanel implements WizardCompletedListener, F2007.Callback {
 
 	private final ParticipantPanel participants;
 	private final VerticalPanel rightSide;
@@ -48,23 +48,12 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 	
 	public RacePanel(final F2007 mediator, final MainPanel mainPanel, ClientRace race) {
 		super(mediator, mainPanel);
-		mediator.setSelectedRace(race);
 		if (race == null) {
 			throw new IllegalArgumentException("Race cannot be null");
 		}
 		rightSide = new VerticalPanel();
 		rightSide.setWidth("300px");
 		rightSide.add(participants = new ParticipantPanel());
-		
-		if (race.isOpened() == true && race.isParticipant() == false) {
-			createWizard();
-			addCommandButton("Jeg skal deltage");
-		} else if (race.isOpened() == false && race.isCompleted() == false && race.isWaiting() == false && getMediator().getPlayer().isGameAdministrator() == true) {
-			addCommandButton("Indtast resultat");
-			createWizard();
-		} else if (race.isCompleted()) {
-			addSeeBidButton();
-		}
 		
 		HorizontalPanel panel = new HorizontalPanel();
 		panel.setWidth("100%");
@@ -76,6 +65,7 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 		panel.add(rightSide);
 		
 		add(panel);
+		mediator.setSelectedRace(race, this);
 	}
 
 	private void createWizard() {
@@ -98,7 +88,7 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 	}
 	
 	private void addSeeBidButton() {
-		commandButton = new Button("Se bud", new ClickListener() {
+		commandButton = new Button(getMediator().getSelectedRace().isCompleted() ? "Se resultat" : "Se bud", new ClickListener() {
 			public void onClick(Widget arg0) {
 				getMainPanel().setCenterPanel(new BidOverviewPanel(getMediator(), getMainPanel()));
 			}
@@ -152,9 +142,7 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 			}
 
 			public void onSuccess(Object race) {
-				getMediator().setSelectedRace((ClientRace) race);
-				removeCommandButton();
-				participants.reset();
+				getMediator().setSelectedRace((ClientRace) race, RacePanel.this);
 				getMainPanel().setCenterPanel(RacePanel.this);
 			}
 		};
@@ -171,10 +159,9 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 		return bid;
 	}
 	
-	private class ParticipantPanel extends VerticalPanel {
+	private class ParticipantPanel extends VerticalPanel  {
 		
 		public ParticipantPanel() {
-			reset();
 		}
 		
 		private void addHeadline() {
@@ -229,5 +216,24 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener {
 			submitResult();
 		}
 		
+	}
+
+	public void completed() {
+		if (participants != null) {
+			participants.reset();
+		}
+		removeCommandButton();
+		ClientRace race = getMediator().getSelectedRace();
+		if (race.isOpened() == true && race.isParticipant() == false) {
+			createWizard();
+			addCommandButton("Jeg skal deltage");
+		} else if (race.isOpened() && race.isParticipant() == true) {
+			addSeeBidButton();
+		} else if (race.isOpened() == false && race.isCompleted() == false && race.isWaiting() == false && getMediator().getPlayer().isGameAdministrator() == true) {
+			addCommandButton("Indtast resultat");
+			createWizard();
+		} else if (race.isCompleted()) {
+			addSeeBidButton();
+		} 
 	}
 }

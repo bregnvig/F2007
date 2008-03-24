@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
@@ -20,6 +21,7 @@ public class ClientRace implements IsSerializable{
 	private Date closeDate;
 	private boolean participant;
 	private ClientDriver selectedDriver;
+	private boolean fullyLoaded;
 	
 	public ClientRace() {
 		
@@ -122,6 +124,41 @@ public class ClientRace implements IsSerializable{
 
 	public void setCloseDate(Date closeDate) {
 		this.closeDate = closeDate;
+	}
+
+	public boolean isFullyLoaded() {
+		return fullyLoaded;
+	}
+
+	public void setFullyLoaded(boolean fullyLoaded) {
+		this.fullyLoaded = fullyLoaded;
+	}
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (GWT.getTypeName(this).equals(GWT.getTypeName(obj)) == false)
+			return false;
+		final ClientRace other = (ClientRace) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	public String toString() {
+		return name + " Open: " + openDate + " Close: " + closeDate;
 	}
 	
 }

@@ -40,7 +40,7 @@ public class SelectFirstCrashDriverPanel extends AbstractWizardPage {
 	}
 	
 	protected Widget getScreenTitle() {
-		return new  BigLabel(isBidPage() ? "Vælg først udgående kører" : "Udgående kørere");
+		return new  BigLabel(isBidPage() ? "Gæt først udgået køre" : "Udgående kørere");
 	}
 
 	protected Rule[] getRules() {

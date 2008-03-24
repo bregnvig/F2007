@@ -24,12 +24,12 @@ public class RulesPanel extends ContentPanel {
 
 	public Panel qualifyRules() {
 		VerticalPanel qualifyRules = new VerticalPanel();
-		qualifyRules.add(new BigLabel("Gæt qualify"));
+		qualifyRules.add(new BigLabel("Gæt qualify Q3 resultat"));
 		HTML rule = new HTML();
 		qualifyRules.add(rule);
 		rule.setHTML("<p>" +
 			"Du skal gætte de seks første i qualify. Det betyder at det er kvalificerings" +
-			" resultatet der gælder. Ikke startsplaceringen søndag morgen.<br/>" +
+			" resultatet der gælder. Ikke startsplaceringen søndag.<br/>" +
 			"Der er to point for et korrekt gæt. Et point hvis du er en ved siden af. Derefter nul point." +
 			"</p>");
 		rule.setStyleName("gwt-Label");
@@ -39,7 +39,7 @@ public class RulesPanel extends ContentPanel {
 
 	public Panel fastestRules() {
 		VerticalPanel fastestLapRules = new VerticalPanel();
-		fastestLapRules.add(new BigLabel("Gæt hurtigste omgang"));
+		fastestLapRules.add(new BigLabel("Gæt hurtigste køre"));
 		HTML rule = new HTML();
 		fastestLapRules.add(rule);
 		rule.setHTML("<p>" +
@@ -53,7 +53,7 @@ public class RulesPanel extends ContentPanel {
 	
 	public Panel podiumRules() {
 		VerticalPanel podiumRules = new VerticalPanel();
-		podiumRules.add(new BigLabel("Gæt podium"));
+		podiumRules.add(new BigLabel("Gæt podium placeringer"));
 		HTML rule = new HTML();
 		podiumRules.add(rule);
 		rule.setHTML("<p>" +
@@ -67,7 +67,7 @@ public class RulesPanel extends ContentPanel {
 
 	public Panel selectedDriverRules() {
 		VerticalPanel selectedDriverRules = new VerticalPanel();
-		selectedDriverRules.add(new BigLabel("Gæt udvalgte køre"));
+		selectedDriverRules.add(new BigLabel("Gæt den udvalgte køres start- og slutposition"));
 		HTML rule = new HTML();
 		selectedDriverRules.add(rule);
 		rule.setHTML("<p>" +
@@ -83,7 +83,7 @@ public class RulesPanel extends ContentPanel {
 	
 	public Panel firstCrashRules() {
 		VerticalPanel firstCrashRules = new VerticalPanel();
-		firstCrashRules.add(new BigLabel("Gæt først udgået"));
+		firstCrashRules.add(new BigLabel("Gæt først udgået køre"));
 		HTML rule = new HTML();
 		firstCrashRules.add(rule);
 		rule.setHTML("<p>" +

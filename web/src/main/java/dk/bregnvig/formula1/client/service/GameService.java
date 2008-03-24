@@ -45,7 +45,13 @@ public interface GameService extends RemoteService {
 	 * @return
 	 */
 	ClientRace getCurrentRace();
-	
+
+	/**
+	 * Returns the race specified by the id. This is only because of performance :-(
+	 * @return
+	 */
+	ClientRace getRace(Long id);
+
 	/**
 	 * Returns the user that is currently logged in account
 	 * @return

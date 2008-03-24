@@ -20,7 +20,7 @@ public class SelectFastestDriverPanel extends AbstractWizardPage {
 		
 		Grid grid = new Grid(1, 1);
 		grid.setCellPadding(10);
-		grid.setWidget(0, 0, driver = new DriverSelection(mediator, "Hurtigste kører"));
+		grid.setWidget(0, 0, driver = new DriverSelection(mediator, "Gær hurtigste kører"));
 
 		add(grid);
 		setCellHorizontalAlignment(grid, VerticalPanel.ALIGN_CENTER);

@@ -72,7 +72,7 @@ public class SelectGridPanel extends AbstractWizardPage {
 	}
 
 	protected Widget getScreenTitle() {
-		return new  BigLabel(isBidPage() ? "Gæt qualify" : "Qualify resultatet");
+		return new  BigLabel(isBidPage() ? "Gæt qualify Q3 resultatet" : "Qualify resultatet");
 	}
 
 	protected Rule[] getRules() {

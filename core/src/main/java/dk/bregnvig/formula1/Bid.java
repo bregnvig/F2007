@@ -3,6 +3,7 @@ package dk.bregnvig.formula1;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -45,7 +46,7 @@ public class Bid {
 		this.id = id;
 	}
 
-	@ManyToOne(optional=false, cascade = CascadeType.ALL)
+	@ManyToOne(optional=false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	public Player getPlayer() {
 		return player;
 	}

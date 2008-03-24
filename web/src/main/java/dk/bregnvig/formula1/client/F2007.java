@@ -2,6 +2,7 @@ package dk.bregnvig.formula1.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Panel;
@@ -14,8 +15,8 @@ import dk.bregnvig.formula1.client.domain.ClientSeason;
 import dk.bregnvig.formula1.client.service.GameService;
 import dk.bregnvig.formula1.client.service.GameServiceAsync;
 import dk.bregnvig.formula1.client.widget.ErrorPanel;
-import dk.bregnvig.formula1.client.widget.MainPanel;
 import dk.bregnvig.formula1.client.widget.LoginPanel;
+import dk.bregnvig.formula1.client.widget.MainPanel;
 import dk.bregnvig.formula1.client.widget.WelcomePanel;
 
 /**
@@ -143,7 +144,32 @@ public class F2007 implements EntryPoint, GWT.UncaughtExceptionHandler {
 		return selectedRace;
 	}
 
-	public void setSelectedRace(ClientRace selectedRace) {
-		this.selectedRace = selectedRace;
+	public void setSelectedRace(final ClientRace selectedRace, final Callback callback) {
+		
+		int index = season.getRaces().indexOf(selectedRace);
+		this.selectedRace = (ClientRace) season.getRaces().get(index);
+		if (this.selectedRace.isFullyLoaded() == false) {
+			AsyncCallback gwtCallback = new AsyncCallback() {
+
+				public void onFailure(Throwable caught) {
+					reportError("Failure - could not load " + selectedRace.getName() + " fully");
+				}
+
+				public void onSuccess(Object result) {
+					int index = season.getRaces().indexOf(selectedRace);
+					season.getRaces().remove(index);
+					season.getRaces().add(index, result);
+					F2007.this.selectedRace = (ClientRace) result;
+					callback.completed();
+				}
+			};
+			getGameService().getRace(selectedRace.getId(), gwtCallback);
+		} else {
+			callback.completed();
+		}
+	}
+	
+	public interface Callback {
+		void completed();
 	}
 }
