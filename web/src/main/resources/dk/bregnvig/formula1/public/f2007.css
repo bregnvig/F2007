@@ -176,13 +176,12 @@ a:active {
 }
 
 .bidEntryRow {
-	text-align:
-	background-color: #9FC6FF;
-	border: 1px solid #FFFFFF;
 	font-size: 12px;
 }
 
 .bidEntryRow:hover {
+	border: 20px solid;
+	border-color: red;
 	background-color: #CFE3FF;
 }
 
@@ -193,10 +192,12 @@ a:active {
 
 .gwt-Label-bidEntry-3points {
 	color: #01AF00;
+	font-size: 13px;
 }
 
 .gwt-Label-bidEntry-2points {
 	color: #FF910F;
+	font-size: 13px;
 }
 
 .gwt-Label-bidEntry-1points {

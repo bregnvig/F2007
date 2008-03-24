@@ -23,7 +23,7 @@ public class BidOverviewPanel extends ContentPanel {
 		setWidth("95%");
 		
 		table = new Grid(mediator.getSelectedRace().getBids().size()+1, 7);
-		table.setWidget(0, 0, new Label(""));
+		table.setWidget(0, 0, new Label("Navn"));
 		table.setWidget(0, 1, new Label("Qualify"));
 		table.setWidget(0, 2, new Label("Hurtigste kører"));
 		table.setWidget(0, 3, new Label("Podium"));
@@ -42,15 +42,21 @@ public class BidOverviewPanel extends ContentPanel {
 		List bids = mediator.getSelectedRace().getBids();
 		for (int i = 0; i < bids.size(); i++) {
 			ClientBid bid = (ClientBid) bids.get(i);
-			table.setWidget(i+1, 0, new Label(bid.getPlayer().getFirstName() + " " + bid.getPlayer().getLastName()));
+			Panel panel = new FlowPanel();
+			panel.add(new Label(bid.getPlayer().getFirstName() + " " + bid.getPlayer().getLastName()));
+			if (getMediator().getSelectedRace().isCompleted()) {
+				panel.add(new Label("(" + bid.getPoints() + " points)"));
+			}
+			table.setWidget(i+1, 0, panel);
 			table.getRowFormatter().addStyleName(i+1, "bidEntryRow");
 			table.getRowFormatter().setVerticalAlign(i+1, VerticalPanel.ALIGN_TOP);
 		}
 		addQualify();
-		addFastestCrash();
+		addFastestLap();
 		addPodium();
 		addSelectedDriver();
 		addFirstCrash();
+		addPolePositionTime();
 		add(table);
 	}
 	
@@ -63,7 +69,7 @@ public class BidOverviewPanel extends ContentPanel {
 		
 	}
 
-	private void addFastestCrash() {
+	private void addFastestLap() {
 		List bids = getMediator().getSelectedRace().getBids();
 		for (int i = 0; i < bids.size(); i++) {
 			ClientBid bid = (ClientBid) bids.get(i);
@@ -96,14 +102,29 @@ public class BidOverviewPanel extends ContentPanel {
 		}
 	}
 	
+	private void addPolePositionTime() {
+		List bids = getMediator().getSelectedRace().getBids();
+	
+		for (int i = 0; i < bids.size(); i++) {
+			ClientBid bid = (ClientBid) bids.get(i);
+			table.setWidget(i+1, 6, new BidEntrylabel(bid.getPolePositionTimeInText()));
+		}
+	}
+	
+	
+	
 	private Panel getSelectedDriverPanel(ClientBid bid) {
 		BidEntrylabel startPosition = new BidEntrylabel("Starter som " + bid.getSelectedDriver()[0]);
 		BidEntrylabel endPosition = new BidEntrylabel("Slutter som " + bid.getSelectedDriver()[1]);
-		if (bid.getSelectedDriverPoints()[0] != 0) {
-			startPosition.addStyleName("gwt-Label-bidEntry-" +bid.getSelectedDriverPoints()[0] + "points");
-		}
-		if (bid.getSelectedDriverPoints()[1] != 0) {
-			endPosition.addStyleName("gwt-Label-bidEntry-" +bid.getSelectedDriverPoints()[1] + "points");
+		if (getMediator().getSelectedRace().isCompleted()) {
+			if (bid.getSelectedDriverPoints()[0] != 0) {
+				startPosition.addStyleName("gwt-Label-bidEntry-" +bid.getSelectedDriverPoints()[0] + "points");
+				startPosition.setTitle(bid.getSelectedDriverPoints()[0] + " points");
+			}
+			if (bid.getSelectedDriverPoints()[1] != 0) {
+				endPosition.addStyleName("gwt-Label-bidEntry-" +bid.getSelectedDriverPoints()[1] + "points");
+				endPosition.setTitle(bid.getSelectedDriverPoints()[1] + " points");
+			}
 		}
 		Panel panel = new FlowPanel();
 		panel.add(startPosition);
@@ -131,7 +152,7 @@ public class BidOverviewPanel extends ContentPanel {
 	}
 
 	protected Widget getScreenTitle() {
-		return new BigLabel(getMediator().getSelectedRace().isCompleted() ? "Resultatet" : "Indsendt bud");
+		return new BigLabel(getMediator().getSelectedRace().getName() + (getMediator().getSelectedRace().isCompleted() ? " - resultat" : " - indsendte bud"));
 	}
 	
 	private class BidEntrylabel extends Label {

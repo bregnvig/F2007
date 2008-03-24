@@ -22,6 +22,8 @@ public interface GameServiceAsync {
 	
 	void getCurrentRace(AsyncCallback callback);
 
+	void getRace(Long id, AsyncCallback callback);
+
 	void getAccount(AsyncCallback callback);
 
 	void updatePassword(String password, AsyncCallback callback);

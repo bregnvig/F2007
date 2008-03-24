@@ -53,11 +53,21 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	public ClientRace getCurrentRace() {
 		Race race = getContext().getSeason().getCurrentRace();
 		if (race != null) {
-			return objectFactory.create(race);
+			return objectFactory.createFull(race);
 		}
 		return null;
 	}
 
+	@Authorization(roles={PlayerRole.PLAYER})
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public ClientRace getRace(Long id) {
+		Race race = getContext().getSeason().getRaceById(id);
+		if (race != null) {
+			return objectFactory.createFull(race);
+		}
+		return null;
+	}
+	
 	@Authorization(roles={PlayerRole.PLAYER})
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientSeason getSeason() {
@@ -107,7 +117,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	public ClientRace setResult(ClientResult result) {
 		Race race = getContext().getSeason().getCurrentRace(); 
 		race.completeRace(objectFactory.create(result));
-		return objectFactory.create(race);
+		return objectFactory.createFull(race);
 	}
 
 	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})

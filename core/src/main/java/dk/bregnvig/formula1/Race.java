@@ -255,6 +255,9 @@ public class Race {
 	 */
 	@Transient
 	public boolean isParticipant(Player player) {
+		if (isWaiting() == true) {
+			return false;
+		}
 		if (playersThatSubmitted.isEmpty()) {
 			for (Bid bid : bids) {
 				playersThatSubmitted.add(bid.getPlayer());

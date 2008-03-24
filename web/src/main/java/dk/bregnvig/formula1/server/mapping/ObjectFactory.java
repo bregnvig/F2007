@@ -26,6 +26,8 @@ public interface ObjectFactory {
 	
 	ClientRace create(Race source);
 	
+	ClientRace createFull(Race source);
+	
 	ClientAccount create(Account account);
 	
 	List<ClientDriver> getClientDrivers(Collection<Driver> drivers);

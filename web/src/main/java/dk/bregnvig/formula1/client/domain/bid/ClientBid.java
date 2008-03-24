@@ -1,5 +1,6 @@
 package dk.bregnvig.formula1.client.domain.bid;
 
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 import dk.bregnvig.formula1.client.domain.ClientDriver;
@@ -89,6 +90,15 @@ public class ClientBid implements IsSerializable {
 	public void setSelectedDriverPoints(int[] selectedDriverPoints) {
 		this.selectedDriverPoints = selectedDriverPoints;
 	}
-	
+
+	public String getPolePositionTimeInText() {
+		NumberFormat secondFormatter = NumberFormat.getFormat("00");
+		NumberFormat milliSecondFormatter = NumberFormat.getFormat("000");
+		
+		String result = Integer.toString((int) getPolePositionTime() / (1000*60));
+		result += ":" + secondFormatter.format(((int)getPolePositionTime() % (1000*60)) / 1000);
+		result += "." + milliSecondFormatter.format(getPolePositionTime() % 1000); 
+		return result;
+	}
 	
 }

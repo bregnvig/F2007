@@ -46,22 +46,34 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	private WebContext context;
 
 	public ClientRace create(Race race) {
+		ClientRace clientRace = new ClientRace(false);
+		map(race, clientRace);
+		return clientRace;
+	}
+	
+	public ClientRace createFull(Race race) {
 		ClientRace clientRace = new ClientRace(race.isParticipant(context.getPlayer()));
-		BeanUtils.copyProperties(race, clientRace, new String[] {"selectedDriver"});
-		clientRace.setSelectedDriver(create(race.getSelectedDriver()));
-		clientRace.setOpenDate(race.getOpen().getTime());
-		clientRace.setCloseDate(race.getClose().getTime());
-		if (race.isCompleted() == false) {
-			for (Bid bid : race.getBids()) {
-				clientRace.addBid(create(clientRace.isParticipant(), bid, race.isCompleted()));
-			}
-		} else {
-			for (Bid bid : race.getResult()) {
-				clientRace.addBid(create(clientRace.isParticipant(), bid, race.isCompleted()));
+		map(race, clientRace);
+		if (race.isWaiting() == false) {
+			if (race.isCompleted() == false) {
+				for (Bid bid : race.getBids()) {
+					clientRace.addBid(create(clientRace.isParticipant(), bid, race.isCompleted()));
+				}
+			} else {
+				for (Bid bid : race.getResult()) {
+					clientRace.addBid(create(clientRace.isParticipant(), bid, race.isCompleted()));
+				}
 			}
 		}
-		
+		clientRace.setFullyLoaded(true);
 		return clientRace;
+	}
+	
+	private void map(Race source, ClientRace target) {
+		BeanUtils.copyProperties(source, target, new String[] {"selectedDriver"});
+		target.setSelectedDriver(create(source.getSelectedDriver()));
+		target.setOpenDate(source.getOpen().getTime());
+		target.setCloseDate(source.getClose().getTime());
 	}
 	
 	public void map(ClientRace source, Race target) {
