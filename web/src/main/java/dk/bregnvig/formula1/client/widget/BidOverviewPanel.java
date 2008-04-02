@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -22,7 +23,9 @@ public class BidOverviewPanel extends ContentPanel {
 		super(mediator, mainPanel);
 		setWidth("95%");
 		
-		table = new Grid(mediator.getSelectedRace().getBids().size()+1, 7);
+		add(getLegend());
+		
+		table = new Grid(getNumberOfRows(), 7);
 		table.setWidget(0, 0, new Label("Navn"));
 		table.setWidget(0, 1, new Label("Qualify"));
 		table.setWidget(0, 2, new Label("Hurtigste kører"));
@@ -40,6 +43,7 @@ public class BidOverviewPanel extends ContentPanel {
 		table.getCellFormatter().addStyleName(0, 6, "bidHeader");
 		
 		List bids = mediator.getSelectedRace().getBids();
+		int offset = mediator.getSelectedRace().isCompleted() ? 2 : 1;
 		for (int i = 0; i < bids.size(); i++) {
 			ClientBid bid = (ClientBid) bids.get(i);
 			Panel panel = new FlowPanel();
@@ -47,9 +51,14 @@ public class BidOverviewPanel extends ContentPanel {
 			if (getMediator().getSelectedRace().isCompleted()) {
 				panel.add(new Label("(" + bid.getPoints() + " points)"));
 			}
-			table.setWidget(i+1, 0, panel);
-			table.getRowFormatter().addStyleName(i+1, "bidEntryRow");
-			table.getRowFormatter().setVerticalAlign(i+1, VerticalPanel.ALIGN_TOP);
+			table.setWidget(i+offset, 0, panel);
+			table.getRowFormatter().addStyleName(i+offset, "bidEntryRow");
+			table.getRowFormatter().setVerticalAlign(i+offset, VerticalPanel.ALIGN_TOP);
+		}
+		if (offset == 2) {
+			table.setWidget(1, 0, new Label("Resultat"));
+			table.getRowFormatter().addStyleName(1, "bidEntryRow");
+			table.getRowFormatter().setVerticalAlign(1, VerticalPanel.ALIGN_TOP);
 		}
 		addQualify();
 		addFastestLap();
@@ -59,55 +68,110 @@ public class BidOverviewPanel extends ContentPanel {
 		addPolePositionTime();
 		add(table);
 	}
+
+	private int getNumberOfRows() {
+		int size = getMediator().getSelectedRace().getBids().size()+1; 
+		if (getMediator().getSelectedRace().isCompleted()) {
+			size++;
+		}
+		return size;
+	}
+
+	private Panel getLegend() {
+		Panel legend = new HorizontalPanel();
+//		legend.setWidth("100%");
+		Label zeroPoint = new BidEntrylabel("Nul point ");
+		Label onePoint = new BidEntrylabel("Et point ");
+		onePoint.addStyleName("gwt-Label-bidEntry-1points");
+		
+		Label twoPoints = new BidEntrylabel("To point ");
+		twoPoints.addStyleName("gwt-Label-bidEntry-2points");
+		Label threePoints = new BidEntrylabel("Tre point");
+		threePoints.addStyleName("gwt-Label-bidEntry-3points");
+		legend.add(zeroPoint);
+		legend.add(onePoint);
+		legend.add(twoPoints);
+		legend.add(threePoints);
+		return legend;
+	}
 	
 	private void addQualify() {
+		int offset = 1;
+		if (getMediator().getSelectedRace().isCompleted()) {
+			table.setWidget(offset, 1, getCategory(getMediator().getSelectedRace().getRaceResult().getGrid()));
+			offset++;
+		}
 		List bids = getMediator().getSelectedRace().getBids();
 		for (int i = 0; i < bids.size(); i++) {
 			ClientBid bid = (ClientBid) bids.get(i);
-			table.setWidget(i+1, 1, getCategory(bid.getGrid()));
+			table.setWidget(i+offset, 1, getCategory(bid.getGrid()));
 		}
 		
 	}
 
 	private void addFastestLap() {
+		int offset = 1;
+		if (getMediator().getSelectedRace().isCompleted()) {
+			table.setWidget(offset, 2, getBidEntry(1, getMediator().getSelectedRace().getRaceResult().getFastestLap()));
+			offset++;
+		}
 		List bids = getMediator().getSelectedRace().getBids();
 		for (int i = 0; i < bids.size(); i++) {
 			ClientBid bid = (ClientBid) bids.get(i);
-			table.setWidget(i+1, 2, getBidEntry(1, bid.getFastestLap()));
+			table.setWidget(i+offset, 2, getBidEntry(1, bid.getFastestLap()));
 		}
 	}
 
 	private void addPodium() {
+		int offset = 1;
+		if (getMediator().getSelectedRace().isCompleted()) {
+			table.setWidget(offset, 3, getCategory(getMediator().getSelectedRace().getRaceResult().getPodium()));
+			offset++;
+		}
 		List bids = getMediator().getSelectedRace().getBids();
 		for (int i = 0; i < bids.size(); i++) {
 			ClientBid bid = (ClientBid) bids.get(i);
-			table.setWidget(i+1, 3, getCategory(bid.getPodium()));
+			table.setWidget(i+offset, 3, getCategory(bid.getPodium()));
 		}
 		
 	}
-
-	private void addFirstCrash() {
-		List bids = getMediator().getSelectedRace().getBids();
-		for (int i = 0; i < bids.size(); i++) {
-			ClientBid bid = (ClientBid) bids.get(i);
-			table.setWidget(i+1, 5, getBidEntry(1, bid.getFirstCrash()));
-		}
-	}
 	
 	private void addSelectedDriver() {
+		int offset = 1;
+		if (getMediator().getSelectedRace().isCompleted()) {
+			table.setWidget(offset, 4, getSelectedDriverPanel(getMediator().getSelectedRace().getRaceResult()));
+			offset++;
+		}
 		List bids = getMediator().getSelectedRace().getBids();
 		for (int i = 0; i < bids.size(); i++) {
 			ClientBid bid = (ClientBid) bids.get(i);
-			table.setWidget(i+1, 4, getSelectedDriverPanel(bid));
+			table.setWidget(i+offset, 4, getSelectedDriverPanel(bid));
+		}
+	}
+
+	private void addFirstCrash() {
+		int offset = 1;
+		if (getMediator().getSelectedRace().isCompleted()) {
+			table.setWidget(offset, 5, getCategory(getMediator().getSelectedRace().getRaceResult().getFirstCrashes()));
+			offset++;
+		}
+		List bids = getMediator().getSelectedRace().getBids();
+		for (int i = 0; i < bids.size(); i++) {
+			ClientBid bid = (ClientBid) bids.get(i);
+			table.setWidget(i+offset, 5, getBidEntry(1, bid.getFirstCrash()));
 		}
 	}
 	
 	private void addPolePositionTime() {
+		int offset = 1;
+		if (getMediator().getSelectedRace().isCompleted()) {
+			table.setWidget(offset, 6, new BidEntrylabel(getMediator().getSelectedRace().getRaceResult().getPolePositionTimeInText()));
+			offset++;
+		}
 		List bids = getMediator().getSelectedRace().getBids();
-	
 		for (int i = 0; i < bids.size(); i++) {
 			ClientBid bid = (ClientBid) bids.get(i);
-			table.setWidget(i+1, 6, new BidEntrylabel(bid.getPolePositionTimeInText()));
+			table.setWidget(i+offset, 6, new BidEntrylabel(bid.getPolePositionTimeInText()));
 		}
 	}
 	

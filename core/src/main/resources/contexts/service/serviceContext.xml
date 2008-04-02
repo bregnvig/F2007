@@ -68,7 +68,7 @@
 	</bean>
 	
 	<bean id="fromAddress" class="java.lang.String">
-		<constructor-arg value="formel1@codeweasels.net"/>
+		<constructor-arg value="general@codeweasels.net"/>
 	</bean>
 
 	<!-- service used by the Account bean -->
@@ -93,7 +93,7 @@
 
 	<bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="mail.bregnvig.dk" />
+		<property name="host" value="mail.codeweasels.net" />
 		<property name="username" value="general@codeweasels.net" />
 		<property name="password" value="omega" />
 		<property name="defaultEncoding" value="ISO-8859-1"/>

@@ -14,7 +14,7 @@ public class ClientBid implements IsSerializable {
 	private ClientDriver firstCrash;
 	private ClientDriver[] podium;
 	private int[] selectedDriver;
-	private int[] selectedDriverPoints;
+	private int[] selectedDriverPoints = {0,0};
 	private int polePositionTime;
 	
 	private int points;
