@@ -53,7 +53,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	public ClientRace getCurrentRace() {
 		Race race = getContext().getSeason().getCurrentRace();
 		if (race != null) {
-			return objectFactory.createFull(race);
+			return objectFactory.create(race);
 		}
 		return null;
 	}

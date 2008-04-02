@@ -60,6 +60,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 					clientRace.addBid(create(clientRace.isParticipant(), bid, race.isCompleted()));
 				}
 			} else {
+				clientRace.setRaceResult(create(race.getRaceResult()));
 				for (Bid bid : race.getResult()) {
 					clientRace.addBid(create(clientRace.isParticipant(), bid, race.isCompleted()));
 				}
@@ -70,7 +71,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	}
 	
 	private void map(Race source, ClientRace target) {
-		BeanUtils.copyProperties(source, target, new String[] {"selectedDriver"});
+		BeanUtils.copyProperties(source, target, new String[] {"selectedDriver", "raceResult"});
 		target.setSelectedDriver(create(source.getSelectedDriver()));
 		target.setOpenDate(source.getOpen().getTime());
 		target.setCloseDate(source.getClose().getTime());
@@ -184,13 +185,27 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		}
 		return clientBid;
 	}
-	
+
+	private ClientResult create(RaceResult raceResult) {
+		ClientResult clientResult = new ClientResult();
+		clientResult.setPlayer(create(raceResult.getPlayer()));
+		clientResult.setGrid(getDrivers(raceResult.getGrid(), "position", 7));
+		clientResult.setFastestLap(create(raceResult.getFastestLap().getDriver()));
+		clientResult.setPodium(getDrivers(raceResult.getPodium(), "position", 4));
+		clientResult.setSelectedDriver(new int[] {raceResult.getSelectedDriver().getStartPosition(), raceResult.getSelectedDriver().getEndPosition()});
+		clientResult.setFirstCrashes(getDrivers(raceResult.getFirstCrash(), "crash", 3));
+		clientResult.setPolePositionTime(raceResult.getPolePositionTimeMillis());
+		return clientResult;
+	}
+
 	private ClientDriver[] getDrivers(AbstractBid bid, String propertyName, int numberOfProperties) {
 		ClientDriver[] drivers = new ClientDriver[numberOfProperties];
 		for (int i = 0; i < numberOfProperties; i++) {
 			try {
 				drivers[i] = create((Driver) PropertyUtils.getSimpleProperty(bid, propertyName+(i+1)));
-				drivers[i].setPoints((Integer) PropertyUtils.getSimpleProperty(bid, getPointsPropertyName(propertyName+(i+1))));
+				if (PropertyUtils.isReadable(bid, getPointsPropertyName(propertyName+(i+1)))) {
+					drivers[i].setPoints((Integer) PropertyUtils.getSimpleProperty(bid, getPointsPropertyName(propertyName+(i+1))));
+				}
 			} catch (Exception e) {
 				throw new IllegalArgumentException("The supplied bid could not have property " + propertyName+(i+1) + " extracted", e);
 			}

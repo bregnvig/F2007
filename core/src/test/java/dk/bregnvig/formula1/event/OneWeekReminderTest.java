@@ -23,7 +23,6 @@ public class OneWeekReminderTest extends AbstractDaoTest {
 	
 	public void testLetterSending() {
 		monza.addBid(ttpMonzaBid);
-		monza.addBid(mbaMonzaBid);
 		
 		service.invoke();
 	}

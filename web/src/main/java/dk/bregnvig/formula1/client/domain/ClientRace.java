@@ -9,6 +9,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
+import dk.bregnvig.formula1.client.domain.bid.ClientResult;
 
 public class ClientRace implements IsSerializable{
 
@@ -22,7 +23,13 @@ public class ClientRace implements IsSerializable{
 	private boolean participant;
 	private ClientDriver selectedDriver;
 	private boolean fullyLoaded;
+	/**
+	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.bid.ClientBid>
+	 */
+	private List bids = new ArrayList();
 	
+	private ClientResult result;
+		
 	public ClientRace() {
 		
 	}
@@ -31,11 +38,6 @@ public class ClientRace implements IsSerializable{
 		this.participant = participant;
 	}
 
-	/**
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.bid.ClientBid>
-	 */
-	private List bids = new ArrayList();
-	
 	public Long getId() {
 		return id;
 	}
@@ -159,6 +161,14 @@ public class ClientRace implements IsSerializable{
 
 	public String toString() {
 		return name + " Open: " + openDate + " Close: " + closeDate;
+	}
+
+	public ClientResult getRaceResult() {
+		return result;
+	}
+
+	public void setRaceResult(ClientResult result) {
+		this.result = result;
 	}
 	
 }

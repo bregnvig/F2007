@@ -130,7 +130,7 @@ public class F2007 implements EntryPoint, GWT.UncaughtExceptionHandler {
 	}
 	
 	public boolean isTesting() {
-		return true;
+		return false;
 	}
 
 	/**

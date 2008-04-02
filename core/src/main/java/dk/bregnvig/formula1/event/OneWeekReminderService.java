@@ -77,7 +77,7 @@ public class OneWeekReminderService extends AbstractRaceTimer {
 			log.info("Sending reminder to " + player.getEmailAddress() + " for race " + getRace().getName());
 			this.mailSender.send(preparator);
 		} catch (MailException e) {
-			log.error("Sending failed to " + player.getEmailAddress() + " for race " + getRace().getName());
+			log.error("Sending failed to " + player.getEmailAddress() + " for race " + getRace().getName(), e);
 		}
 	}
 
