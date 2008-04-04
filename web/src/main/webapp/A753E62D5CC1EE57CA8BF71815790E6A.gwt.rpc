@@ -1,0 +1,17 @@
+com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException, true
+dk.bregnvig.formula1.client.domain.ClientDriver, true
+[Ldk.bregnvig.formula1.client.domain.ClientDriver;, true
+dk.bregnvig.formula1.client.domain.ClientPlayer, true
+dk.bregnvig.formula1.client.domain.ClientRace, true
+dk.bregnvig.formula1.client.domain.ClientSeason, true
+dk.bregnvig.formula1.client.domain.account.ClientAccount, true
+dk.bregnvig.formula1.client.domain.account.ClientAccountEntry, true
+dk.bregnvig.formula1.client.domain.bid.ClientBid, true
+dk.bregnvig.formula1.client.domain.bid.ClientResult, true
+dk.bregnvig.formula1.client.exception.CredentialException, true
+[I, true
+java.lang.Long, true
+java.lang.String, true
+java.util.ArrayList, true
+java.util.Date, true
+java.util.Vector, true

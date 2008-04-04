@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cache-entry>
+	<generated-type-hash class="dk.bregnvig.formula1.client.service.GameService_TypeSerializer" hash="2E7CDD094CF1FF03B8DD998E6DF38703"/>
+	<generated-type-hash class="com.google.gwt.i18n.client.constants.DateTimeConstants_" hash="60199A12D629C0197611025E36AA63EC"/>
+	<generated-type-hash class="com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException_FieldSerializer" hash="FF198044879E67E1ACF2E0C29CC58CB5"/>
+	<generated-type-hash class="com.google.gwt.i18n.client.constants.CurrencyCodeMapConstants_" hash="8277A1C7B5AA006BA38095BEB609E722"/>
+	<generated-type-hash class="dk.bregnvig.formula1.client.domain.bid.ClientBid_FieldSerializer" hash="6623F926B7FA7368CD63F09AD08CE38D"/>
+	<generated-type-hash class="dk.bregnvig.formula1.client.domain.account.ClientAccount_FieldSerializer" hash="4368076950BDD22950C127BC0AEE34BC"/>
+	<generated-type-hash class="dk.bregnvig.formula1.client.domain.ClientDriver_FieldSerializer" hash="3FD55978F7E2CCFF77EA150430BF8A79"/>
+	<generated-type-hash class="dk.bregnvig.formula1.client.domain.account.ClientAccountEntry_FieldSerializer" hash="70C1A361874F25F90CDF13F77271F514"/>
+	<generated-type-hash class="dk.bregnvig.formula1.client.domain.ClientSeason_FieldSerializer" hash="741AC5DEE93B30AB4395271EAF2B675E"/>
+	<generated-type-hash class="dk.bregnvig.formula1.client.domain.bid.ClientResult_FieldSerializer" hash="014059810518FE707E6310F3DE39EB88"/>
+	<generated-type-hash class="dk.bregnvig.formula1.client.service.GameService_Proxy" hash="14E686C32AF93CD8150C7A05D41D11E7"/>
+	<generated-type-hash class="dk.bregnvig.formula1.client.domain.ClientPlayer_FieldSerializer" hash="60D3E2EB5B3B3ACF0DC4AC580406B2EC"/>
+	<generated-type-hash class="dk.bregnvig.formula1.client.exception.CredentialException_FieldSerializer" hash="19DE95422EB38F3C1953D7F803E5AE85"/>
+	<generated-type-hash class="dk.bregnvig.formula1.client.domain.ClientRace_FieldSerializer" hash="C64A81C35944234D70488B9E51F0D139"/>
+	<generated-type-hash class="com.google.gwt.i18n.client.constants.NumberConstants_" hash="5873569F35109F546DABA53ACD8F9CD6"/>
+	<rebind-decision in="com.google.gwt.user.client.ui.impl.TextBoxImpl" out="com.google.gwt.user.client.ui.impl.TextBoxImpl"/>
+	<rebind-decision in="com.google.gwt.user.client.ui.ListBox.Impl" out="com.google.gwt.user.client.ui.ListBox.ImplSafari"/>
+	<rebind-decision in="com.google.gwt.user.client.ui.impl.FocusImpl" out="com.google.gwt.user.client.ui.impl.FocusImplSafari"/>
+	<rebind-decision in="com.google.gwt.user.client.ui.impl.ClippedImageImpl" out="com.google.gwt.user.client.ui.impl.ClippedImageImpl"/>
+	<rebind-decision in="com.google.gwt.i18n.client.constants.NumberConstants" out="com.google.gwt.i18n.client.constants.NumberConstants_"/>
+	<rebind-decision in="dk.bregnvig.formula1.client.service.GameService" out="dk.bregnvig.formula1.client.service.GameService_Proxy"/>
+	<rebind-decision in="dk.bregnvig.formula1.client.F2007" out="dk.bregnvig.formula1.client.F2007"/>
+	<rebind-decision in="com.google.gwt.user.client.impl.HistoryImpl" out="com.google.gwt.user.client.impl.HistoryImplSafari"/>
+	<rebind-decision in="com.google.gwt.i18n.client.constants.CurrencyCodeMapConstants" out="com.google.gwt.i18n.client.constants.CurrencyCodeMapConstants_"/>
+	<rebind-decision in="com.google.gwt.user.client.impl.DOMImpl" out="com.google.gwt.user.client.impl.DOMImplSafari"/>
+	<rebind-decision in="com.google.gwt.user.client.ui.impl.PopupImpl" out="com.google.gwt.user.client.ui.impl.PopupImpl"/>
+	<rebind-decision in="com.google.gwt.i18n.client.constants.DateTimeConstants" out="com.google.gwt.i18n.client.constants.DateTimeConstants_"/>
+	<rebind-decision in="com.google.gwt.user.client.ui.impl.FormPanelImpl" out="com.google.gwt.user.client.ui.impl.FormPanelImpl"/>
+	<rebind-decision in="com.google.gwt.user.client.impl.HTTPRequestImpl" out="com.google.gwt.user.client.impl.HTTPRequestImpl"/>
+</cache-entry>

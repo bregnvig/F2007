@@ -45,4 +45,8 @@ public interface GameServiceAsync {
 	void updateDriver(ClientDriver driver, AsyncCallback callback);
 	
 	void findAllDrivers(AsyncCallback callback);
+	
+	void fetchWBCStanding(AsyncCallback callback);
+
+	void fetchWBCStanding(ClientRace race, AsyncCallback callback);
 }

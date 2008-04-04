@@ -14,9 +14,11 @@ import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
+import dk.bregnvig.formula1.client.domain.ClientWBCEntry;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.domain.bid.ClientResult;
+import dk.bregnvig.formula1.wbc.WBC;
 
 public interface ObjectFactory {
 	
@@ -33,6 +35,8 @@ public interface ObjectFactory {
 	List<ClientDriver> getClientDrivers(Collection<Driver> drivers);
 	
 	Bid create(ClientBid clientBid);
+	
+	List<ClientWBCEntry> create(List<WBC.Entry> entries);
 	
 	RaceResult create(ClientResult clientResult);
 
