@@ -15,6 +15,7 @@ import dk.bregnvig.formula1.client.F2007;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.account.ClientAccountEntry;
 import dk.bregnvig.formula1.client.widget.control.BigLabel;
+import dk.bregnvig.formula1.client.widget.control.WaitingImage;
 
 public class AccountPanel extends ContentPanel {
 	
@@ -65,6 +66,7 @@ public class AccountPanel extends ContentPanel {
 			public void onSuccess(Object result) {
 				account = (ClientAccount) result;
 				amount.setText(Integer.toString(account.getBalance()));
+				table.resizeRows(1);
 				fillTable();
 				buttonPanel.changeState();
 			}
@@ -148,7 +150,7 @@ public class AccountPanel extends ContentPanel {
 
 
 	private void tabelPanel() {
-		table = new Grid(1, 3);
+		table = new Grid(2, 3);
 		table.setWidget(0, 0, new Label("Dato"));
 		table.setWidget(0, 1, new Label("Tekst"));
 		Label amountLabel = new Label("Beløb");
@@ -159,6 +161,8 @@ public class AccountPanel extends ContentPanel {
 		table.getCellFormatter().setWidth(0, 0, "33%");
 		table.getCellFormatter().addStyleName(0, 1, "accountHeader");
 		table.getCellFormatter().addStyleName(0, 2, "accountHeader");
+		table.setWidget(1, 1, new WaitingImage());
+		table.getCellFormatter().setHorizontalAlignment(1, 1, HorizontalPanel.ALIGN_CENTER);
 	}
 
 	private HorizontalPanel balancePanel() {

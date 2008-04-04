@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Widget;
 import dk.bregnvig.formula1.client.F2007;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
+import dk.bregnvig.formula1.client.widget.control.WaitingPanel;
 
 public class MainPanel extends DockPanel {
 
@@ -25,6 +26,7 @@ public class MainPanel extends DockPanel {
 	private Panel currentCenter;
 	private HorizontalPanel northPanel;
 	private Widget screenTitle;
+	private WaitingPanel waiting = new WaitingPanel("100%", "100%");
 	
 	/**
 	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientRace>
@@ -35,6 +37,7 @@ public class MainPanel extends DockPanel {
 		this.mediator = mediator;
 		setWidth("100%");
 		setHeight("100%");
+		setCenterPanel(waiting);
 	}
 	
 
@@ -92,7 +95,6 @@ public class MainPanel extends DockPanel {
 		if (isAsyncCompleted() == false) {
 			return;
 		}
-		
 		createNorth();
 		if (openRace != null) {
 			setCenterPanel(new RacePanel(mediator, this, openRace));
@@ -116,6 +118,7 @@ public class MainPanel extends DockPanel {
 	    
 		MenuBar playerMenu = new MenuBar(true);
 		playerMenu.addItem("Konto", new OpenAccountCommand());
+		playerMenu.addItem("WBC", new OpenWBCCommand());
 		playerMenu.addItem("Oplysninger", new OpenUserCommand());
 		playerMenu.addItem("Regler", new OpenRulesCommand());
 		
@@ -172,6 +175,13 @@ public class MainPanel extends DockPanel {
     private class OpenAccountCommand implements Command {
 		public void execute() {
 			setCenterPanel(new AccountPanel(mediator, MainPanel.this));
+		}
+    }
+
+    private class OpenWBCCommand implements Command {
+    	private WBCPanel panel = new WBCPanel(mediator, MainPanel.this);
+		public void execute() {
+			setCenterPanel(panel);
 		}
     }
 

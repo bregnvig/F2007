@@ -14,6 +14,7 @@ import dk.bregnvig.formula1.client.F2007;
 import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.widget.control.BigLabel;
+import dk.bregnvig.formula1.client.widget.control.SpacerImage;
 
 public class BidOverviewPanel extends ContentPanel {
 	
@@ -55,7 +56,7 @@ public class BidOverviewPanel extends ContentPanel {
 			table.getRowFormatter().addStyleName(i+offset, "bidEntryRow");
 			table.getRowFormatter().setVerticalAlign(i+offset, VerticalPanel.ALIGN_TOP);
 		}
-		if (offset == 2) {
+		if (mediator.getSelectedRace().isCompleted() == true) {
 			table.setWidget(1, 0, new Label("Resultat"));
 			table.getRowFormatter().addStyleName(1, "bidEntryRow");
 			table.getRowFormatter().setVerticalAlign(1, VerticalPanel.ALIGN_TOP);
@@ -78,19 +79,22 @@ public class BidOverviewPanel extends ContentPanel {
 	}
 
 	private Panel getLegend() {
-		Panel legend = new HorizontalPanel();
-//		legend.setWidth("100%");
-		Label zeroPoint = new BidEntrylabel("Nul point ");
-		Label onePoint = new BidEntrylabel("Et point ");
+		HorizontalPanel legend = new HorizontalPanel();
+		legend.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+		Label zeroPoint = new BidEntrylabel("Nul point");
+		Label onePoint = new BidEntrylabel("Et point");
 		onePoint.addStyleName("gwt-Label-bidEntry-1points");
 		
-		Label twoPoints = new BidEntrylabel("To point ");
+		Label twoPoints = new BidEntrylabel("To point");
 		twoPoints.addStyleName("gwt-Label-bidEntry-2points");
 		Label threePoints = new BidEntrylabel("Tre point");
 		threePoints.addStyleName("gwt-Label-bidEntry-3points");
 		legend.add(zeroPoint);
+		legend.add(new SpacerImage(10, 20));
 		legend.add(onePoint);
+		legend.add(new SpacerImage(10, 20));
 		legend.add(twoPoints);
+		legend.add(new SpacerImage(10, 20));
 		legend.add(threePoints);
 		return legend;
 	}

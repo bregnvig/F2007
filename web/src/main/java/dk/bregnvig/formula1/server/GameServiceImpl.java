@@ -15,6 +15,7 @@ import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
+import dk.bregnvig.formula1.client.domain.ClientWBCEntry;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.domain.bid.ClientResult;
@@ -71,7 +72,8 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	@Authorization(roles={PlayerRole.PLAYER})
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientSeason getSeason() {
-		return objectFactory.create(getContext().getSeason());
+		ClientSeason season = objectFactory.create(getContext().getSeason());
+		return season;
 	}
 	
 	@Authorization(roles = {PlayerRole.PLAYER})
@@ -161,6 +163,20 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		service.updateDriver(driver);
 	}
 
+	@Authorization(roles = {PlayerRole.PLAYER})
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public List<ClientWBCEntry> fetchWBCStanding() {
+		return objectFactory.create(getContext().getSeason().getWBC().getStanding());
+	}
+
+	@Authorization(roles = {PlayerRole.PLAYER})
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public List<ClientWBCEntry> fetchWBCStanding(ClientRace clientRace) {
+		Season season = getContext().getSeason();
+		Race race = season.getRaceById(clientRace.getId());
+		return objectFactory.create(getContext().getSeason().getWBC().getRaceEntries(race));
+	}
+
 	public void setObjectFactory(ObjectFactory objectFactory) {
 		this.objectFactory = objectFactory;
 	}
@@ -168,5 +184,4 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	public void setService(dk.bregnvig.formula1.service.GameService service) {
 		this.service = service;
 	}
-
 }

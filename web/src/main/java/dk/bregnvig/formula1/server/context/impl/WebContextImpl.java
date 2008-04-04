@@ -19,7 +19,7 @@ public class WebContextImpl implements ApplicationContextAware, WebContext {
 	private String seasonName;
 
 	
-	@Transactional(propagation = Propagation.MANDATORY)
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public Season getSeason() {
 		Season season = service.findByName(seasonName);
 		if (season == null) {

@@ -27,6 +27,7 @@ import dk.bregnvig.formula1.client.widget.control.AbstractWizardPage;
 import dk.bregnvig.formula1.client.widget.control.BigLabel;
 import dk.bregnvig.formula1.client.widget.control.ContentTitleLabel;
 import dk.bregnvig.formula1.client.widget.control.PlayerLabel;
+import dk.bregnvig.formula1.client.widget.control.WaitingPanel;
 import dk.bregnvig.formula1.client.widget.control.WizardCompletedListener;
 import dk.bregnvig.formula1.client.widget.control.WizardPanel;
 
@@ -161,7 +162,10 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 	
 	private class ParticipantPanel extends VerticalPanel  {
 		
+		private WaitingPanel waiting = new WaitingPanel("234px", "240px");
+		
 		public ParticipantPanel() {
+			add(waiting);
 		}
 		
 		private void addHeadline() {
