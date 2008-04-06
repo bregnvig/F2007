@@ -117,7 +117,7 @@ public class ClientRace implements IsSerializable{
 	}
 	
 	public boolean isClosed() {
-		return isOpened() == false && isCompleted() == false;
+		return isWaiting() == false && isOpened() == false && isCompleted() == false;
 	}
 
 	public Date getCloseDate() {

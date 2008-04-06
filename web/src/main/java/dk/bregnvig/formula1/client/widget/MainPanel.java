@@ -132,6 +132,7 @@ public class MainPanel extends DockPanel {
 			adminMenu.addItem("Spiller", new CreateUserCommand());
 			adminMenu.addItem("Løb", new RaceAdminCommand());
 			adminMenu.addItem("Køre", new DriverAdminCommand());
+			adminMenu.addItem("Konto", new AccountAdminCommand());
 			mainMenu.addItem("Admin", adminMenu);
 		}
 
@@ -212,6 +213,12 @@ public class MainPanel extends DockPanel {
     private class DriverAdminCommand implements Command {
 		public void execute() {
 			setCenterPanel(new AdminDriverPanel(mediator, MainPanel.this));
+		}
+    }
+    
+    private class AccountAdminCommand implements Command {
+		public void execute() {
+			setCenterPanel(new AdminAccountPanel(mediator, MainPanel.this));
 		}
     }
     

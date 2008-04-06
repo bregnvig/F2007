@@ -24,7 +24,6 @@ import dk.bregnvig.formula1.client.widget.control.WaitingPanel;
 public class WBCPanel extends ContentPanel {
 
 	private final ParticipantPanel participants;
-//	private final RacesPanel races;
 	private final VerticalPanel rightSide;
 	private final BigLabel title = new BigLabel("WBC Mesterskabet");
 
@@ -49,6 +48,7 @@ public class WBCPanel extends ContentPanel {
 		HorizontalPanel panel = new HorizontalPanel();
 		panel.setWidth("100%");
 		panel.setHeight("100%");
+		panel.setStyleName("standard-indent");
 
 		panel.add(new RacesPanel());
 		
@@ -62,7 +62,7 @@ public class WBCPanel extends ContentPanel {
 		AsyncCallback callback = new AsyncCallback() {
 
 			public void onFailure(Throwable caught) {
-				WBCPanel.this.getMediator().reportError("Failure - could not WBC");
+				WBCPanel.this.getMediator().reportError("Failure - could not load WBC");
 			}
 
 			public void onSuccess(Object result) {
@@ -95,6 +95,9 @@ public class WBCPanel extends ContentPanel {
 			Iterator i = selected.iterator();
 			while(i.hasNext()) {
 				ClientWBCEntry entry = (ClientWBCEntry) i.next();
+				if (entry.getPoints() == 0) {
+					break;
+				}
 				ClientPlayer player = entry.getPlayer();
 				table.setWidget(index, 0, new PlayerLabel(player.getFirstName() + " " + player.getLastName()));
 				table.setWidget(index, 1, new Label(Integer.toString(entry.getPoints())));
