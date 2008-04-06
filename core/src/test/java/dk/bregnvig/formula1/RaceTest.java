@@ -215,7 +215,6 @@ public class RaceTest extends AbstractDaoTest {
     	spa.setTimers(timers);
     	spa.setOpen(begin);
     	spa.setClose(close);
-    	spa.initialized();
     	
     	Thread.sleep(5000);
     	
@@ -262,7 +261,6 @@ public class RaceTest extends AbstractDaoTest {
     	spa.setListeners(listners);
     	spa.setOpen(open);
     	spa.setClose(close);
-    	spa.initialized();
     	Thread.sleep(1000);
     	spa.addBid(flbSpaBid);
     	Thread.sleep(3000);

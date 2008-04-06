@@ -79,7 +79,7 @@ public class Race {
 	}
 	
 	@Transient
-	public void initialized() {
+	public void initialize() {
 		createRaceListeners();
 		createRaceTimers();
 	}
@@ -106,6 +106,7 @@ public class Race {
 	public void setClose(Calendar close) {
 		validateDates(this.open, close);
 		this.close = close;
+		initialize();
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -117,6 +118,7 @@ public class Race {
 	public void setOpen(Calendar open) {
 		validateDates(open, this.close);
 		this.open = open;
+		initialize();
 	}
 	
 	/**
@@ -162,7 +164,7 @@ public class Race {
 	 * @param listeners
 	 */
 	public void setListeners(List<AbstractRaceListener> listeners) {
-		this.listeners = listeners;
+ 		this.listeners = listeners;
 	}
 	
 	private void validateDates(Calendar open, Calendar close) {
@@ -200,7 +202,6 @@ public class Race {
 		Race other = (Race) obj;
 		
 		return new EqualsBuilder()
-			.appendSuper(super.equals(obj))
 			.append(name, other.name)
 			.isEquals();
 	}
@@ -325,7 +326,7 @@ public class Race {
 	 		setCompleted(true);
 	 		resultStrategy.calculateResult(raceResult, bids);
 	 		transferWinnings();
-	 		for (AbstractRaceListener listener : listeners) {
+	 		for (AbstractRaceListener listener : listenersMap.get(this).getListeners()) {
 	 			listener.raceCompleted();
 			}
 	 		
@@ -385,19 +386,18 @@ public class Race {
 	}
 	
 	private void createRaceTimers() {
-
-		if (isInitialized() == false || isClosed() == true || timers == null || timers.size() == 0) {
+		if (isInitialized() == false) {
+			return;
+		}
+		if (isClosed() == true || timers == null || timers.size() == 0) {
+			timers = null;
 			return; 
 		}
-		
-		if (timersMap.containsKey(this) == true) {
-			Race timerRace = timersMap.get(this);
-			if (timerRace.timer != null) {
-				timerRace.timer.cancel();
-			}
+		if (timer != null) {
+			timer.cancel();
 		}
 		
-		timer = new Timer();
+		timer = new Timer(true);
 		Date now = new Date();
 		for (RaceTimer raceTimer : timers) {
 			raceTimer.setRace(this);
@@ -412,9 +412,14 @@ public class Race {
 	}
 	
 	private void createRaceListeners() {
-		if (isInitialized() == false  || isCompleted()) {
+		if (isInitialized() == false) {
 			return;
 		}
+		if (isCompleted()) {
+			listeners = null;
+			return;
+		}
+		cancelPreviousListeners();
 		listenersMap.put(this, this);
 		for (AbstractRaceListener listener : listeners) {
 			log.info("Added listener: " + listener.getClass().getName());
@@ -422,6 +427,16 @@ public class Race {
 		}
 	}
 	
+	private void cancelPreviousListeners() {
+		Race race = listenersMap.get(this);
+		if (race != null && race.getListeners() != null) {
+			for (AbstractRaceListener listener : race.getListeners()) {
+				log.info("Cancelling previous listener:" + listener.getClass().getName());
+				listener.cancel();
+			}
+		}
+	}
+
 	@Transient
 	private boolean isInitialized() {
 		return close != null && open != null && name != null;

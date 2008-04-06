@@ -1,5 +1,6 @@
 package dk.bregnvig.formula1;
 
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -136,8 +137,8 @@ public class Season {
 	}
 
 	/**
-	 * Returns the currently opened race. If no race is opened, the next to open
-	 * is selected
+	 * Returns the currently opened race. If no race is opened, then the race that is not completed yet. 
+	 * Or else the next race to open
 	 * 
 	 * @return
 	 */
@@ -151,6 +152,18 @@ public class Season {
 			}
 			if (race.isClosed() == true && race.isCompleted() == false) {
 				secondBest = race;
+			}
+		}
+		if (secondBest == null) {
+			long minimumDifference = Long.MAX_VALUE;
+			long now = Calendar.getInstance().getTimeInMillis();
+			for (Race race : races) {
+				if (race.isWaiting()) {
+					if (race.getOpen().getTimeInMillis() - now < minimumDifference) {
+						minimumDifference = race.getOpen().getTimeInMillis() - now;
+						secondBest = race;
+					}
+				}
 			}
 		}
 		return secondBest;

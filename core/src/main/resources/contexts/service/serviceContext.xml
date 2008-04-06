@@ -40,7 +40,7 @@
 		conveniently matches the behaviour of @Configurable when no
 		bean name is given in the annotation 
 	-->
-	<bean class="dk.bregnvig.formula1.Race" lazy-init="true" init-method="initialized">
+	<bean class="dk.bregnvig.formula1.Race">
 		<property name="resultStrategy" ref="resultStrategy" />
 		<property name="timers">
 			<list>
