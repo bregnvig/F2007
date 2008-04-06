@@ -8,9 +8,10 @@ import dk.bregnvig.formula1.Race;
 public abstract class AbstractRaceListener {
 	
 	private Race race;
-	private Timer timer = new Timer();
+	private Timer timer;
 	
 	public void setRace(Race race) {
+		timer = new Timer(true);
 		this.race = race;
 		TimerTask openTask = new TimerTask() {
 			@Override
@@ -26,6 +27,12 @@ public abstract class AbstractRaceListener {
 			}
 		};
 		timer.schedule(closeTask, race.getClose().getTime());		
+	}
+	
+	public void cancel() {
+		if (timer != null) {
+			timer.cancel();
+		}
 	}
 	
 	protected Race getRace() {

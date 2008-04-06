@@ -103,8 +103,6 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 		close2.add(Calendar.MINUTE, 7);
 		spa.setClose(close2);
 		
-		spa.initialized();
-		monza.initialized();
 		season.addRace(monza);
 		season.addRace(spa);
 		

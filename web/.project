@@ -42,6 +42,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>src/main/webapp/tracks</name>
+			<type>2</type>
+			<locationURI>PUBLIC/tracks</locationURI>
+		</link>
+		<link>
 			<name>src/main/webapp/F2007.html</name>
 			<type>1</type>
 			<location>/Users/4u603ctpsz9/Documents/workspace/F2007/web/src/main/resources/dk/bregnvig/formula1/public/F2007.html</location>
@@ -50,6 +55,16 @@
 			<name>src/main/webapp/f2007.css</name>
 			<type>1</type>
 			<location>/Users/4u603ctpsz9/Documents/workspace/F2007/web/src/main/resources/dk/bregnvig/formula1/public/f2007.css</location>
+		</link>
+		<link>
+			<name>src/main/webapp/drivers</name>
+			<type>2</type>
+			<locationURI>PUBLIC/drivers</locationURI>
+		</link>
+		<link>
+			<name>src/main/webapp/ajax-loader.gif</name>
+			<type>1</type>
+			<locationURI>PUBLIC/ajax-loader.gif</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
