@@ -81,6 +81,11 @@ a:active {
 	font-size: 40px;
 }
 
+.gwt-Label-mini {
+	font-size: 14px;
+	text-align: center;
+}
+
 .gwt-Label-content-title {
 	margin-top: 20px;
 }
@@ -148,6 +153,10 @@ a:active {
 
 .buttonPanel {
 	margin-top: 6px;
+}
+
+.standard-indent {
+	margin-left: 50px;
 }
 
 .form {

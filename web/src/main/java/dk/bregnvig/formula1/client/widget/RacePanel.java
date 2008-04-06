@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -24,8 +25,8 @@ import dk.bregnvig.formula1.client.widget.bid.SelectGridPanel;
 import dk.bregnvig.formula1.client.widget.bid.SelectPodiumPanel;
 import dk.bregnvig.formula1.client.widget.bid.SelectedDriverPanel;
 import dk.bregnvig.formula1.client.widget.control.AbstractWizardPage;
-import dk.bregnvig.formula1.client.widget.control.BigLabel;
 import dk.bregnvig.formula1.client.widget.control.ContentTitleLabel;
+import dk.bregnvig.formula1.client.widget.control.CountDownLabel;
 import dk.bregnvig.formula1.client.widget.control.PlayerLabel;
 import dk.bregnvig.formula1.client.widget.control.WaitingPanel;
 import dk.bregnvig.formula1.client.widget.control.WizardCompletedListener;
@@ -201,15 +202,26 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 	protected Widget getScreenTitle() {
 		ClientRace race = getMediator().getSelectedRace();
 		
-		String postFix = "";
+		String postFix = " - åbner om&nbsp;";
 		if (race.isOpened()) {
-			postFix = " - åbent";
+			postFix = " - åbent i&nbsp;";
 		} else if (race.isClosed() && race.isCompleted() == false) {
 			postFix = " - lukket";
 		} else if (race.isCompleted() == true){
 			postFix = " - afgjort";
-		}
-		return new  BigLabel(race.getName() + postFix);
+		} 
+		HorizontalPanel panel = new HorizontalPanel();
+		HTML label = new HTML(race.getName() + postFix);
+		label.setStylePrimaryName("gwt-Label");
+		label.addStyleDependentName("big");
+		panel.add(label);
+		
+		CountDownLabel countDown = new CountDownLabel(race);
+		countDown.useMinutes();
+		countDown.addStyleDependentName("big");
+		panel.add(countDown);
+		panel.setCellVerticalAlignment(countDown, HorizontalPanel.ALIGN_BOTTOM);
+		return panel;
 	}
 
 	public void completed(AbstractWizardPage[] pages) {

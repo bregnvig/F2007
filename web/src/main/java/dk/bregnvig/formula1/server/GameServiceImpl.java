@@ -25,12 +25,12 @@ import dk.bregnvig.formula1.server.context.SessionAttributes;
 import dk.bregnvig.formula1.server.mapping.ObjectFactory;
 import dk.bregnvig.formula1.server.security.Authorization;
 
-
 public class GameServiceImpl extends AbstractService implements GameService {
 
 	private static final long serialVersionUID = 3283834885586579712L;
-	
+
 	private ObjectFactory objectFactory;
+
 	private dk.bregnvig.formula1.service.GameService service;
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
@@ -49,7 +49,6 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		return objectFactory.create(player);
 	}
 
-	@Authorization(roles={PlayerRole.PLAYER})
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientRace getCurrentRace() {
 		Race race = getContext().getSeason().getCurrentRace();
@@ -59,7 +58,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		return null;
 	}
 
-	@Authorization(roles={PlayerRole.PLAYER})
+	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientRace getRace(Long id) {
 		Race race = getContext().getSeason().getRaceById(id);
@@ -68,28 +67,28 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		}
 		return null;
 	}
-	
-	@Authorization(roles={PlayerRole.PLAYER})
+
+	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientSeason getSeason() {
 		ClientSeason season = objectFactory.create(getContext().getSeason());
 		return season;
 	}
-	
-	@Authorization(roles = {PlayerRole.PLAYER})
+
+	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientAccount getAccount() {
 		return objectFactory.create(getContext().getSeason().getPlayer(getContext().getPlayer().getPlayername()).getAccount());
 	}
 
-	@Authorization(roles = {PlayerRole.PLAYER})
+	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updatePassword(String password) {
 		getContext().getPlayer().setPassword(password);
 		service.updatePlayer(getContext().getPlayer());
 	}
-	
-	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
+
+	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void createPlayer(ClientPlayer clientPlayer) {
 		Player player = new Player(PlayerRole.PLAYER);
@@ -100,76 +99,75 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		getContext().getSeason().addPlayer(player);
 	}
 
-	@Authorization(roles = {PlayerRole.PLAYER})
+	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updatePlayer(ClientPlayer player) {
 		objectFactory.map(player, getContext().getPlayer());
 		service.updatePlayer(getContext().getPlayer());
 	}
 
-	@Authorization(roles = {PlayerRole.PLAYER})
+	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void addBid(ClientBid bid) {
-		Season season = getContext().getSeason(); 
+		Season season = getContext().getSeason();
 		season.getCurrentRace().addBid(objectFactory.create(bid));
 	}
 
-	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
+	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public ClientRace setResult(ClientResult result) {
-		Race race = getContext().getSeason().getCurrentRace(); 
+		Race race = getContext().getSeason().getCurrentRace();
 		race.completeRace(objectFactory.create(result));
 		return objectFactory.createFull(race);
 	}
 
-	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
+	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void createRace(ClientRace clientRace) {
-		Race race = new Race(); 
+		Race race = new Race();
 		objectFactory.map(clientRace, race);
 		getContext().getSeason().addRace(race);
 		clientRace.setId(race.getId());
 	}
 
-	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
+	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateRace(ClientRace clientRace) {
 		Race race = getContext().getSeason().getRaceById(clientRace.getId());
 		objectFactory.map(clientRace, race);
 	}
-	
-	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
+
+	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = true)
 	public List<ClientDriver> findAllDrivers() {
 		List<Driver> drivers = service.findAllDrivers();
 		return objectFactory.getClientDrivers(drivers);
 	}
-	
 
-	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
+	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void createDriver(ClientDriver clientDriver) {
-		Driver driver = new Driver(); 
+		Driver driver = new Driver();
 		objectFactory.map(clientDriver, driver);
 		service.createDriver(driver);
 		getContext().getSeason().addDriver(driver);
 	}
 
-	@Authorization(roles = {PlayerRole.PLAYER_ADMIN})
+	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateDriver(ClientDriver clientDriver) {
-		Driver driver = new Driver(); 
+		Driver driver = new Driver();
 		objectFactory.map(clientDriver, driver);
 		service.updateDriver(driver);
 	}
 
-	@Authorization(roles = {PlayerRole.PLAYER})
+	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<ClientWBCEntry> fetchWBCStanding() {
 		return objectFactory.create(getContext().getSeason().getWBC().getStanding());
 	}
 
-	@Authorization(roles = {PlayerRole.PLAYER})
+	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<ClientWBCEntry> fetchWBCStanding(ClientRace clientRace) {
 		Season season = getContext().getSeason();
