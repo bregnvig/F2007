@@ -1,5 +1,7 @@
 package dk.bregnvig.formula1.client.domain;
 
+import java.util.Comparator;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -13,6 +15,7 @@ public class ClientPlayer extends Object implements IsSerializable {
 	private String lastName;
 	private String emailAddress;
 	private String smsNumber;
+	private int balance;
 	private boolean gameAdministrator;
 	private boolean bankAdministrator;
 
@@ -33,6 +36,9 @@ public class ClientPlayer extends Object implements IsSerializable {
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	public String getName() {
+		return firstName+" "+lastName;
 	}
 	public String getEmailAddress() {
 		return emailAddress;
@@ -81,7 +87,21 @@ public class ClientPlayer extends Object implements IsSerializable {
 			return false;
 		return true;
 	}
+	
+	public static class NameComparator implements Comparator, IsSerializable {
 
-	
-	
+		public int compare(Object arg0, Object arg1) {
+			ClientPlayer player0 = (ClientPlayer) arg0;
+			ClientPlayer player1 = (ClientPlayer) arg1;
+			
+			return (player0.getFirstName()+player0.getLastName()).compareTo(player1.getFirstName()+player1.getLastName());
+		}
+	}
+
+	public int getBalance() {
+		return balance;
+	}
+	public void setBalance(int amount) {
+		this.balance = amount;
+	}
 }

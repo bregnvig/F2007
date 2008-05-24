@@ -48,4 +48,10 @@ public interface GameService {
 	 * @param player
 	 */
 	void updateDriver(Driver driver);
+
+	/**
+	 * Returns a list of all players. No mather the season
+	 * @return
+	 */
+	List<Player> findAllPlayers();
 }

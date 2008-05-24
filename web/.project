@@ -49,7 +49,7 @@
 		<link>
 			<name>src/main/webapp/F2007.html</name>
 			<type>1</type>
-			<location>/Users/4u603ctpsz9/Documents/workspace/F2007/web/src/main/resources/dk/bregnvig/formula1/public/F2007.html</location>
+			<locationURI>PUBLIC/F2007.html</locationURI>
 		</link>
 		<link>
 			<name>src/main/webapp/f2007.css</name>

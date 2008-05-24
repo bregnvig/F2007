@@ -4,6 +4,7 @@ dk.bregnvig.formula1.client.domain.ClientDriver, true
 dk.bregnvig.formula1.client.domain.ClientPlayer, true
 dk.bregnvig.formula1.client.domain.ClientRace, true
 dk.bregnvig.formula1.client.domain.ClientSeason, true
+dk.bregnvig.formula1.client.domain.ClientWBCEntry, true
 dk.bregnvig.formula1.client.domain.account.ClientAccount, true
 dk.bregnvig.formula1.client.domain.account.ClientAccountEntry, true
 dk.bregnvig.formula1.client.domain.bid.ClientBid, true

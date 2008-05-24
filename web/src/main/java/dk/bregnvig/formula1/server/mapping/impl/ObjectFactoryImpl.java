@@ -105,6 +105,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		if (player.getRoles().contains(PlayerRole.ACCOUNT_ADMIN)) {
 			clientPlayer.setBankAdministrator(true);
 		}
+		clientPlayer.setBalance(player.getAccount().getBalance().intValue());
 		return clientPlayer;
 	}
 	
@@ -167,7 +168,16 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		Collections.sort(clientDrivers, new ClientDriver.NumberComparator());
 		return clientDrivers;
 	}
-	
+
+	public List<ClientPlayer> getClientPlayers(Collection<Player> players) {
+		List<ClientPlayer> clientPlayers = new ArrayList<ClientPlayer>(players.size());
+		for (Player player : players) {
+			clientPlayers.add(create(player));
+		}
+		Collections.sort(clientPlayers, new ClientPlayer.NameComparator());
+		return clientPlayers;
+	}
+
 	private ClientBid create(boolean participant, Bid bid, boolean completed) {
 		ClientBid clientBid = new ClientBid();
 		clientBid.setPlayer(create(bid.getPlayer()));

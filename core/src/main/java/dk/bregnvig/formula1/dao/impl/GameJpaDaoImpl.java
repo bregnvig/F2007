@@ -47,6 +47,12 @@ public class GameJpaDaoImpl extends JpaDaoSupport implements GameDao {
 		return drivers;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Player> findAllPlayers() {
+		List<Player> players = getJpaTemplate().findByNamedQuery("player.findAll");
+		return players;
+	}
+	
 	private boolean isEmpty(List<?> list) {
 		return list == null || list.size() == 0;
 	}

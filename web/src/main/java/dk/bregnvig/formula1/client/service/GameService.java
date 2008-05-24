@@ -111,11 +111,10 @@ public interface GameService extends RemoteService {
 	 * @param race
 	 */
 	void updateDriver(ClientDriver driver);
-
-	/**
-	 *  @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientWBCEntry>
-	 */
-	List fetchWBCStanding();
+	
+	void accountTransfer(ClientPlayer fromPlayer, ClientPlayer toPlayer, String message, int amount);
+	void accountDeposit(ClientPlayer player, String message, int amount);
+	void accountWithdraw(ClientPlayer player, String message, int amount);
 
 	/**
 	 * Returns the list of all drivers in the system.
@@ -123,6 +122,19 @@ public interface GameService extends RemoteService {
 	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientDriver>
 	 */
 	List findAllDrivers();
+
+	/**
+	 * Returns the list of all players in the system.
+	 * @return
+	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientPlayer>
+	 */
+	List findAllPlayers();
+	
+	/**
+	 *  @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientWBCEntry>
+	 */
+	List fetchWBCStanding();
+
 	
 	/**
 	 *  @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientWBCEntry>
