@@ -33,6 +33,8 @@ public interface ObjectFactory {
 	ClientAccount create(Account account);
 	
 	List<ClientDriver> getClientDrivers(Collection<Driver> drivers);
+
+	List<ClientPlayer> getClientPlayers(Collection<Player> players);
 	
 	Bid create(ClientBid clientBid);
 	

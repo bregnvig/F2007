@@ -50,8 +50,12 @@ public class GameServiceImpl implements GameService {
 		return dao.findAllDrivers();
 	}	
 
+	@Transactional(readOnly = true)
+	public List<Player> findAllPlayers() {
+		return dao.findAllPlayers();
+	}
+	
 	public void setDao(GameDao dao) {
 		this.dao = dao;
 	}
-
 }

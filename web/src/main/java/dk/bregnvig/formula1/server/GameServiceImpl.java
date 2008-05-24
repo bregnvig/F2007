@@ -1,5 +1,6 @@
 package dk.bregnvig.formula1.server;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.gwtwidgets.server.spring.ServletUtils;
@@ -144,6 +145,13 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		return objectFactory.getClientDrivers(drivers);
 	}
 
+	@Authorization(roles = { PlayerRole.ACCOUNT_ADMIN })
+	@Transactional(readOnly = true)
+	public List<ClientPlayer> findAllPlayers() {
+		List<Player> players = service.findAllPlayers();
+		return objectFactory.getClientPlayers(players);
+	}
+	
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void createDriver(ClientDriver clientDriver) {
@@ -181,5 +189,27 @@ public class GameServiceImpl extends AbstractService implements GameService {
 
 	public void setService(dk.bregnvig.formula1.service.GameService service) {
 		this.service = service;
+	}
+
+	@Authorization(roles = { PlayerRole.ACCOUNT_ADMIN })
+	@Transactional(readOnly = false)
+	public void accountDeposit(ClientPlayer clientPlayer, String message, int amount) {
+		Player player = getContext().getSeason().getPlayer(clientPlayer.getPlayername());
+		player.getAccount().deposit(message, new BigDecimal(amount));
+	}
+
+	@Authorization(roles = { PlayerRole.ACCOUNT_ADMIN })
+	@Transactional(readOnly = false)
+	public void accountTransfer(ClientPlayer clientFromPlayer, ClientPlayer clientToPlayer, String message, int amount) {
+		Player fromPlayer = getContext().getSeason().getPlayer(clientFromPlayer.getPlayername());
+		Player toPlayer = getContext().getSeason().getPlayer(clientToPlayer.getPlayername());
+		fromPlayer.getAccount().transfer(message, new BigDecimal(amount), toPlayer.getAccount());
+	}
+
+	@Authorization(roles = { PlayerRole.ACCOUNT_ADMIN })
+	@Transactional(readOnly = false)
+	public void accountWithdraw(ClientPlayer clientPlayer, String message, int amount) {
+		Player player = getContext().getSeason().getPlayer(clientPlayer.getPlayername());
+		player.getAccount().withdraw(message, new BigDecimal(amount));
 	}
 }

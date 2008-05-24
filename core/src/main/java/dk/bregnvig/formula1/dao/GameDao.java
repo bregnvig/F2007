@@ -15,4 +15,6 @@ public interface GameDao extends CommonDao {
 	void updatePlayer(Player player);
 	
 	List<Driver> findAllDrivers();
+	
+	List<Player> findAllPlayers();
 }

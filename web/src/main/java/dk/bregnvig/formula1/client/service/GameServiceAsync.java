@@ -45,8 +45,14 @@ public interface GameServiceAsync {
 	void updateDriver(ClientDriver driver, AsyncCallback callback);
 	
 	void findAllDrivers(AsyncCallback callback);
+
+	void findAllPlayers(AsyncCallback callback);
 	
 	void fetchWBCStanding(AsyncCallback callback);
 
 	void fetchWBCStanding(ClientRace race, AsyncCallback callback);
+	
+	void accountTransfer(ClientPlayer fromPlayer, ClientPlayer toPlayer, String message, int amount, AsyncCallback callback);
+	void accountDeposit(ClientPlayer player, String message, int amount, AsyncCallback callback);
+	void accountWithdraw(ClientPlayer player, String message, int amount, AsyncCallback callback);
 }

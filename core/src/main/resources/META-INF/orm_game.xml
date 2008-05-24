@@ -8,6 +8,9 @@
 	<orm:named-query name="player.findByName">
 		<orm:query>select p from Player p where p.playername = ?1</orm:query>
 	</orm:named-query>
+	<orm:named-query name="player.findAll">
+		<orm:query>select p from Player p order by p.lastName</orm:query>
+	</orm:named-query>
 	<orm:named-query name="driver.findAll">
 		<orm:query>select d from Driver d</orm:query>
 	</orm:named-query>
