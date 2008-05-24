@@ -38,6 +38,7 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 	private final VerticalPanel rightSide;
 	
 	private Button commandButton;
+	private Button seeButton;
 	
 	private WizardPanel wizard;
 	private SelectGridPanel selectGrid;
@@ -90,12 +91,12 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 	}
 	
 	private void addSeeBidButton() {
-		commandButton = new Button(getMediator().getSelectedRace().isCompleted() ? "Se resultat" : "Se bud", new ClickListener() {
+		seeButton = new Button(getMediator().getSelectedRace().isCompleted() ? "Se resultat" : "Se bud", new ClickListener() {
 			public void onClick(Widget arg0) {
 				getMainPanel().setCenterPanel(new BidOverviewPanel(getMediator(), getMainPanel()));
 			}
 		});
-		addButton(commandButton);
+		addButton(seeButton);
 	}
 	
 	private void addButton(Button commandButton) {
@@ -245,8 +246,11 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 			addCommandButton("Jeg skal deltage");
 		} else if (race.isOpened() && race.isParticipant() == true) {
 			addSeeBidButton();
-		} else if (race.isOpened() == false && race.isCompleted() == false && race.isWaiting() == false && getMediator().getPlayer().isGameAdministrator() == true) {
-			addCommandButton("Indtast resultat");
+		} else if (race.isOpened() == false && race.isCompleted() == false && race.isWaiting() == false) {
+			addSeeBidButton();
+			if (getMediator().getPlayer().isGameAdministrator() == true) {
+				addCommandButton("Indtast resultat");
+			}
 			createWizard();
 		} else if (race.isCompleted()) {
 			addSeeBidButton();
