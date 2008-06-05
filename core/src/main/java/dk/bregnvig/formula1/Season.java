@@ -72,7 +72,9 @@ public class Season {
 	 * @param player
 	 */
 	public void addPlayer(Player player) {
-		players.add(player);
+		if (players.contains(player) == false) {
+			players.add(player);
+		}
 	}
 
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH })
@@ -91,7 +93,9 @@ public class Season {
 	}
 
 	public void removePlayer(Player player) {
-		players.remove(player);
+		if (players.contains(player) == true) {
+			players.remove(player);
+		}
 	}
 
 	public void addRace(Race race) {
