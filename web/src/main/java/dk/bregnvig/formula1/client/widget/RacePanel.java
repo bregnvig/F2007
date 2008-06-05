@@ -184,7 +184,7 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 			while(i.hasNext()) {
 				ClientBid bid = (ClientBid) i.next();
 				ClientPlayer player = bid.getPlayer().equals(getMediator().getPlayer()) ? getMediator().getPlayer() : bid.getPlayer();
-				table.setWidget(index, 0, new PlayerLabel(player.getFirstName() + " " + player.getLastName()));
+				table.setWidget(index, 0, new PlayerLabel(player));
 				if (getMediator().getSelectedRace().isCompleted()) {
 					table.setWidget(index, 1, new Label(Integer.toString(bid.getPoints())));
 				}

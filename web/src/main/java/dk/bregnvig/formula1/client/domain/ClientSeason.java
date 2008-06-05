@@ -40,6 +40,16 @@ public class ClientSeason implements IsSerializable{
 	public void setPlayers(List players) {
 		this.players = players;
 	}
+	
+	public ClientPlayer findPlayerByPlayerName(String playerName) {
+		for (int i = 0; i < players.size(); i++) {
+			ClientPlayer player = (ClientPlayer) players.get(i);
+			if (player.getPlayername().equals(playerName)) {
+				return player;
+			}
+		}
+		return null;
+	}
 
 	public List getRaces() {
 		return races;

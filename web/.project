@@ -47,6 +47,11 @@
 			<locationURI>PUBLIC/tracks</locationURI>
 		</link>
 		<link>
+			<name>src/main/webapp/other</name>
+			<type>2</type>
+			<locationURI>PUBLIC/other</locationURI>
+		</link>
+		<link>
 			<name>src/main/webapp/F2007.html</name>
 			<type>1</type>
 			<locationURI>PUBLIC/F2007.html</locationURI>
