@@ -102,9 +102,17 @@ public class GameServiceImpl extends AbstractService implements GameService {
 
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void updatePlayer(ClientPlayer player) {
-		objectFactory.map(player, getContext().getPlayer());
-		service.updatePlayer(getContext().getPlayer());
+	public void updatePlayer(ClientPlayer clientPlayer) {
+		Season season = getContext().getSeason();
+		Player player = season.getPlayer(clientPlayer.getPlayername());
+		objectFactory.map(clientPlayer, player);
+		
+		service.updatePlayer(player);
+		if (clientPlayer.isPartOfSeason() == true) {
+			season.addPlayer(player);
+		} else {
+			season.removePlayer(player);
+		}
 	}
 
 	@Authorization(roles = { PlayerRole.PLAYER })

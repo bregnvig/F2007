@@ -99,7 +99,7 @@ public class WBCPanel extends ContentPanel {
 					break;
 				}
 				ClientPlayer player = entry.getPlayer();
-				table.setWidget(index, 0, new PlayerLabel(player.getFirstName() + " " + player.getLastName()));
+				table.setWidget(index, 0, new PlayerLabel(player));
 				table.setWidget(index, 1, new Label(Integer.toString(entry.getPoints())));
 				index++;
 			}

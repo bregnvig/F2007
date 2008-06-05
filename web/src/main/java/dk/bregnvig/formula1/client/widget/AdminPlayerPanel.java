@@ -4,10 +4,12 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -31,13 +33,14 @@ import dk.bregnvig.formula1.client.widget.control.FormTitleLabel;
 public class AdminPlayerPanel extends ContentPanel {
 
 	private MessagePanel messagePanel;
-	private boolean createMode;
+	private boolean adminMode;
+	private boolean createMode = true;
 	
-	public AdminPlayerPanel(F2007 mediator, MainPanel mainPanel, boolean createMode) {
+	public AdminPlayerPanel(F2007 mediator, MainPanel mainPanel, boolean adminMode) {
 		super(mediator, mainPanel);
-		this.createMode = createMode;
+		this.adminMode = adminMode;
 		// setHeight("50%");
-		Label header = new ContentTitleLabel(isPlayerMode() ? "Opdater dine oplysninger her" : "Opret ny spiller");
+		Label header = new ContentTitleLabel(isPlayerMode() ? "Opdater dine oplysninger her" : "Spiller administration");
 		add(header);
 		add(messagePanel = new MessagePanel());
 		setCellHeight(messagePanel, "18px");
@@ -137,7 +140,12 @@ public class AdminPlayerPanel extends ContentPanel {
 		private Label smsNumberLabel;
 		private TextBox smsNumber;
 		
-		private final ClientPlayer player;
+		private ListBox players;
+		private CheckBox wbcParticipant;
+//		private CheckBox partOfSeason;
+		private Button updatePersonalInfo;
+		
+		private ClientPlayer player;
 
 		public PersonalInfoForm() {
 			setStyleName("form");
@@ -147,36 +155,55 @@ public class AdminPlayerPanel extends ContentPanel {
 			} else {
 				player = new ClientPlayer();
 			}
-			
-			setWidget(0, 0, new FormTitleLabel("Personlig information"));
+			int row = 0;
+			setWidget(row++, 0, new FormTitleLabel("Personlig information"));
 			getFlexCellFormatter().setColSpan(0, 0, 2);
-			if (isCreateMode()) {
-				setWidget(1, 0, playerNameLabel = new FormLabel("Spillernavn"));
-				setWidget(1, 1, playerName = new TextBox());
+			if (isAdminMode()) {
+				setWidget(row, 0, new FormLabel("Spillere"));
+				setWidget(row++, 1, players = getPlayers());
+				players.addClickListener(new ClickListener() {
+
+					public void onClick(Widget arg0) {
+						if (players.getSelectedIndex() == 0) {
+							resetPlayer();
+						} else {
+							player = getMediator().getSeason().findPlayerByPlayerName(players.getValue(players.getSelectedIndex()));
+							displayDriver();
+						}
+					}
+					
+				});
+				setWidget(row, 0, playerNameLabel = new FormLabel("Spillernavn"));
+				setWidget(row++, 1, playerName = new TextBox());
 			}
 
-			setWidget(2, 0, firstNameLabel = new FormLabel("Fornavn"));
-			setWidget(2, 1, firstName = new TextBox());
-			firstName.setText(player.getFirstName());
+			setWidget(row, 0, firstNameLabel = new FormLabel("Fornavn"));
+			setWidget(row++, 1, firstName = new TextBox());
 
-			setWidget(3, 0, lastNameLabel = new FormLabel("Efternavn"));
-			setWidget(3, 1, lastName = new TextBox());
-			lastName.setText(player.getLastName());
+			setWidget(row, 0, lastNameLabel = new FormLabel("Efternavn"));
+			setWidget(row++, 1, lastName = new TextBox());
 
-			setWidget(4, 0, emailAddressLabel = new FormLabel("E-mail-adresse"));
-			setWidget(4, 1, emailAddress = new TextBox());
-			emailAddress.setText(player.getEmailAddress());
+			setWidget(row, 0, emailAddressLabel = new FormLabel("E-mail-adresse"));
+			setWidget(row++, 1, emailAddress = new TextBox());
 
-			setWidget(5, 0, smsNumberLabel = new FormLabel("Mobilnummer"));
-			setWidget(5, 1, smsNumber = new TextBox());
-			smsNumber.setText(player.getSms());
+			setWidget(row, 0, smsNumberLabel = new FormLabel("Mobilnummer"));
+			setWidget(row++, 1, smsNumber = new TextBox());
 
-			Button updatePersonalInfo = new Button(isPlayerMode() ? "Opdater" : "Opret", new ClickListener() {
+			if (isAdminMode()) {
+//				setWidget(row, 0, new FormLabel("Deltager i sæsonen"));
+//				setWidget(row++, 1, partOfSeason = new CheckBox());
+				setWidget(row, 0, new FormLabel("Med i WBC?"));
+				setWidget(row++, 1, wbcParticipant = new CheckBox());
+			}
+
+			updatePersonalInfo = new Button(isPlayerMode() ? "Opdater" : "Opret", new ClickListener() {
 
 				public void onClick(Widget arg0) {
 					if (validate() == true) {
-						if (isCreateMode()) {
+						if (isAdminMode()) {
 							player.setPlayername(playerName.getText());
+							player.setWbcParticipant(wbcParticipant.isChecked());
+//							player.setPartOfSeason(partOfSeason.isChecked());
 						}
 						player.setFirstName(firstName.getText());
 						player.setLastName(lastName.getText());
@@ -191,36 +218,44 @@ public class AdminPlayerPanel extends ContentPanel {
 							public void onSuccess(Object arg0) {
 								String message = isPlayerMode() ? "Dine informationer er blevet opdateret" : "Spilleren er blevet oprettet"; 
 								messagePanel.setStatus(message);
-								if (isCreateMode()) {
-									playerName.setText("");
-									firstName.setText("");
-									lastName.setText("");
-									emailAddress.setText("");
-									smsNumber.setText("");
+								if (isAdminMode()) {
+									resetPlayer();
 								}
 							}
 
 						};
-						if (isPlayerMode()) {
+						if (isCreateMode() == false) {
 							getMediator().getGameService().updatePlayer(player, callback);
 						} else {
 							getMediator().getGameService().createPlayer(player, callback);
 						}
-						
 					}
 				}
 			});
-			setWidget(6, 1, updatePersonalInfo);
-			getFlexCellFormatter().setColSpan(6, 1, 2);
+			setWidget(row, 1, updatePersonalInfo);
+			getFlexCellFormatter().setColSpan(row++, 1, 2);
+			if (isPlayerMode()) {
+				displayDriver();
+			}
+		}
+
+		private ListBox getPlayers() {
+			ListBox players = new ListBox();
+			players.addItem("Vælg");
+			for (int i = 0; i < getMediator().getSeason().getPlayers().size(); i++) {
+				ClientPlayer player = (ClientPlayer) getMediator().getSeason().getPlayers().get(i);
+				players.addItem(player.getName(), player.getPlayername());
+			}
+			return players;
 		}
 
 		private boolean validate() {
-			Rule[] rules = new Rule[isCreateMode() ? 5 :4]; 
+			Rule[] rules = new Rule[isAdminMode() ? 5 :4]; 
 			rules[0] = new CompositeRule().addRule(new RequiredRule(firstName, firstNameLabel)).addRule(new MaxLengthRule(firstName, firstNameLabel, 25));
 			rules[1] = new CompositeRule().addRule(new RequiredRule(lastName, lastNameLabel)).addRule(new MaxLengthRule(lastName, lastNameLabel, 25));
 			rules[2] = new EmailRule(emailAddress, emailAddressLabel);
 			rules[3] = new CompositeRule().addRule(new PhoneNumberRule(smsNumber, smsNumberLabel));
-			if (isCreateMode()) {
+			if (isAdminMode()) {
 				rules[4] = new CompositeRule().addRule(new RequiredRule(playerName, playerNameLabel)).addRule(new MaxLengthRule(playerName, playerNameLabel, 15));
 			}
 			List issues = AdminPlayerPanel.this.validate(rules);
@@ -234,18 +269,48 @@ public class AdminPlayerPanel extends ContentPanel {
 
 			return issues.size() == 0 ? true : false;
 		}
+
+		private void resetPlayer() {
+			playerName.setText("");
+			firstName.setText("");
+			lastName.setText("");
+			emailAddress.setText("");
+			smsNumber.setText("");
+			updatePersonalInfo.setText("Opret");
+			wbcParticipant.setChecked(false);
+			players.setSelectedIndex(0);
+			createMode = true;
+		}
+		
+		private void displayDriver() {
+			
+			firstName.setText(player.getFirstName());
+			lastName.setText(player.getLastName());
+			emailAddress.setText(player.getEmailAddress());
+			smsNumber.setText(player.getSms());
+			if (isAdminMode()) {
+				playerName.setText(player.getPlayername());
+				wbcParticipant.setChecked(player.isWbcParticipant());
+			}
+			updatePersonalInfo.setText("Opdater");
+			createMode = false;
+		}
 	}
 
 	protected Widget getScreenTitle() {
 		return new  BigLabel("Mine oplysninger");
 	}
 
-	public final boolean isCreateMode() {
+	public final boolean isAdminMode() {
+		return adminMode;
+	}
+	
+	private final boolean isCreateMode() {
 		return createMode;
 	}
 	
 	public final boolean isPlayerMode() {
-		return createMode == false;
+		return adminMode == false;
 	}
 
 }

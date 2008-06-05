@@ -248,6 +248,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		target.setLastName(source.getLastName());
 		target.setEmailAddress(source.getEmailAddress());
 		target.setSms(source.getSms());
+		target.setWbcParticipant(source.isWbcParticipant());
 	}
 	
 	private Driver getDriver(ClientDriver clientDriver) {
