@@ -34,6 +34,7 @@ public class Player {
 	private String lastName;
 	private String emailAddress;
 	private String smsNumber;
+	private boolean wbcParticipant;
 	private Account account = new Account();
 	
 	private Set<PersistentRole> roles = new HashSet<PersistentRole>();
@@ -185,5 +186,14 @@ public class Player {
 		return new ToStringBuilder(this)
 			.append(playername)
 			.toString();
+	}
+
+	@Column(nullable = false)
+	public boolean isWbcParticipant() {
+		return wbcParticipant;
+	}
+
+	public void setWbcParticipant(boolean wbcMember) {
+		this.wbcParticipant = wbcMember;
 	}
 }
