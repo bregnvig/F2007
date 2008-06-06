@@ -25,66 +25,54 @@ import dk.bregnvig.formula1.client.widget.control.BigLabel;
 import dk.bregnvig.formula1.client.widget.control.ContentTitleLabel;
 import dk.bregnvig.formula1.client.widget.control.FormLabel;
 import dk.bregnvig.formula1.client.widget.control.FormTitleLabel;
+import dk.bregnvig.formula1.client.widget.control.PlayerListBox;
+import dk.bregnvig.formula1.client.widget.control.SpacerImage;
 
 public class AdminAccountPanel extends ContentPanel {
 
 	private MessagePanel messagePanel;
+	private HorizontalPanel formPanel;
 	private AccountInfoForm form;
-	
-	/**
-	 *  @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientPlayer>
-	 */
-	private List fetchedPlayers;
+	private HorizontalPanel mainPanel;
+	private VerticalPanel left;
+	private VerticalPanel right;
 	
 	public AdminAccountPanel(F2007 mediator, MainPanel mainPanel) {
 		super(mediator, mainPanel);
-		// setHeight("50%");
+		add(this.mainPanel = new HorizontalPanel());
+		left = new VerticalPanel();
+		right = new VerticalPanel();
+		right.setBorderWidth(0);
+		this.mainPanel.add(left);
+		this.mainPanel.setHeight("100%");
+		right.setHeight("100%");
+		this.mainPanel.add(new SpacerImage(10));
+		this.mainPanel.add(right);
 		Label header = new ContentTitleLabel("Indsæt, hæv eller overfør");
-		add(header);
-		add(messagePanel = new MessagePanel());
-		setCellHeight(messagePanel, "18px");
+		left.add(header);
+		left.add(messagePanel = new MessagePanel());
+		left.setCellHeight(messagePanel, "18px");
 		
-		HorizontalPanel formPanel = new HorizontalPanel();
+		formPanel = new HorizontalPanel();
 		formPanel.add(form = new AccountInfoForm());
-		add(formPanel);
-		setCellVerticalAlignment(formPanel, VerticalPanel.ALIGN_MIDDLE);
+		left.add(formPanel);
+		left.setCellVerticalAlignment(formPanel, VerticalPanel.ALIGN_MIDDLE);
 	}
-	
-	
 	
 	protected void onLoad() {
 		super.onLoad();
-		loadPlayers();
-	}
-
-
-
-	private void loadPlayers() {
-		
-		AsyncCallback callback = new AsyncCallback() {
-
-			public void onFailure(Throwable exception) {
-				getMediator().reportError(exception.getMessage());
-			}
-
-			public void onSuccess(Object argument) {
-				fetchedPlayers = (List) argument;
-				form.setPlayers();
-			}
-		};
-		getMediator().getGameService().findAllPlayers(callback);
 	}
 
 	private class AccountInfoForm extends FlexTable {
 
 		private Label playerNameLabel;
-		private ListBox playerName;
+		private PlayerListBox playerName;
 		
 		private Label actionLabel;
 		private final ListBox action;
 		
 		private Label toPlayerNameLabel;
-		private ListBox toPlayerName;
+		private PlayerListBox toPlayerName;
 
 		private Label amountLabel;
 		private TextBox amount;
@@ -100,12 +88,15 @@ public class AdminAccountPanel extends ContentPanel {
 			setWidget(row, 0, new FormTitleLabel("Konto"));
 			getFlexCellFormatter().setColSpan(row++, 0, 2);
 			setWidget(row, 0, playerNameLabel = new FormLabel("Navn"));
-			setWidget(row++, 1, playerName = new ListBox());
+			setWidget(row++, 1, playerName = new PlayerListBox(getMediator()));
 			playerName.addClickListener(new ClickListener() {
 				public void onClick(Widget arg0) {
-					ClientPlayer player = findPlayerByPlayername(playerName.getValue(playerName.getSelectedIndex()));
-					if (player != null) {
-						messagePanel.setStatus(player.getFirstName() + " " + player.getLastName() + " har kr. " + player.getBalance());
+					if (playerName.getSelectedPlayer() != null) {
+						ClientPlayer player = playerName.getSelectedPlayer();
+						if (player != null) {
+							right.clear();
+							right.add(new AccountPanel(getMediator(), getMainPanel(), player));
+						}
 					}
  				}
 				
@@ -131,7 +122,7 @@ public class AdminAccountPanel extends ContentPanel {
 			});
 			
 			setWidget(row, 0, toPlayerNameLabel = new FormLabel("Til"));
-			setWidget(row++, 1, toPlayerName = new ListBox());
+			setWidget(row++, 1, toPlayerName = new PlayerListBox(getMediator()));
 			setToPlayerEnabled(false);
 
 			setWidget(row, 0, amountLabel = new FormLabel("Beløb"));
@@ -173,18 +164,6 @@ public class AdminAccountPanel extends ContentPanel {
 		public void setToPlayerEnabled(boolean visible) {
 			toPlayerName.setEnabled(visible);
 		}
-		
-		public void setPlayers() {
-			
-			playerName.addItem("Vælg");
-			toPlayerName.addItem("Vælg");
-			
-			for (int i = 0; i < fetchedPlayers.size(); i++) {
-				ClientPlayer player = (ClientPlayer) fetchedPlayers.get(i);
-				playerName.addItem(player.getName(), player.getPlayername());
-				toPlayerName.addItem(player.getName(), player.getPlayername());
-			}
-		}
 
 		private boolean validate() {
 			Rule[] rules = new Rule[isTransfer() ? 5 : 4];
@@ -220,33 +199,18 @@ public class AdminAccountPanel extends ContentPanel {
 		}
 		
 		private void transfer(AsyncCallback callback) {
-			ClientPlayer fromPlayer = findPlayerByPlayername(playerName.getValue(playerName.getSelectedIndex()));
-			ClientPlayer toPlayer = findPlayerByPlayername(toPlayerName.getValue(toPlayerName.getSelectedIndex()));
+			ClientPlayer fromPlayer = playerName.getSelectedPlayer();
+			ClientPlayer toPlayer = toPlayerName.getSelectedPlayer();
 			getMediator().getGameService().accountTransfer(fromPlayer, toPlayer, message.getText(), Integer.parseInt(amount.getText()), callback);
 		}
 
 		private void deposit(AsyncCallback callback) {
-			ClientPlayer player = findPlayerByPlayername(playerName.getValue(playerName.getSelectedIndex()));
-			getMediator().getGameService().accountDeposit(player, message.getText(), Integer.parseInt(amount.getText()), callback);
+			getMediator().getGameService().accountDeposit(playerName.getSelectedPlayer(), message.getText(), Integer.parseInt(amount.getText()), callback);
 		}
 
 		private void withdraw(AsyncCallback callback) {
-			ClientPlayer player = findPlayerByPlayername(playerName.getValue(playerName.getSelectedIndex()));
-			getMediator().getGameService().accountWithdraw(player, message.getText(), Integer.parseInt(amount.getText()), callback);
+			getMediator().getGameService().accountWithdraw(playerName.getSelectedPlayer(), message.getText(), Integer.parseInt(amount.getText()), callback);
 		}
-	}
-	
-	private ClientPlayer findPlayerByPlayername(String playername) {
-		if (fetchedPlayers == null || fetchedPlayers.isEmpty()) {
-			return null;
-		}
-		for(int i = 0; i < fetchedPlayers.size(); i++) {
-			ClientPlayer player = (ClientPlayer) fetchedPlayers.get(i); 
-			if (player.getPlayername().equals(playername)) {
-				return player;
-			}
-		}
-		return null;
 	}
 	
 	protected Widget getScreenTitle() {
