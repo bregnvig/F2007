@@ -40,7 +40,7 @@ public class OneWeekReminderService extends AbstractRaceTimer {
 		}
 	}
 
-	public void setJavaMailSender(JavaMailSender mailSender) {
+	public void setMailSender(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
 	}
 

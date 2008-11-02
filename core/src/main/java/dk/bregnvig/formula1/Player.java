@@ -187,6 +187,11 @@ public class Player {
 			.append(playername)
 			.toString();
 	}
+	
+	@Transient
+	public boolean isEmailAddressAvailable() {
+		return getEmailAddress() != null && getEmailAddress().length() != 0;
+	}
 
 	@Column(nullable = false)
 	public boolean isWbcParticipant() {
