@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -29,6 +28,7 @@ import dk.bregnvig.formula1.client.widget.control.BigLabel;
 import dk.bregnvig.formula1.client.widget.control.ContentTitleLabel;
 import dk.bregnvig.formula1.client.widget.control.FormLabel;
 import dk.bregnvig.formula1.client.widget.control.FormTitleLabel;
+import dk.bregnvig.formula1.client.widget.control.PlayerListBox;
 
 public class AdminPlayerPanel extends ContentPanel {
 
@@ -140,7 +140,7 @@ public class AdminPlayerPanel extends ContentPanel {
 		private Label smsNumberLabel;
 		private TextBox smsNumber;
 		
-		private ListBox players;
+		private PlayerListBox players;
 		private CheckBox wbcParticipant;
 //		private CheckBox partOfSeason;
 		private Button updatePersonalInfo;
@@ -160,14 +160,14 @@ public class AdminPlayerPanel extends ContentPanel {
 			getFlexCellFormatter().setColSpan(0, 0, 2);
 			if (isAdminMode()) {
 				setWidget(row, 0, new FormLabel("Spillere"));
-				setWidget(row++, 1, players = getPlayers());
+				setWidget(row++, 1, players = new PlayerListBox(getMediator()));
 				players.addClickListener(new ClickListener() {
 
 					public void onClick(Widget arg0) {
-						if (players.getSelectedIndex() == 0) {
+						if (players.getSelectedPlayer() == null) {
 							resetPlayer();
 						} else {
-							player = getMediator().getSeason().findPlayerByPlayerName(players.getValue(players.getSelectedIndex()));
+							player = players.getSelectedPlayer();
 							displayDriver();
 						}
 					}
@@ -216,7 +216,7 @@ public class AdminPlayerPanel extends ContentPanel {
 							}
 
 							public void onSuccess(Object arg0) {
-								String message = isPlayerMode() ? "Dine informationer er blevet opdateret" : "Spilleren er blevet oprettet"; 
+								String message = isCreateMode() ? "Spilleren er blevet oprettet" : "Dine informationer er blevet opdateret"; 
 								messagePanel.setStatus(message);
 								if (isAdminMode()) {
 									resetPlayer();
@@ -237,16 +237,6 @@ public class AdminPlayerPanel extends ContentPanel {
 			if (isPlayerMode()) {
 				displayDriver();
 			}
-		}
-
-		private ListBox getPlayers() {
-			ListBox players = new ListBox();
-			players.addItem("Vælg");
-			for (int i = 0; i < getMediator().getSeason().getPlayers().size(); i++) {
-				ClientPlayer player = (ClientPlayer) getMediator().getSeason().getPlayers().get(i);
-				players.addItem(player.getName(), player.getPlayername());
-			}
-			return players;
 		}
 
 		private boolean validate() {

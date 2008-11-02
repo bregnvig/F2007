@@ -19,6 +19,7 @@ public class ClientPlayer extends Object implements IsSerializable {
 	private boolean gameAdministrator;
 	private boolean bankAdministrator;
 	private boolean wbcParticipant;
+	private boolean bettingMoneyAvailable;
 
 	public String getPlayername() {
 		return playername;
@@ -111,9 +112,15 @@ public class ClientPlayer extends Object implements IsSerializable {
 	public boolean isWbcParticipant() {
 		return wbcParticipant;
 	}
+	public boolean isBettingMoneyAvailable() {
+		return bettingMoneyAvailable;
+	}
 	public void setWbcParticipant(boolean wbcParticipant) {
 		this.wbcParticipant = wbcParticipant;
 	}
 	public void setPartOfSeason(boolean partOfSeason) {
+	}
+	public void setBettingMoneyAvailable(boolean bidMoneyAvailable) {
+		this.bettingMoneyAvailable = bidMoneyAvailable;
 	}
 }
