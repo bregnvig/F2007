@@ -26,6 +26,8 @@ public interface GameServiceAsync {
 
 	void getAccount(AsyncCallback callback);
 
+	void getAccount(ClientPlayer player, AsyncCallback callback);
+
 	void updatePassword(String password, AsyncCallback callback);
 
 	void updatePlayer(ClientPlayer player, AsyncCallback callback);

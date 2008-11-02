@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 import dk.bregnvig.formula1.client.F2007;
+import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.account.ClientAccountEntry;
 import dk.bregnvig.formula1.client.widget.control.BigLabel;
@@ -26,11 +27,15 @@ public class AccountPanel extends ContentPanel {
 	private Label amount = new Label();
 	private Grid table;
 	private ButtonPanel buttonPanel;
+	private ClientPlayer player;
 	
-	public AccountPanel(F2007 mediator, MainPanel mainPanel) {
+	public AccountPanel(F2007 mediator, MainPanel mainPanel, ClientPlayer player) {
 		super(mediator, mainPanel);
-
 		
+		this.player = player;
+		if (player != null) {
+			setWidth("100%");
+		}
 		HorizontalPanel balancePanel = balancePanel();
 		add(balancePanel);
 		setCellHeight(balancePanel, "30%");
@@ -42,7 +47,11 @@ public class AccountPanel extends ContentPanel {
 		add(buttonPanel = new ButtonPanel());
 		setCellHeight(buttonPanel, "5%");
 	}
-	
+
+	public AccountPanel(F2007 mediator, MainPanel mainPanel) {
+		this(mediator, mainPanel, null);
+	}
+
 	protected Widget getScreenTitle() {
 		return new  BigLabel("Konto og posteringer");
 	}
@@ -71,7 +80,11 @@ public class AccountPanel extends ContentPanel {
 				buttonPanel.changeState();
 			}
 		};
-		getMediator().getGameService().getAccount(callback);
+		if (player == null) {
+			getMediator().getGameService().getAccount(callback);
+		} else {
+			getMediator().getGameService().getAccount(player, callback);
+		}
 	}
 	
 

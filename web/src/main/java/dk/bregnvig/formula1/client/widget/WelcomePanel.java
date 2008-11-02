@@ -58,7 +58,9 @@ public class WelcomePanel extends VerticalPanel {
 			}
 
 			public void onSuccess(Object result) {
-				countDown.setRace((ClientRace) result);
+				if (result != null) {
+					countDown.setRace((ClientRace) result);
+				}
 			}
 		};
 		mediator.getGameService().getCurrentRace(callback);

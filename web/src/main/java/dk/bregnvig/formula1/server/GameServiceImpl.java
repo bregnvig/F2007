@@ -82,6 +82,12 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		return objectFactory.create(getContext().getSeason().getPlayer(getContext().getPlayer().getPlayername()).getAccount());
 	}
 
+	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public ClientAccount getAccount(ClientPlayer player) {
+		return objectFactory.create(getContext().getSeason().getPlayer(player.getPlayername()).getAccount());
+	}
+
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updatePassword(String password) {

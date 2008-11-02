@@ -59,6 +59,12 @@ public interface GameService extends RemoteService {
 	ClientAccount getAccount();
 	
 	/**
+	 * Returns the specifed players account
+	 * @return
+	 */
+	ClientAccount getAccount(ClientPlayer player);
+	
+	/**
 	 * Updates the players password
 	 * @param password
 	 */

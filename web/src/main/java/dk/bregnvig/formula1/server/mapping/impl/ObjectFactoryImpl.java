@@ -106,6 +106,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 			clientPlayer.setBankAdministrator(true);
 		}
 		clientPlayer.setBalance(player.getAccount().getBalance().intValue());
+		clientPlayer.setBettingMoneyAvailable(player.getAccount().isBettingMoneyAvailable());
 		return clientPlayer;
 	}
 	

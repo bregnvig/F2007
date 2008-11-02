@@ -144,8 +144,10 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 				getMediator().reportError(exception.getMessage());
 			}
 
-			public void onSuccess(Object race) {
-				getMediator().setSelectedRace((ClientRace) race, RacePanel.this);
+			public void onSuccess(Object _race) {
+				ClientRace race = (ClientRace) _race;
+				race.setFullyLoaded(false);
+				getMediator().setSelectedRace(race, RacePanel.this);
 				getMainPanel().setCenterPanel(RacePanel.this);
 			}
 		};
@@ -244,6 +246,11 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 		if (race.isOpened() == true && race.isParticipant() == false) {
 			createWizard();
 			addCommandButton("Jeg skal deltage");
+			if (getMediator().getPlayer().isBettingMoneyAvailable() == false) {
+				commandButton.setEnabled(false);
+				commandButton.setTitle("Du har ikke penge til at deltage i " + race.getName());
+				
+			}
 		} else if (race.isOpened() && race.isParticipant() == true) {
 			addSeeBidButton();
 		} else if (race.isOpened() == false && race.isCompleted() == false && race.isWaiting() == false) {

@@ -36,6 +36,10 @@ public class CountDownLabel extends Label {
 	
 	public void setRace(ClientRace race) {
 		
+		if (race == null) {
+			throw new IllegalStateException("Race cannot be null");
+		}
+		
 		if (timer != null) {
 			setText(" ");
 			timer.cancel();

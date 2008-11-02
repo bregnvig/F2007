@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Widget;
 import dk.bregnvig.formula1.client.F2007;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
+import dk.bregnvig.formula1.client.widget.control.BigLabel;
 import dk.bregnvig.formula1.client.widget.control.WaitingPanel;
 
 public class MainPanel extends DockPanel {
@@ -98,6 +99,15 @@ public class MainPanel extends DockPanel {
 		createNorth();
 		if (openRace != null) {
 			setCenterPanel(new RacePanel(mediator, this, openRace));
+		} else {
+			HorizontalPanel panel = new HorizontalPanel();
+			panel.setWidth("100%");
+			panel.setHeight("100%");
+			BigLabel message = new BigLabel("Der er ikke flere løb");
+			panel.add(message);
+			panel.setCellHorizontalAlignment(message, HorizontalPanel.ALIGN_CENTER);
+			panel.setCellVerticalAlignment(message, HorizontalPanel.ALIGN_MIDDLE);
+			setCenterPanel(panel);
 		}
 	}
 
