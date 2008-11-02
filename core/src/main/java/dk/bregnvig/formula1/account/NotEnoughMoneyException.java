@@ -2,7 +2,7 @@ package dk.bregnvig.formula1.account;
 
 import java.math.BigDecimal;
 
-public class NotEnoughMoney extends AccountException {
+public class NotEnoughMoneyException extends AccountException {
 
 	private static final long serialVersionUID = -5600846604510804687L;
 
@@ -18,12 +18,12 @@ public class NotEnoughMoney extends AccountException {
 		return balance;
 	}
 
-	public NotEnoughMoney(BigDecimal balance, BigDecimal amount) {
+	public NotEnoughMoneyException(BigDecimal balance, BigDecimal amount) {
 		this.balance = balance;
 		this.amount = amount;
 	}
 
-	public NotEnoughMoney(String message, BigDecimal balance, BigDecimal amount) {
+	public NotEnoughMoneyException(String message, BigDecimal balance, BigDecimal amount) {
 		this(balance, amount);
 		this.message = message;
 	}

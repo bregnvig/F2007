@@ -75,7 +75,7 @@ public class Account {
 
 	public void withdraw(String message, BigDecimal amount) {
 		if (verifyWithdraw(amount) == false) {
-			throw new NotEnoughMoney(balance, amount);
+			throw new NotEnoughMoneyException(balance, amount);
 		}
 		balance = balance.subtract(amount.abs());
 		Entry entry = new WithdrawEntry();
@@ -88,7 +88,7 @@ public class Account {
 	
 	public void transfer(String message, BigDecimal amount, Account toAccount) {
 		if (verifyWithdraw(amount) == false) {
-			throw new NotEnoughMoney("Transfer to: " + toAccount.id, balance, amount);
+			throw new NotEnoughMoneyException("Transfer to: " + toAccount.id, balance, amount);
 		}
 		
 		log.info("** Transfering from id: " + getId() + " to id: " + toAccount.id);
@@ -231,6 +231,16 @@ public class Account {
 	@Transient
 	public int getMinBalance() {
 		return -100;
+	}
+	
+	@Transient
+	public int getBettingAmount() {
+		return bettingAmount.intValue();
+	}
+	
+	@Transient
+	public boolean isBettingMoneyAvailable() {
+		return getBalance().intValue() - bettingAmount.intValue() >= getMinBalance(); 
 	}
 
 	public void setDao(GameDao dao) {

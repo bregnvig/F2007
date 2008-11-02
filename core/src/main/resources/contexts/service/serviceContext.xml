@@ -57,18 +57,28 @@
 			</list>
 		</property>
 	</bean>
-
-	<bean id="oneWeekReminderService"
-		class="dk.bregnvig.formula1.event.OneWeekReminderService"
-		scope="prototype">
-		<property name="days" value="7" />
-		<property name="javaMailSender" ref="mailSender"/>
+	
+	<bean id="mailerTemplate" abstract="true">
+		<property name="mailSender" ref="mailSender"/>
 		<property name="velocityEngine" ref="velocityEngine"/>
 		<property name="fromAddress" ref="fromAddress"/>
 	</bean>
+
+	<bean id="oneWeekReminderService"
+		class="dk.bregnvig.formula1.event.OneWeekReminderService"
+		scope="prototype" parent="mailerTemplate">
+		<property name="days" value="7" />
+	</bean>
+	
+	<bean id="noMoreMoneyReminderServce" 
+		class="dk.bregnvig.formula1.event.NoMoreMoneyReminderService"
+		parent="mailerTemplate">
+	</bean>
+	
+	
 	
 	<bean id="fromAddress" class="java.lang.String">
-		<constructor-arg value="general@codeweasels.net"/>
+		<constructor-arg value="flemming@bregnvig.dk"/>
 	</bean>
 
 	<!-- service used by the Account bean -->
