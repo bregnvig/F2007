@@ -26,16 +26,6 @@
 			</roles>
 			<timezone>+1</timezone>
 		</developer>
-		<developer>
-			<name>Thomas Trebbien Pedersen</name>
-			<id>ttp</id>
-			<email>thomas@3bien.dk</email>
-			<organization>3bien ApS</organization>
-			<roles>
-				<role>Web developer</role>
-			</roles>
-			<timezone>+1</timezone>
-		</developer>
 	</developers>
 	<url>http://f2007.codeweasels.net</url>
 	<build>
@@ -62,14 +52,14 @@
 	<repositories>
 		<repository>
 			<id>central</id>
-			<url>http://codeweasels.net:8080/artifactory/repo</url>
+			<url>http://codeweasels.net/artifactory/repo</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 		<repository>
 			<id>snapshots</id>
-			<url>http://codeweasels.net:8080/artifactory/repo</url>
+			<url>http://codeweasels.net/artifactory/repo</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -78,14 +68,14 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>central</id>
-			<url>http://codeweasels.net:8080/artifactory/repo</url>
+			<url>http://codeweasels.net/artifactory/repo</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
 		<pluginRepository>
 			<id>snapshots</id>
-			<url>http://codeweasels.net:8080/artifactory/repo</url>
+			<url>http://codeweasels.net/artifactory/repo</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
