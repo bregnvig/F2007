@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -160,13 +161,12 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		return clientRaces;
 	}
 
-	public List<ClientDriver> getClientDrivers(Collection<Driver> drivers) {
+	public Set<ClientDriver> getClientDrivers(Collection<Driver> drivers) {
 		
-		List<ClientDriver> clientDrivers = new ArrayList<ClientDriver>(drivers.size());
+		Set<ClientDriver> clientDrivers = new HashSet<ClientDriver>(drivers.size());
 		for (Driver driver : drivers) {
 			clientDrivers.add(create(driver));
 		}
-		Collections.sort(clientDrivers, new ClientDriver.NumberComparator());
 		return clientDrivers;
 	}
 

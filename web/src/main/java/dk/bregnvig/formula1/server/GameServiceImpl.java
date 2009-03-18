@@ -1,6 +1,8 @@
 package dk.bregnvig.formula1.server;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.gwtwidgets.server.spring.ServletUtils;
@@ -138,11 +140,12 @@ public class GameServiceImpl extends AbstractService implements GameService {
 
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void createRace(ClientRace clientRace) {
+	public ClientRace createRace(ClientRace clientRace) {
 		Race race = new Race();
 		objectFactory.map(clientRace, race);
 		getContext().getSeason().addRace(race);
 		clientRace.setId(race.getId());
+		return clientRace;
 	}
 
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
@@ -156,7 +159,9 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	@Transactional(readOnly = true)
 	public List<ClientDriver> findAllDrivers() {
 		List<Driver> drivers = service.findAllDrivers();
-		return objectFactory.getClientDrivers(drivers);
+		List<ClientDriver> clientDrivers = new ArrayList<ClientDriver>(objectFactory.getClientDrivers(drivers));
+		Collections.sort(clientDrivers, new ClientDriver.NumberComparator());
+		return clientDrivers;
 	}
 
 	@Authorization(roles = { PlayerRole.ACCOUNT_ADMIN })
@@ -181,6 +186,11 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		Driver driver = new Driver();
 		objectFactory.map(clientDriver, driver);
 		service.updateDriver(driver);
+		if (clientDriver.isPartOfSeason()) {
+			getContext().getSeason().addDriver(driver);
+		} else {
+			getContext().getSeason().removeDriver(driver);
+		}
 	}
 
 	@Authorization(roles = { PlayerRole.PLAYER })

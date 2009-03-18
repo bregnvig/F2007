@@ -10,6 +10,7 @@ public class ClientDriver implements IsSerializable {
 	private int number;
 	private String name;
 	private boolean active = true;
+	private boolean partOfSeason = false;
 	private int points;
 	
 	public Long getId() {
@@ -73,6 +74,14 @@ public class ClientDriver implements IsSerializable {
 	public void setPoints(int points) {
 		this.points = points;
 	}
+	
+	public boolean isPartOfSeason() {
+		return partOfSeason;
+	}
+	public void setPartOfSeason(boolean partOfSeason) {
+		this.partOfSeason = partOfSeason;
+	}
+
 	
 
 }

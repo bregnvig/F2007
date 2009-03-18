@@ -29,9 +29,6 @@ public class MainPanel extends DockPanel {
 	private Widget screenTitle;
 	private WaitingPanel waiting = new WaitingPanel("100%", "100%");
 	
-	/**
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientRace>
-	 */
 	private ClientRace openRace;
 	
 	public MainPanel(F2007 mediator) {

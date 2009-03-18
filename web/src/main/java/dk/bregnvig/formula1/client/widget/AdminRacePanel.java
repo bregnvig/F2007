@@ -133,19 +133,21 @@ public class AdminRacePanel extends ContentPanel {
 						closeTime.setDate(closeDate.getDate());
 						race.setCloseDate(closeTime.getDate());
 						
-						AsyncCallback callback = new AsyncCallback() {
+						AsyncCallback<ClientRace> callback = new AsyncCallback<ClientRace>() {
 
 							public void onFailure(Throwable exception) {
 								getMediator().reportError(exception.getMessage());
 							}
 
-							public void onSuccess(Object arg0) {
+							public void onSuccess(ClientRace createdRace) {
 								String message = isEditing() ? "Løbet er blevet opdateret" : "Løbet er blevet oprettet"; 
 								messagePanel.setStatus(message);
 								if (isEditing() == false) {
 									getMediator().getSeason().getRaces().add(race);
+									race.setId(createdRace.getId());
 									setRace(new ClientRace());
 								}
+								loadRaces();
 							}
 
 						};
@@ -154,7 +156,6 @@ public class AdminRacePanel extends ContentPanel {
 						} else {
 							getMediator().getGameService().createRace(race, callback);
 						}
-						loadRaces();
 					}
 				}
 			});

@@ -53,12 +53,9 @@ public abstract class ContentPanel extends VerticalPanel {
 		}
 	}
 	
-	/**
-	 * @gwt.typeArgs issues <dk.bregnvig.formula1.client.validation.Issue>
-	 */
-	protected void markIssues(List issues) {
-		for (Iterator iterator = issues.iterator(); iterator.hasNext();) {
-			Issue issue = (Issue) iterator.next();
+	protected void markIssues(List<Issue> issues) {
+		for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
+			Issue issue = iterator.next();
 			if (issue.getField().getStylePrimaryName().length() != 0) {
 				issue.getField().addStyleDependentName("error");
 			} else {
@@ -68,11 +65,8 @@ public abstract class ContentPanel extends VerticalPanel {
 		}
 	}
 	
-	/**
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.validation.Issue>
-	 */
-	protected List validate(Rule[] rules) {
-		List result = new ArrayList();
+	protected List<Issue> validate(Rule[] rules) {
+		List<Issue> result = new ArrayList<Issue>();
 		
 		for (int i = 0; i < rules.length; i++) {
 			result.addAll(rules[i].validate());

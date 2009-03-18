@@ -1,8 +1,10 @@
 package dk.bregnvig.formula1.client.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -10,20 +12,9 @@ public class ClientSeason implements IsSerializable{
 
 	private String name;
 	
-	/**
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientPlayer>
-	 */
-	private List players;
-
-	/**
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientRace>
-	 */
-	private List races;
-
-	/**
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientDriver>
-	 */
-	private List drivers;
+	private List<ClientPlayer> players;
+	private List<ClientRace> races;
+	private Set<ClientDriver> drivers;
 
 	public String getName() {
 		return name;
@@ -59,14 +50,11 @@ public class ClientSeason implements IsSerializable{
 		this.races = races;
 	}
 
-	public List getDrivers() {
+	public Set<ClientDriver> getDrivers() {
 		return drivers;
 	}
 	
-	/**
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientDriver>
-	 */
-	public List getActiveDriver() {
+	public List<ClientDriver> getActiveDriver() {
 		List activeDrivers = new ArrayList();
 		Iterator i = getDrivers().iterator();
 		while (i.hasNext()) {
@@ -75,10 +63,11 @@ public class ClientSeason implements IsSerializable{
 				activeDrivers.add(driver);
 			}
 		}
+		Collections.sort(activeDrivers, new ClientDriver.NumberComparator());
 		return activeDrivers;
 	}
 
-	public void setDrivers(List drivers) {
+	public void setDrivers(Set<ClientDriver> drivers) {
 		this.drivers = drivers;
 	}
 }

@@ -12,10 +12,7 @@ public class PlayerListBox extends ListBox {
 
 	private F2007 mediator;
 	
-	/**
-	 *  @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientPlayer>
-	 */
-	private List fetchedPlayers;
+	private List<ClientPlayer> fetchedPlayers;
 
 	public PlayerListBox(F2007 mediator) {
 		super();
@@ -26,14 +23,14 @@ public class PlayerListBox extends ListBox {
 	
 	private void loadPlayers() {
 		
-		AsyncCallback callback = new AsyncCallback() {
+		AsyncCallback<List<ClientPlayer>> callback = new AsyncCallback<List<ClientPlayer>>() {
 
 			public void onFailure(Throwable exception) {
 				mediator.reportError(exception.getMessage());
 			}
 
-			public void onSuccess(Object argument) {
-				fetchedPlayers = (List) argument;
+			public void onSuccess(List<ClientPlayer> argument) {
+				fetchedPlayers = argument;
 				setPlayers();
 			}
 		};
@@ -42,8 +39,12 @@ public class PlayerListBox extends ListBox {
 	
 	public void setPlayers() {
 		
+		List<ClientPlayer> seasonPlayers = mediator.getSeason().getPlayers(); 
 		for (int i = 0; i < fetchedPlayers.size(); i++) {
 			ClientPlayer player = (ClientPlayer) fetchedPlayers.get(i);
+			if (seasonPlayers.contains(player)) {
+				player.setPartOfSeason(true);
+			}
 			addItem(player.getName(), player.getPlayername());
 		}
 	}

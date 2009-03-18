@@ -2,7 +2,6 @@ package dk.bregnvig.formula1.client.domain;
 
 import java.util.Comparator;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class ClientPlayer extends Object implements IsSerializable {
@@ -19,6 +18,7 @@ public class ClientPlayer extends Object implements IsSerializable {
 	private boolean gameAdministrator;
 	private boolean bankAdministrator;
 	private boolean wbcParticipant;
+	private boolean partOfSeason;
 	private boolean bettingMoneyAvailable;
 
 	public String getPlayername() {
@@ -79,7 +79,7 @@ public class ClientPlayer extends Object implements IsSerializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (GWT.getTypeName(this).equals(GWT.getTypeName(obj)) == false)
+		if (this.getClass().getName().equals(obj.getClass().getName()) == false)
 			return false;
 		final ClientPlayer other = (ClientPlayer) obj;
 		if (playername == null) {
@@ -107,7 +107,7 @@ public class ClientPlayer extends Object implements IsSerializable {
 		this.balance = amount;
 	}
 	public boolean isPartOfSeason() {
-		return true;
+		return partOfSeason;
 	}
 	public boolean isWbcParticipant() {
 		return wbcParticipant;
@@ -119,6 +119,7 @@ public class ClientPlayer extends Object implements IsSerializable {
 		this.wbcParticipant = wbcParticipant;
 	}
 	public void setPartOfSeason(boolean partOfSeason) {
+		this.partOfSeason = partOfSeason;
 	}
 	public void setBettingMoneyAvailable(boolean bidMoneyAvailable) {
 		this.bettingMoneyAvailable = bidMoneyAvailable;

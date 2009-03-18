@@ -22,12 +22,12 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>org.maven.ide.eclipse.maven2Builder</name>
+			<name>org.springframework.ide.eclipse.core.springbuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>org.springframework.ide.eclipse.core.springbuilder</name>
+			<name>org.maven.ide.eclipse.maven2Builder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
@@ -42,34 +42,19 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>src/main/webapp/tracks</name>
+			<name>src/main/webapp/drivers</name>
 			<type>2</type>
-			<locationURI>PUBLIC/tracks</locationURI>
+			<locationURI>WEB_PROJECT/web/src/main/resources/dk/bregnvig/formula1/public/drivers</locationURI>
 		</link>
 		<link>
 			<name>src/main/webapp/other</name>
 			<type>2</type>
-			<locationURI>PUBLIC/other</locationURI>
+			<locationURI>WEB_PROJECT/web/src/main/resources/dk/bregnvig/formula1/public/other</locationURI>
 		</link>
 		<link>
-			<name>src/main/webapp/F2007.html</name>
-			<type>1</type>
-			<locationURI>PUBLIC/F2007.html</locationURI>
-		</link>
-		<link>
-			<name>src/main/webapp/f2007.css</name>
-			<type>1</type>
-			<location>/Users/4u603ctpsz9/Documents/workspace/F2007/web/src/main/resources/dk/bregnvig/formula1/public/f2007.css</location>
-		</link>
-		<link>
-			<name>src/main/webapp/drivers</name>
+			<name>src/main/webapp/tracks</name>
 			<type>2</type>
-			<locationURI>PUBLIC/drivers</locationURI>
-		</link>
-		<link>
-			<name>src/main/webapp/ajax-loader.gif</name>
-			<type>1</type>
-			<locationURI>PUBLIC/ajax-loader.gif</locationURI>
+			<locationURI>WEB_PROJECT/web/src/main/resources/dk/bregnvig/formula1/public/tracks</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

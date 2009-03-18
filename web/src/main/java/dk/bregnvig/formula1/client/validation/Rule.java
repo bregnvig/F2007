@@ -3,13 +3,12 @@ package dk.bregnvig.formula1.client.validation;
 import java.util.List;
 import java.util.Set;
 
+import com.google.gwt.user.client.ui.TextBoxBase;
+
 public interface Rule {
 	
 	
-	/**
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.validation.Issue>
-	 */
-	List validate();
+	List<Issue> validate();
 	
 	/**
 	 * Returns true if any futher validation should be suspended. 
@@ -17,9 +16,6 @@ public interface Rule {
 	 */
 	boolean supendValidation();
 	
-	/**
-	 * @gwt.typeArgs <com.google.gwt.user.client.ui.TextBoxBase>
-	 */
-	Set getFields();
+	Set<TextBoxBase> getFields();
 	
 }
