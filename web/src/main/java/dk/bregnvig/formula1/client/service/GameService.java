@@ -8,6 +8,7 @@ import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
+import dk.bregnvig.formula1.client.domain.ClientWBCEntry;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.domain.bid.ClientResult;
@@ -98,7 +99,7 @@ public interface GameService extends RemoteService {
 	 * Adds a race to the current season
 	 * @param race
 	 */
-	void createRace(ClientRace race);
+	ClientRace createRace(ClientRace race);
 
 	/**
 	 * Updates a race
@@ -125,25 +126,17 @@ public interface GameService extends RemoteService {
 	/**
 	 * Returns the list of all drivers in the system.
 	 * @return
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientDriver>
 	 */
-	List findAllDrivers();
+	List<ClientDriver> findAllDrivers();
 
 	/**
 	 * Returns the list of all players in the system.
 	 * @return
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientPlayer>
 	 */
-	List findAllPlayers();
+	List<ClientPlayer> findAllPlayers();
 	
-	/**
-	 *  @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientWBCEntry>
-	 */
-	List fetchWBCStanding();
+	List<ClientWBCEntry> fetchWBCStanding();
 
 	
-	/**
-	 *  @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientWBCEntry>
-	 */
-	List fetchWBCStanding(ClientRace race);
+	List<ClientWBCEntry> fetchWBCStanding(ClientRace race);
 }

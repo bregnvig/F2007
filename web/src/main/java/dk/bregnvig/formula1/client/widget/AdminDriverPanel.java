@@ -77,20 +77,21 @@ public class AdminDriverPanel extends ContentPanel {
 	
 	private void loadDrivers() {
 		
-		AsyncCallback callback = new AsyncCallback() {
+		AsyncCallback<List<ClientDriver>> callback = new AsyncCallback<List<ClientDriver>>() {
 
 			public void onFailure(Throwable exception) {
 				getMediator().reportError(exception.getMessage());
 			}
 
-			public void onSuccess(Object argument) {
-				fetchedDrivers = (List) argument;
+			public void onSuccess(List<ClientDriver> fetchedDrivers) {
+				AdminDriverPanel.this.fetchedDrivers = fetchedDrivers;
 				int previousSelection = drivers.getSelectedIndex();
 				previousSelection = previousSelection == -1 ? 0 : previousSelection;
 				drivers.clear();
 				drivers.addItem("Opret");
 				for (int i = 0; i < fetchedDrivers.size(); i++) {
-					ClientDriver driver = (ClientDriver) fetchedDrivers.get(i);
+					ClientDriver driver = fetchedDrivers.get(i);
+					driver.setPartOfSeason(getMediator().getSeason().getDrivers().contains(driver));
 					drivers.addItem(driver.getName(), driver.getId().toString());
 				}
 				drivers.setSelectedIndex(previousSelection);
@@ -108,6 +109,7 @@ public class AdminDriverPanel extends ContentPanel {
 		private TextBox driverNumber;
 		
 		private CheckBox active;
+		private CheckBox partOfSeason;
 		
 		private ClientDriver driver;
 
@@ -126,6 +128,9 @@ public class AdminDriverPanel extends ContentPanel {
 			setWidget(row, 0, new FormLabel("Aktiv"));
 			setWidget(row++, 1, active = new CheckBox());
 
+			setWidget(row, 0, new FormLabel("Del af sæson"));
+			setWidget(row++, 1, partOfSeason = new CheckBox());
+
 			updateDriverInfo = new Button("Opret", new ClickListener() {
 
 				public void onClick(Widget arg0) {
@@ -134,6 +139,7 @@ public class AdminDriverPanel extends ContentPanel {
 						driver.setName(driverName.getText());
 						driver.setNumber(Integer.parseInt(driverNumber.getText()));
 						driver.setActive(active.isChecked());
+						driver.setPartOfSeason(partOfSeason.isChecked());
 						
 						AsyncCallback callback = new AsyncCallback() {
 
@@ -144,12 +150,15 @@ public class AdminDriverPanel extends ContentPanel {
 							public void onSuccess(Object arg0) {
 								String message = isEditing() ? "Køreren er blevet opdateret" : "Køreren er blevet oprettet"; 
 								messagePanel.setStatus(message);
-								if (isEditing() == false) {
+								if (driver.isPartOfSeason()) {
 									getMediator().getSeason().getDrivers().add(driver);
+								} else {
+									getMediator().getSeason().getDrivers().remove(driver);
+								}
+								if (isEditing() == false) {
 									setDriver(new ClientDriver());
 								}
 							}
-
 						};
 						if (isEditing()) {
 							getMediator().getGameService().updateDriver(driver, callback);
@@ -172,6 +181,7 @@ public class AdminDriverPanel extends ContentPanel {
 			driverName.setText(driver.getName());
 			driverNumber.setText(Integer.toString(driver.getNumber()));
 			active.setChecked(driver.isActive());
+			partOfSeason.setChecked(driver.isPartOfSeason());
 			driverImage.setDriver(driver);
 		}
 

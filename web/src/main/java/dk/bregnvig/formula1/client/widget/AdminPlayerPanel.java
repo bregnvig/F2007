@@ -142,7 +142,7 @@ public class AdminPlayerPanel extends ContentPanel {
 		
 		private PlayerListBox players;
 		private CheckBox wbcParticipant;
-//		private CheckBox partOfSeason;
+		private CheckBox partOfSeason;
 		private Button updatePersonalInfo;
 		
 		private ClientPlayer player;
@@ -190,8 +190,8 @@ public class AdminPlayerPanel extends ContentPanel {
 			setWidget(row++, 1, smsNumber = new TextBox());
 
 			if (isAdminMode()) {
-//				setWidget(row, 0, new FormLabel("Deltager i sæsonen"));
-//				setWidget(row++, 1, partOfSeason = new CheckBox());
+				setWidget(row, 0, new FormLabel("Deltager i sæsonen"));
+				setWidget(row++, 1, partOfSeason = new CheckBox());
 				setWidget(row, 0, new FormLabel("Med i WBC?"));
 				setWidget(row++, 1, wbcParticipant = new CheckBox());
 			}
@@ -203,7 +203,7 @@ public class AdminPlayerPanel extends ContentPanel {
 						if (isAdminMode()) {
 							player.setPlayername(playerName.getText());
 							player.setWbcParticipant(wbcParticipant.isChecked());
-//							player.setPartOfSeason(partOfSeason.isChecked());
+							player.setPartOfSeason(partOfSeason.isChecked());
 						}
 						player.setFirstName(firstName.getText());
 						player.setLastName(lastName.getText());
@@ -219,6 +219,13 @@ public class AdminPlayerPanel extends ContentPanel {
 								String message = isCreateMode() ? "Spilleren er blevet oprettet" : "Dine informationer er blevet opdateret"; 
 								messagePanel.setStatus(message);
 								if (isAdminMode()) {
+									List<ClientPlayer> players = getMediator().getSeason().getPlayers();
+									if (player.isPartOfSeason() == true && players.contains(player) == false) {
+										players.add(player);
+									}
+									if (player.isPartOfSeason() == false) {
+										players.remove(player);
+									}
 									resetPlayer();
 								}
 							}
@@ -281,6 +288,7 @@ public class AdminPlayerPanel extends ContentPanel {
 			if (isAdminMode()) {
 				playerName.setText(player.getPlayername());
 				wbcParticipant.setChecked(player.isWbcParticipant());
+				partOfSeason.setChecked(player.isPartOfSeason());
 			}
 			updatePersonalInfo.setText("Opdater");
 			createMode = false;

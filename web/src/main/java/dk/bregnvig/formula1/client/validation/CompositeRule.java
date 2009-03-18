@@ -6,17 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.google.gwt.user.client.ui.TextBoxBase;
+
 public class CompositeRule implements Rule {
 
-	/**
-	 * @gwt.typeArgs <com.google.gwt.user.client.ui.TextBoxBase>
-	 */
-	private Set fields = new HashSet(5); 
+	private Set<TextBoxBase> fields = new HashSet(5); 
 	
-	/**
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.validation.Rule>
-	 */
-	private List rules = new ArrayList();
+	private List<Rule> rules = new ArrayList();
 	
 	public CompositeRule addRule(Rule rule) {
 		rules.add(rule);
@@ -26,9 +22,8 @@ public class CompositeRule implements Rule {
 
 	/**
 	 * @return A list of issueds or an empty list. Never null.
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.validation.Issue>
 	 */
-	public List validate() {
+	public List<Issue> validate() {
 		
 		List issues = new ArrayList();
 		

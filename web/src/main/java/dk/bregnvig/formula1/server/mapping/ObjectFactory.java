@@ -2,6 +2,7 @@ package dk.bregnvig.formula1.server.mapping;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import dk.bregnvig.formula1.Bid;
 import dk.bregnvig.formula1.Driver;
@@ -32,7 +33,7 @@ public interface ObjectFactory {
 	
 	ClientAccount create(Account account);
 	
-	List<ClientDriver> getClientDrivers(Collection<Driver> drivers);
+	Set<ClientDriver> getClientDrivers(Collection<Driver> drivers);
 
 	List<ClientPlayer> getClientPlayers(Collection<Player> players);
 	

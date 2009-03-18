@@ -17,10 +17,7 @@ public class DatePicker extends FlowPanel {
 	
 	private Date date;
 	
-	/**
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.widget.control.DatePicker.Month>
-	 */
-	private List months;
+	private List<Month> months;
 	
 	public DatePicker(Date date) {
 
@@ -131,10 +128,7 @@ public class DatePicker extends FlowPanel {
 		}
 
 		
-		/**
-		 * @gwt.typeArgs <java.lang.String>
-		 */
-		private static List names = new ArrayList(12);
+		private static List<String> names = new ArrayList(12);
 		static {
 			names.add("Januar");
 			names.add("Februar");

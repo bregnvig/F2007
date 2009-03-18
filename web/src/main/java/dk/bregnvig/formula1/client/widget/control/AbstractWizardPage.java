@@ -3,6 +3,7 @@ package dk.bregnvig.formula1.client.widget.control;
 import java.util.List;
 
 import dk.bregnvig.formula1.client.F2007;
+import dk.bregnvig.formula1.client.validation.Issue;
 import dk.bregnvig.formula1.client.validation.Rule;
 import dk.bregnvig.formula1.client.widget.ContentPanel;
 import dk.bregnvig.formula1.client.widget.MainPanel;
@@ -18,10 +19,7 @@ public abstract class AbstractWizardPage extends ContentPanel {
 	protected abstract Rule[] getRules();
 	
 	public boolean validate() {
-		/**
-		 * @gwt.typeArgs <dk.bregnvig.formula1.client.validation.Issue>
-		 */
-		List issues = validate(getRules());
+		List<Issue> issues = validate(getRules());
 		unmarkFields(getRules());
 		markIssues(issues);
 		

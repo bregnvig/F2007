@@ -17,10 +17,7 @@ public class DriverSelection extends VerticalPanel {
 	
 	private int currentDriverIndex;
 	
-	/**
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientDriver>
-	 */
-	private final List activeDrivers;
+	private final List<ClientDriver> activeDrivers;
 	private final Label name = new Label();
 	private final DriverImage image = new DriverImage();
 	private final String title;

@@ -27,15 +27,8 @@ public class WBCPanel extends ContentPanel {
 	private final VerticalPanel rightSide;
 	private final BigLabel title = new BigLabel("WBC Mesterskabet");
 
-	/**
-	 *  @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientWBCEntry>
-	 */
-	private List standing;
-
-	/**
-	 *  @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientWBCEntry>
-	 */
-	private List selected;
+	private List<ClientWBCEntry> standing;
+	private List<ClientWBCEntry> selected;
 
 	
 	public WBCPanel(final F2007 mediator, final MainPanel mainPanel) {
@@ -148,11 +141,7 @@ public class WBCPanel extends ContentPanel {
 	
 	private class RaceLink extends Label {
 		
-		/**
-		 *  @gwt.typeArgs <dk.bregnvig.formula1.client.domain.ClientWBCEntry>
-		 */
-		private List standing;
-		
+		private List<ClientWBCEntry> standing;
 		private final ClientRace race;
 
 		RaceLink(ClientRace race) {

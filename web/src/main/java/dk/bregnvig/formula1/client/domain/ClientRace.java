@@ -23,10 +23,7 @@ public class ClientRace implements IsSerializable{
 	private boolean participant;
 	private ClientDriver selectedDriver;
 	private boolean fullyLoaded;
-	/**
-	 * @gwt.typeArgs <dk.bregnvig.formula1.client.domain.bid.ClientBid>
-	 */
-	private List bids = new ArrayList();
+	private List<ClientBid> bids = new ArrayList<ClientBid>();
 	
 	private ClientResult result;
 		
@@ -88,7 +85,7 @@ public class ClientRace implements IsSerializable{
 		this.participant = true;
 	}
 
-	public List getBids() {
+	public List<ClientBid> getBids() {
 		return bids;
 	}
 	
