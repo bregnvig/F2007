@@ -4,14 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,15 +24,13 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import dk.bregnvig.formula1.bid.ResultStrategy;
-import dk.bregnvig.formula1.event.AbstractRaceListener;
-import dk.bregnvig.formula1.event.RaceTimer;
+import dk.bregnvig.formula1.service.EventService;
 
 /**
  * Contains a single race
@@ -49,11 +42,6 @@ import dk.bregnvig.formula1.event.RaceTimer;
 @Table(name="race")
 @Configurable
 public class Race {
-	
-	private static Map<Race, Race> timersMap = new HashMap<Race, Race>(); 
-	private static Map<Race, Race> listenersMap = new HashMap<Race, Race>(); 
-	
-	private Log log = LogFactory.getLog(Race.class);
 	
 	private Long id;
 
@@ -67,21 +55,12 @@ public class Race {
 	private Set<Player> playersThatSubmitted = new HashSet<Player>();
 	private RaceResult raceResult;
 	private ResultStrategy resultStrategy;
-	private List<AbstractRaceListener> listeners = new ArrayList<AbstractRaceListener>();
-	private List<RaceTimer> timers = new ArrayList<RaceTimer>();
-	private Timer timer;
-	
+	private EventService eventService;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)	
 	public Long getId() {
 		return id;
-	}
-	
-	@Transient
-	public void initialize() {
-		createRaceListeners();
-		createRaceTimers();
 	}
 
 	public void setId(Long id) {
@@ -106,7 +85,6 @@ public class Race {
 	public void setClose(Calendar close) {
 		validateDates(this.open, close);
 		this.close = close;
-		initialize();
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -118,7 +96,6 @@ public class Race {
 	public void setOpen(Calendar open) {
 		validateDates(open, this.close);
 		this.open = open;
-		initialize();
 	}
 	
 	/**
@@ -139,32 +116,6 @@ public class Race {
 	public boolean isClosed() {
 		Calendar now = Calendar.getInstance();
 		return close.before(now);
-	}
-
-	@Transient
-	public List<RaceTimer> getTimers() {
-		return timers;
-	}
-
-	/**
-	 * Sets the timers that the race has to deal with
-	 * @param timers
-	 */
-	public void setTimers(List<RaceTimer> timers) {
-		this.timers = timers;
-	}
-
-	@Transient
-	public List<AbstractRaceListener> getListeners() {
-		return listeners;
-	}
-	
-	/**
-	 * Sets the listeners that the race has to deal with
-	 * @param listeners
-	 */
-	public void setListeners(List<AbstractRaceListener> listeners) {
- 		this.listeners = listeners;
 	}
 	
 	private void validateDates(Calendar open, Calendar close) {
@@ -326,10 +277,7 @@ public class Race {
 	 		setCompleted(true);
 	 		resultStrategy.calculateResult(raceResult, bids);
 	 		transferWinnings();
-	 		for (AbstractRaceListener listener : listenersMap.get(this).getListeners()) {
-	 			listener.raceCompleted();
-			}
-	 		
+	 		eventService.raceCompleted(this);
 		}
 	}
 	
@@ -384,77 +332,11 @@ public class Race {
 	public void setResultStrategy(ResultStrategy resultStrategy) {
 		this.resultStrategy = resultStrategy;
 	}
-	
-	private void createRaceTimers() {
-		if (isInitialized() == false) {
-			return;
-		}
-		if (isClosed() == true || timers == null || timers.size() == 0) {
-			timers = null;
-			return; 
-		}
-		if (timer != null) {
-			timer.cancel();
-		}
-		
-		timer = new Timer(true);
-		Date now = new Date();
-		for (RaceTimer raceTimer : timers) {
-			raceTimer.setRace(this);
-			Date when  = close.getTime();
-			when.setTime(when.getTime()-raceTimer.getBeforeInMillis());
-			if (when.after(now)) {
-				log.info("Added timer at " + when + " for " + raceTimer.getClass().getName());
-				timer.schedule(new InternalRaceTimer(raceTimer), when);
-			}
-		}
-		timersMap.put(this, this);
-	}
-	
-	private void createRaceListeners() {
-		if (isInitialized() == false) {
-			return;
-		}
-		if (isCompleted()) {
-			listeners = null;
-			return;
-		}
-		cancelPreviousListeners();
-		listenersMap.put(this, this);
-		for (AbstractRaceListener listener : listeners) {
-			log.info("Added listener: " + listener.getClass().getName());
-			listener.setRace(this);
-		}
-	}
-	
-	private void cancelPreviousListeners() {
-		Race race = listenersMap.get(this);
-		if (race != null && race.getListeners() != null) {
-			for (AbstractRaceListener listener : race.getListeners()) {
-				log.info("Cancelling previous listener:" + listener.getClass().getName());
-				listener.cancel();
-			}
-		}
-	}
 
 	@Transient
-	private boolean isInitialized() {
-		return close != null && open != null && name != null;
-	}
-	
-	private class InternalRaceTimer extends TimerTask {
-		
-		private RaceTimer raceTimer;
-		
-		public InternalRaceTimer(RaceTimer raceTimer) {
-			this.raceTimer = raceTimer;
-		}
-
-		@Override
-		public void run() {
-			raceTimer.invoke();
-		}
-		
+	@Required
+	public void setEventService(EventService eventService) {
+		this.eventService = eventService;
 	}
 	
 	private class ResultComparator implements Comparator<Bid> {

@@ -1,5 +1,6 @@
 package dk.bregnvig.formula1.util;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 import javax.persistence.EntityManager;
@@ -12,6 +13,7 @@ import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Race;
 import dk.bregnvig.formula1.RaceResult;
 import dk.bregnvig.formula1.Season;
+import dk.bregnvig.formula1.service.impl.EventServiceImpl;
 
 
 
@@ -44,6 +46,12 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 	protected RaceResult raceResultMonza;
 	protected RaceResult raceResultSpa;
 	
+	protected EventServiceImpl eventService;
+	
+	public void setEventService(EventServiceImpl eventService) {
+		this.eventService = eventService;
+	}
+
 	protected CreatorHelper helper = new CreatorHelper();
 	
 
@@ -72,6 +80,10 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 		getEntityManager().persist(ttp = helper.getPlayer("ttp"));
 		getEntityManager().persist(bookie = helper.getPlayer("bookie"));
 
+		flb.getAccount().deposit("Start money", new BigDecimal(100));
+		mba.getAccount().deposit("Start money", new BigDecimal(100));
+		ttp.getAccount().deposit("Start money", new BigDecimal(100));
+		
 		season = new Season();
 		season.setName("F1 2007");
 		season.addDriver(kimi);
@@ -88,7 +100,9 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 		monza = new Race();
 		monza.setSelectedDriver(kimi);
 		monza.setName("Monza");
-		monza.setOpen(Calendar.getInstance());
+		Calendar begin = Calendar.getInstance();
+		begin.add(Calendar.SECOND, -1);
+		monza.setOpen(begin);
 		Calendar close = Calendar.getInstance();
 		close.add(Calendar.MINUTE, 2);
 		monza.setClose(close);
@@ -96,7 +110,7 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 		spa = new Race();
 		spa.setSelectedDriver(massa);
 		spa.setName("Spa");
-		Calendar begin = Calendar.getInstance();
+		begin = Calendar.getInstance();
 		begin.add(Calendar.MINUTE, 5);
 		spa.setOpen(begin);
 		Calendar close2 = Calendar.getInstance();
@@ -116,6 +130,7 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 		raceResultSpa = helper.getRaceResult(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, button, 1, 1, 10000);
 
 		getEntityManager().persist(season);
+		eventService.initialized();
 	}
 	
 	

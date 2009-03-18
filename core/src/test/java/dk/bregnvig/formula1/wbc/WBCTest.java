@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import dk.bregnvig.formula1.event.AbstractRaceListener;
 import dk.bregnvig.formula1.util.AbstractDaoTest;
 import dk.bregnvig.formula1.util.SMSServiceDummyImpl;
 
 public class WBCTest extends AbstractDaoTest {
+	
+	private SMSCongratulator congratulator;
+
+	public void setCongratulator(SMSCongratulator congratulator) {
+		this.congratulator = congratulator;
+	}
 
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
@@ -86,15 +91,6 @@ public class WBCTest extends AbstractDaoTest {
 	
 	public void testSMSSending() throws Exception {
 
-		List<AbstractRaceListener> listeners =  monza.getListeners();
-		
-		SMSCongratulator congratulator = null;
-		for (AbstractRaceListener listener : listeners) {
-			if (listener instanceof SMSCongratulator) {
-				congratulator = (SMSCongratulator) listener;
-			}
-		}
-		
 		SMSServiceDummyImpl service = new SMSServiceDummyImpl();
 		congratulator.setSMSService(service);
 		

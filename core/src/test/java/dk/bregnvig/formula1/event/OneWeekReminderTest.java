@@ -1,37 +1,32 @@
 package dk.bregnvig.formula1.event;
 
-import org.springframework.context.ApplicationContext;
-
 import dk.bregnvig.formula1.util.AbstractDaoTest;
+import dk.bregnvig.formula1.util.DummyMailServiceImpl;
 
 public class OneWeekReminderTest extends AbstractDaoTest {
 
-	private ApplicationContext context;
 	private OneWeekReminderService service;
-	
-	@Override
-	protected void onSetUpInTransaction() throws Exception {
-		super.onSetUpInTransaction();
-		context = getApplicationContext();
-		service.setRace(monza);
-	}
+	private DummyMailServiceImpl mailService;
 	
 	public void testInitialized() {
-		assertNotNull(context);
 		assertNotNull(service);
+		assertNotNull(mailService);
 	}
 	
 	public void testLetterSending() {
+		mailService.players.clear();
 		monza.addBid(ttpMonzaBid);
-		
-		service.invoke();
+		service.invoke(monza);
+		assertEquals(2, mailService.players.size());
+		assertEquals(true, mailService.players.contains(flb));
+		assertEquals(true, mailService.players.contains(mba));
 	}
 
 	public void setOneWeekReminderService(OneWeekReminderService service) {
 		this.service = service;
 	}
-	
-	
-	
 
+	public void setMailService(DummyMailServiceImpl mailService) {
+		this.mailService = mailService;
+	}
 }
