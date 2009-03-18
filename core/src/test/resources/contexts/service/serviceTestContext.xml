@@ -9,4 +9,5 @@
               http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 	<bean id="smsService" class="dk.bregnvig.formula1.util.SMSServiceDummyImpl"/>
+	<bean id="mailSender" class="dk.bregnvig.formula1.util.DummyMailServiceImpl"/>
 </beans>

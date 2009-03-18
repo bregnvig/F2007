@@ -43,7 +43,7 @@
 			</bean>
 		</property>
 		<property name="jpaProperties">
-			<value>hibernate.hbm2ddl.auto=create-drop</value>
+			<value>hibernate.hbm2ddl.auto=none</value>
 		</property>
 	</bean>
 </beans>

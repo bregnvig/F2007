@@ -1,27 +1,18 @@
 package dk.bregnvig.formula1.wbc;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import dk.bregnvig.formula1.Race;
+import dk.bregnvig.formula1.event.RaceListener;
 
-import dk.bregnvig.formula1.event.AbstractRaceListener;
+public class WBCListener implements RaceListener {
 
-public class WBCListener extends AbstractRaceListener{
-	
-	
-	
-	@Override
-	public void raceClosed() {
+	public void raceClosed(Race race) {
 	}
 
-	@Override
-	@Transactional(readOnly=false, propagation = Propagation.REQUIRED)
-	public void raceCompleted() {
-		
-		WBC wbc = getRace().getSeason().getWBC();
-		wbc.raceCompleted(getRace());
+	public void raceCompleted(Race race) {
+		WBC wbc = race.getSeason().getWBC();
+		wbc.raceCompleted(race);
 	}
 
-	@Override
-	public void raceOpened() {
+	public void raceOpened(Race race) {
 	}
 }

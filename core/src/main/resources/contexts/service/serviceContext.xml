@@ -12,6 +12,10 @@
 		so that it has a reference to the bean factory 
 	-->
 	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	</bean>
+	
+	
 	<aop:spring-configured/>
 
 	<bean id="smsService" class="dk.bregnvig.formula1.service.impl.SMSServiceImpl">
@@ -20,6 +24,27 @@
 				<property name="serviceUrl" value="http://www.ditbarn.net/Service/sms"/>
 				<property name="serviceInterface" value="net.codeweasels.service.SMSService"/>
 			</bean>
+		</property>
+	</bean>
+	
+	<bean id="smsCongratulator" class="dk.bregnvig.formula1.wbc.SMSCongratulator">
+		<property name="SMSService" ref="smsService"/>
+		<property name="velocityEngine" ref="velocityEngine"/>
+	</bean>
+	<bean id="eventService" class="dk.bregnvig.formula1.service.impl.EventServiceImpl" init-method="initialized">
+		<property name="seasonName" value="${season.name}"></property>
+		<property name="service"><ref local="gameService"/></property>
+		<property name="listeners">
+			<list>
+				<bean class="dk.bregnvig.formula1.wbc.WBCListener"/>
+				<ref local="smsCongratulator"/>
+				<ref local="noMoreMoneyReminderServce"/>
+			</list>
+		</property>
+		<property name="timers">
+			<list>
+				<ref local="oneWeekReminderService" />
+			</list>
 		</property>
 	</bean>
 	
@@ -42,20 +67,7 @@
 	-->
 	<bean class="dk.bregnvig.formula1.Race">
 		<property name="resultStrategy" ref="resultStrategy" />
-		<property name="timers">
-			<list>
-				<ref local="oneWeekReminderService" />
-			</list>
-		</property>
-		<property name="listeners">
-			<list>
-				<bean class="dk.bregnvig.formula1.wbc.WBCListener"/>
-				<bean class="dk.bregnvig.formula1.wbc.SMSCongratulator">
-					<property name="SMSService" ref="smsService"/>
-					<property name="velocityEngine" ref="velocityEngine"/>
-				</bean>
-			</list>
-		</property>
+		<property name="eventService"><ref local="eventService"/></property>
 	</bean>
 	
 	<bean id="mailerTemplate" abstract="true">
@@ -67,7 +79,6 @@
 	<bean id="oneWeekReminderService"
 		class="dk.bregnvig.formula1.event.OneWeekReminderService"
 		scope="prototype" parent="mailerTemplate">
-		<property name="days" value="7" />
 	</bean>
 	
 	<bean id="noMoreMoneyReminderServce" 
