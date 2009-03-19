@@ -9,17 +9,17 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import dk.bregnvig.formula1.Race;
 import dk.bregnvig.formula1.event.RaceListener;
-import dk.bregnvig.formula1.service.SMSService;
+import dk.bregnvig.formula1.sms.SMSGateway;
 import dk.bregnvig.formula1.wbc.WBC.Entry;
 
 public class SMSCongratulator implements RaceListener {
 	
-	private SMSService service;
+	private SMSGateway gateway;
 	private VelocityEngine velocityEngine;
 
 	@Required
-	public void setSMSService(SMSService service) {
-		this.service = service;
+	public void setSMSGateway(SMSGateway gateway) {
+		this.gateway = gateway;
 	}
 
 	@Required
@@ -37,7 +37,7 @@ public class SMSCongratulator implements RaceListener {
 			if (entry.getPlayer().getSms() != null && entry.getPlayer().getSms().length() != 0) {
 				Map<String, Object> model = new HashMap<String, Object>(3);
 				model.put("entry", entry);
-				service.sendSMS(entry.getPlayer().getSms(), VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "templates/smsResult.vm", model));
+				gateway.sendSMS(entry.getPlayer().getSms(), VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "templates/smsResult.vm", model));
 			}
 		}
 	}

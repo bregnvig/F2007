@@ -10,6 +10,7 @@ import java.util.TimerTask;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
 import dk.bregnvig.formula1.Race;
 import dk.bregnvig.formula1.Season;
@@ -27,6 +28,7 @@ public class EventServiceImpl implements EventService {
 	private List<RaceListener> listeners;
 	private GameService service;
 	private String seasonName;
+	private PropertyPlaceholderConfigurer bla;
 
 	public void setSeasonName(String seasonName) {
 		this.seasonName = seasonName;
@@ -165,5 +167,13 @@ public class EventServiceImpl implements EventService {
 		public void run() {
 			timer.invoke(race);
 		}
+	}
+
+	public PropertyPlaceholderConfigurer getBla() {
+		return bla;
+	}
+
+	public void setBla(PropertyPlaceholderConfigurer bla) {
+		this.bla = bla;
 	}
 }

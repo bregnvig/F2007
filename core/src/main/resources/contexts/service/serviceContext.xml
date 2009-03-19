@@ -12,27 +12,20 @@
 		so that it has a reference to the bean factory 
 	-->
 	
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-	</bean>
-	
-	
 	<aop:spring-configured/>
 
-	<bean id="smsService" class="dk.bregnvig.formula1.service.impl.SMSServiceImpl">
-		<property name="service">
-			<bean class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
-				<property name="serviceUrl" value="http://www.ditbarn.net/Service/sms"/>
-				<property name="serviceInterface" value="net.codeweasels.service.SMSService"/>
-			</bean>
-		</property>
+	<bean id="smsGateway" class="dk.bregnvig.formula1.sms.impl.CPSMSGatewayImpl">
+		<property name="from" value="${season.name}" />
+		<property name="username" value="bregnvig" />
+		<property name="password" value="CAQVNG" />
 	</bean>
 	
 	<bean id="smsCongratulator" class="dk.bregnvig.formula1.wbc.SMSCongratulator">
-		<property name="SMSService" ref="smsService"/>
+		<property name="SMSGateway" ref="smsGateway"/>
 		<property name="velocityEngine" ref="velocityEngine"/>
 	</bean>
 	<bean id="eventService" class="dk.bregnvig.formula1.service.impl.EventServiceImpl" init-method="initialized">
-		<property name="seasonName" value="${season.name}"></property>
+		<property name="seasonName" value="${season.name}" />
 		<property name="service"><ref local="gameService"/></property>
 		<property name="listeners">
 			<list>
