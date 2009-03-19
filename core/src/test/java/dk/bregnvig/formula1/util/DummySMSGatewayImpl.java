@@ -1,11 +1,12 @@
 package dk.bregnvig.formula1.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import dk.bregnvig.formula1.service.SMSService;
+import dk.bregnvig.formula1.sms.SMSGateway;
 
-public class SMSServiceDummyImpl implements SMSService {
+public class DummySMSGatewayImpl implements SMSGateway {
 
 	private List<String> numbers = new ArrayList<String>();
 	private List<String> messages = new ArrayList<String>();
@@ -30,5 +31,21 @@ public class SMSServiceDummyImpl implements SMSService {
 			}
 		}
 		return false;
+	}
+
+	public void sendSMS(Collection<String> numbers, String message) {
+		for (String number : numbers) {
+			sendSMS(number, message);
+		}
+	}
+
+	public void setFrom(String from) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setStatusURL(String url) {
+		// TODO Auto-generated method stub
+		
 	}
 }

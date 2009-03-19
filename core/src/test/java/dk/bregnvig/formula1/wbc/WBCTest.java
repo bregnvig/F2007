@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import dk.bregnvig.formula1.util.AbstractDaoTest;
-import dk.bregnvig.formula1.util.SMSServiceDummyImpl;
+import dk.bregnvig.formula1.util.DummySMSGatewayImpl;;
 
 public class WBCTest extends AbstractDaoTest {
 	
@@ -91,8 +91,8 @@ public class WBCTest extends AbstractDaoTest {
 	
 	public void testSMSSending() throws Exception {
 
-		SMSServiceDummyImpl service = new SMSServiceDummyImpl();
-		congratulator.setSMSService(service);
+		DummySMSGatewayImpl service = new DummySMSGatewayImpl();
+		congratulator.setSMSGateway(service);
 		
     	monza.addBid(flbMonzaBid);
     	monza.addBid(mbaMonzaBid);
