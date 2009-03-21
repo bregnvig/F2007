@@ -28,7 +28,11 @@ public class CreatorHelper {
 		player.setFirstName("first"+playername);
 		player.setLastName("last"+playername);
 		player.setEmailAddress("flemming.bregnvig@gmail.com");
-		player.setSms("28712234");
+		if (playername.equals("mba")) {
+			player.setSms("20896003");
+		} else {
+			player.setSms("28712234");
+		}
 		player.setPassword("mypassword");
 		Set<PersistentRole> roles = new HashSet<PersistentRole>();
 		PersistentRole role = new PersistentRole();

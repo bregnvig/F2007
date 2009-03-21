@@ -82,7 +82,7 @@
 	
 	
 	<bean id="fromAddress" class="java.lang.String">
-		<constructor-arg value="flemming@bregnvig.dk"/>
+		<constructor-arg><value>flemming@bregnvig.dk</value></constructor-arg>
 	</bean>
 
 	<!-- service used by the Account bean -->
@@ -107,9 +107,9 @@
 
 	<bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="mail.codeweasels.net" />
-		<property name="username" value="general@codeweasels.net" />
-		<property name="password" value="omega" />
+		<property name="host" value="mail.bregnvig.dk" />
+		<property name="username" value="flemming@bregnvig.dk" />
+		<property name="password" value="Indy.500" />
 		<property name="defaultEncoding" value="ISO-8859-1"/>
 	</bean>
 

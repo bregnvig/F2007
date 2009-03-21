@@ -23,7 +23,6 @@ public class CPSMSGatewayImpl implements SMSGateway {
 	private String statusURL;
 	
 	public CPSMSGatewayImpl() {
-		System.out.println("**************************************************");
 	}
 
 	public void sendSMS(String number, String message) {
