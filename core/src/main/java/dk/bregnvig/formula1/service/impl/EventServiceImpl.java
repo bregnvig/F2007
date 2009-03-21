@@ -10,7 +10,8 @@ import java.util.TimerTask;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import dk.bregnvig.formula1.Race;
 import dk.bregnvig.formula1.Season;
@@ -28,7 +29,6 @@ public class EventServiceImpl implements EventService {
 	private List<RaceListener> listeners;
 	private GameService service;
 	private String seasonName;
-	private PropertyPlaceholderConfigurer bla;
 
 	public void setSeasonName(String seasonName) {
 		this.seasonName = seasonName;
@@ -46,7 +46,7 @@ public class EventServiceImpl implements EventService {
 		return Collections.unmodifiableList(timers);
 	}
 	
-	
+	@Transactional(readOnly = true, propagation=Propagation.REQUIRED)
 	public void initialized() {
 		Season season = service.findByName(seasonName);
 		
@@ -122,8 +122,8 @@ public class EventServiceImpl implements EventService {
 			raceOpened(race);
 		}
 
-		int getDelay() {
-			return (int) (race.getOpen().getTime().getTime() - new Date().getTime());
+		long getDelay() {
+			return race.getOpen().getTime().getTime() - new Date().getTime();
 		}
 
 		boolean isValid() {
@@ -144,8 +144,8 @@ public class EventServiceImpl implements EventService {
 			raceClosed(race);
 		}
 		
-		int getDelay() {
-			return (int) (race.getClose().getTime().getTime() - new Date().getTime());
+		long getDelay() {
+			return race.getClose().getTime().getTime() - new Date().getTime();
 		}
 		
 		boolean isValid() {
@@ -167,13 +167,5 @@ public class EventServiceImpl implements EventService {
 		public void run() {
 			timer.invoke(race);
 		}
-	}
-
-	public PropertyPlaceholderConfigurer getBla() {
-		return bla;
-	}
-
-	public void setBla(PropertyPlaceholderConfigurer bla) {
-		this.bla = bla;
 	}
 }

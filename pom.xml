@@ -44,6 +44,12 @@
 					<argLine>
 						-javaagent:${user.home}/.m2/repository/aspectj/aspectjweaver/1.5.3/aspectjweaver-1.5.3.jar
 					</argLine>
+					<systemProperties>
+						<property>
+			              <name>CONFIG_PATH</name>
+			              <value>classpath:environment/test.properties</value>
+			            </property>
+		            </systemProperties>
 					<useSystemClassLoader>true</useSystemClassLoader>
 				</configuration>
 			</plugin>

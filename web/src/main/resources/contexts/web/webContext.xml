@@ -23,7 +23,7 @@
 	</bean>
 
 	<bean id="webContext" class="dk.bregnvig.formula1.server.context.impl.WebContextImpl">
-		<property name="seasonName" value="F1 2009"/>
+		<property name="seasonName" value="${season.name}"/>
 	</bean>
 	
 	<bean id="mapper" class="dk.bregnvig.formula1.server.mapping.impl.ObjectFactoryImpl">
