@@ -47,7 +47,7 @@ public class EventServiceImpl implements EventService {
 	}
 	
 	@Transactional(readOnly = true, propagation=Propagation.REQUIRED)
-	public void initialized() {
+	public void initialize() {
 		Season season = service.findByName(seasonName);
 		
 		if (season == null) {

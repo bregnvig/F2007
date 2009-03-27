@@ -24,7 +24,7 @@
 		<property name="SMSGateway" ref="smsGateway"/>
 		<property name="velocityEngine" ref="velocityEngine"/>
 	</bean>
-	<bean id="eventService" class="dk.bregnvig.formula1.service.impl.EventServiceImpl" init-method="initialized">
+	<bean id="eventService" class="dk.bregnvig.formula1.service.impl.EventServiceImpl" init-method="initialize">
 		<property name="seasonName" value="${season.name}" />
 		<property name="service"><ref local="gameService"/></property>
 		<property name="listeners">
@@ -72,6 +72,11 @@
 	<bean id="oneWeekReminderService"
 		class="dk.bregnvig.formula1.event.OneWeekReminderService"
 		scope="prototype" parent="mailerTemplate">
+	</bean>
+
+	<bean id="twoHourReminderService" class="dk.bregnvig.formula1.event.TwoHourReminderService" scope="prototype">
+		<property name="gateway" ref="smsGateway" />
+		<property name="velocityEngine" ref="velocityEngine" />
 	</bean>
 	
 	<bean id="noMoreMoneyReminderServce" 

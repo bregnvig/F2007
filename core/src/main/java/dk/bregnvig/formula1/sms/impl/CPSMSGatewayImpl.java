@@ -41,11 +41,12 @@ public class CPSMSGatewayImpl implements SMSGateway {
 		uriString.append("http://www.cpsms.dk/sms/");
 		uriString.append("?username=").append(username);
 		uriString.append("&password=").append(password);
+		uriString.append("&utf8=1");
 		uriString.append(getNumbers(numbers));
 
 		try {
-			uriString.append("&from=").append(URLEncoder.encode(from, "ISO-8859-1"));
-			uriString.append("&message=").append(URLEncoder.encode(message, "ISO-8859-1"));
+			uriString.append("&from=").append(URLEncoder.encode(from, "UTF-8"));
+			uriString.append("&message=").append(URLEncoder.encode(message, "UTF-8"));
 			if (statusURL != null) {
 				uriString.append("&url=").append(statusURL);
 			}

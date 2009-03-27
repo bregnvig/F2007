@@ -1,10 +1,8 @@
 package dk.bregnvig.formula1.event;
 
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
@@ -12,19 +10,17 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
-import dk.bregnvig.formula1.Bid;
 import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Race;
 import dk.bregnvig.formula1.util.PlayerMessagePreparator;
 
-public class OneWeekReminderService implements RaceTimer {
+public class OneWeekReminderService extends AbstractReminderService {
 
 	private static Locale DA_DK = new Locale("da", "DK");
 	private static SimpleDateFormat weekday = new SimpleDateFormat("EEEEE", DA_DK);
@@ -32,19 +28,10 @@ public class OneWeekReminderService implements RaceTimer {
 	
 	private Log log = LogFactory.getLog(OneWeekReminderService.class);
 	private JavaMailSender mailSender;
-	private VelocityEngine velocityEngine;
 	private String fromAddress;
 
-	public void invoke(Race race) {
-		log.info("OneWeekReminderService started");
-		Collection<Player> players = getNonplayingPlayers(race);
-		for (Player player : players) {
-			sendConfirmationEmail(race, player);
-		}
-	}
-	
 	public int getDelay(Race race) {
-		return (int) ((race.getOpen().getTime().getTime() - RaceTimer.DAY * 7) - new Date().getTime()); 
+		return (int) ((race.getClose().getTime().getTime() - RaceTimer.DAY * 7) - new Date().getTime()); 
 	}
 
 	@Required
@@ -52,25 +39,13 @@ public class OneWeekReminderService implements RaceTimer {
 		this.mailSender = mailSender;
 	}
 
-	@Required
-	public void setVelocityEngine(VelocityEngine velocityEngine) {
-		this.velocityEngine = velocityEngine;
-	}
-
-	private Collection<Player> getNonplayingPlayers(Race race) {
-		Collection<Player> result = new HashSet<Player>();
-		result.addAll(race.getSeason().getPlayers());
-
-		for (Bid bid : race.getBids()) {
-			result.remove(bid.getPlayer());
-		}
-		return result;
-	}
-
-	private void sendConfirmationEmail(final Race race, final Player player) {
+	@Override
+	void sendReminder(final Race race, final Player player) {
 		try {
-			log.info("Sending reminder to " + player.getEmailAddress() + " for race " + race.getName());
-			this.mailSender.send(new OneWeekReminderPreparator(race, player));
+			if (player.isEmailAddressAvailable()) {
+				log.info("Sending reminder to " + player.getEmailAddress() + " for race " + race.getName());
+				this.mailSender.send(new OneWeekReminderPreparator(race, player));
+			}
 		} catch (MailException e) {
 			log.error("Sending failed to " + player.getEmailAddress() + " for race " + race.getName(), e);
 		}
@@ -99,8 +74,8 @@ public class OneWeekReminderService implements RaceTimer {
 			model.put("race", race);
 			model.put("weekday", weekday.format(race.getClose().getTime()));
 			model.put("time", hours.format(race.getClose().getTime()));
-			message.setSubject(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "templates/oneWeekReminderSubject.vm", model));
-			message.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "templates/oneWeekReminderBody.vm", model), true);
+			message.setSubject(VelocityEngineUtils.mergeTemplateIntoString(getVelocityEngine(), "templates/oneWeekReminderSubject.vm", model));
+			message.setText(VelocityEngineUtils.mergeTemplateIntoString(getVelocityEngine(), "templates/oneWeekReminderBody.vm", model), true);
 		}
 
 		public Player getPlayer() {

@@ -1,0 +1,4 @@
+Hej ${player.firstName}
+
+Det er snart tid til at spille på ${race.name}.
+Spillet lukker klokken ${time}
