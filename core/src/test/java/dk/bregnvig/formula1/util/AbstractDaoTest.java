@@ -13,7 +13,7 @@ import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Race;
 import dk.bregnvig.formula1.RaceResult;
 import dk.bregnvig.formula1.Season;
-import dk.bregnvig.formula1.service.impl.EventServiceImpl;
+import dk.bregnvig.formula1.service.EventService;
 
 
 
@@ -46,9 +46,9 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 	protected RaceResult raceResultMonza;
 	protected RaceResult raceResultSpa;
 	
-	protected EventServiceImpl eventService;
+	protected EventService eventService;
 	
-	public void setEventService(EventServiceImpl eventService) {
+	public void setEventService(EventService eventService) {
 		this.eventService = eventService;
 	}
 
@@ -130,7 +130,7 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 		raceResultSpa = helper.getRaceResult(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, button, 1, 1, 10000);
 
 		getEntityManager().persist(season);
-		eventService.initialized();
+		eventService.initialize();
 	}
 	
 	

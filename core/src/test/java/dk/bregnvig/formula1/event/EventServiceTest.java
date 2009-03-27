@@ -17,13 +17,13 @@ public class EventServiceTest extends AbstractDaoTest {
     	timers.add(timer);
     	
     	eventService.setTimers(timers);
-    	eventService.initialized();
+    	eventService.initialize();
 
     	Thread.sleep(500);
     	
     	assertEquals(true, timer.monzaInvoked);
     	eventService.setTimers(backup);
-    	eventService.initialized();
+    	eventService.initialize();
     }
 
 
@@ -59,7 +59,7 @@ public class EventServiceTest extends AbstractDaoTest {
     	listeners.add(listener);
     	
     	eventService.setListeners(listeners);
-    	eventService.initialized();
+    	eventService.initialize();
     	
     	Thread.sleep(1000);
     	spa.addBid(flbSpaBid);
@@ -71,7 +71,7 @@ public class EventServiceTest extends AbstractDaoTest {
     	assertNotNull(listener.getCompleted());
     	
     	eventService.setListeners(backup);
-    	eventService.initialized();
+    	eventService.initialize();
 	}
 	
 	private class TestRaceListener implements RaceListener {

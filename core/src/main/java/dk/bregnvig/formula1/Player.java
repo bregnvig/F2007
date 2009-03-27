@@ -193,6 +193,11 @@ public class Player {
 		return getEmailAddress() != null && getEmailAddress().length() != 0;
 	}
 
+	@Transient
+	public boolean isSmsAvailable() {
+		return getSms() != null && getSms().isEmpty() == false;
+	}
+	
 	@Column(nullable = false)
 	public boolean isWbcParticipant() {
 		return wbcParticipant;
