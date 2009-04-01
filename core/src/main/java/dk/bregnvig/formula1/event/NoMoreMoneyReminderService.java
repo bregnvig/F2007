@@ -21,7 +21,7 @@ import dk.bregnvig.formula1.util.PlayerMessagePreparator;
 
 public class NoMoreMoneyReminderService implements RaceListener {
 	
-	private Log log = LogFactory.getLog(OneWeekReminderService.class);
+	private Log log = LogFactory.getLog(EmailReminderService.class);
 	private JavaMailSender mailSender;
 	private VelocityEngine velocityEngine;
 	private String fromAddress;

@@ -21,5 +21,5 @@ public interface RaceTimer {
 	 * @param race
 	 * @return
 	 */
-	int getDelay(Race race);
+	long getDelay(Race race);
 }
