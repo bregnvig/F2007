@@ -67,11 +67,15 @@ public class EventServiceImpl implements EventService {
 				log.info("Closed timer added for " + race.getName());
 				timer.schedule(closedTimer, closedTimer.getDelay());
 			}
+		}
+		for (Race race : races) {
 			for (RaceTimer timer : timers) {
-				int delay = timer.getDelay(race);
+				long delay = timer.getDelay(race);
 				if (delay > 100) {
-					log.info("Timer added for " + race.getName() + " for timer impl " + timer.getClass().getName());
+					log.info("Timer added for " + race.getName() + " for timer " + timer.getClass().getSimpleName() + " Delay: " + (delay/1000) + " seconds");
 					this.timer.schedule(new InternalTimer(race, timer), delay);
+				} else {
+					log.info("Timer NOT added for " + race.getName() + " for timer " + timer.getClass().getSimpleName() + " Delay: " + (delay/1000) + " seconds");
 				}
 			}
 		}

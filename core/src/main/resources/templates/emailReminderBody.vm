@@ -4,11 +4,11 @@
 
 <div>
 <p>
-Det er snart tid til at spille på ${race.name}.<br/>
+Det er snart tid til at spille pÃ¥ ${race.name}.<br/>
 Spillet lukker ${weekday} klokken ${time}
 </p>
 <p>
-Du kan spille <a href="http://formel1.codeweasels.net/f1?race=${race.id}">her</a>.
+Du kan spille <a href="http://formel1.codeweasels.net/">her</a>.
 </p>
 </div>
 

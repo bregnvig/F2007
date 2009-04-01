@@ -20,18 +20,18 @@ import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Race;
 import dk.bregnvig.formula1.util.PlayerMessagePreparator;
 
-public class OneWeekReminderService extends AbstractReminderService {
+public class EmailReminderService extends AbstractReminderService {
 
 	private static Locale DA_DK = new Locale("da", "DK");
 	private static SimpleDateFormat weekday = new SimpleDateFormat("EEEEE", DA_DK);
 	private static SimpleDateFormat hours = new SimpleDateFormat("HH:mm", DA_DK);
 	
-	private Log log = LogFactory.getLog(OneWeekReminderService.class);
+	private Log log = LogFactory.getLog(EmailReminderService.class);
 	private JavaMailSender mailSender;
 	private String fromAddress;
 
-	public int getDelay(Race race) {
-		return (int) ((race.getClose().getTime().getTime() - RaceTimer.DAY * 7) - new Date().getTime()); 
+	public long getDelay(Race race) {
+		return (race.getClose().getTime().getTime() - getInternalDelay()) - new Date().getTime(); 
 	}
 
 	@Required
@@ -74,8 +74,8 @@ public class OneWeekReminderService extends AbstractReminderService {
 			model.put("race", race);
 			model.put("weekday", weekday.format(race.getClose().getTime()));
 			model.put("time", hours.format(race.getClose().getTime()));
-			message.setSubject(VelocityEngineUtils.mergeTemplateIntoString(getVelocityEngine(), "templates/oneWeekReminderSubject.vm", model));
-			message.setText(VelocityEngineUtils.mergeTemplateIntoString(getVelocityEngine(), "templates/oneWeekReminderBody.vm", model), true);
+			message.setSubject(VelocityEngineUtils.mergeTemplateIntoString(getVelocityEngine(), "templates/emailReminderSubject.vm", model));
+			message.setText(VelocityEngineUtils.mergeTemplateIntoString(getVelocityEngine(), "templates/emailReminderBody.vm", model), true);
 		}
 
 		public Player getPlayer() {

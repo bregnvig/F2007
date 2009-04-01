@@ -6,10 +6,14 @@ import dk.bregnvig.formula1.util.DummySMSGatewayImpl;
 
 public class ReminderTest extends AbstractDaoTest {
 
-	private OneWeekReminderService oneWeekService;
-	private TwoHourReminderService twoHoursService;
+	private RaceTimer oneWeekService;
+	private RaceTimer twoHoursService;
 	private DummyMailServiceImpl mailService;
 	private DummySMSGatewayImpl gateway;
+	
+	public ReminderTest() {
+		setAutowireMode(AUTOWIRE_BY_NAME);
+	}
 	
 	public void testInitialized() {
 		assertNotNull(oneWeekService);
@@ -36,19 +40,19 @@ public class ReminderTest extends AbstractDaoTest {
 		assertEquals(true, gateway.getNumbers().contains(mba.getSms()));
 	}
 
-	public void setOneWeekReminderService(OneWeekReminderService service) {
+	public void setEmailReminderService(RaceTimer service) {
 		this.oneWeekService = service;
 	}
 
-	public void setTwoHoursReminderService(TwoHourReminderService service) {
+	public void setSmsReminderService(RaceTimer service) {
 		this.twoHoursService = service;
 	}
 
-	public void setMailService(DummyMailServiceImpl mailService) {
+	public void setMailSender(DummyMailServiceImpl mailService) {
 		this.mailService = mailService;
 	}
 
-	public void setSMSGateway(DummySMSGatewayImpl gateway) {
+	public void setSmsGateway(DummySMSGatewayImpl gateway) {
 		this.gateway = gateway;
 	}
 }

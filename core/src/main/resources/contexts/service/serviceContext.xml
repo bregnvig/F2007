@@ -36,7 +36,8 @@
 		</property>
 		<property name="timers">
 			<list>
-				<ref local="oneWeekReminderService" />
+				<ref local="emailReminderService" />
+				<ref local="smsReminderService" />
 			</list>
 		</property>
 	</bean>
@@ -69,14 +70,16 @@
 		<property name="fromAddress" ref="fromAddress"/>
 	</bean>
 
-	<bean id="oneWeekReminderService"
-		class="dk.bregnvig.formula1.event.OneWeekReminderService"
+	<bean id="emailReminderService"
+		class="dk.bregnvig.formula1.event.EmailReminderService"
 		scope="prototype" parent="mailerTemplate">
+		<property name="days" value="3" />
 	</bean>
 
-	<bean id="twoHourReminderService" class="dk.bregnvig.formula1.event.TwoHourReminderService" scope="prototype">
+	<bean id="smsReminderService" class="dk.bregnvig.formula1.event.SmsReminderService" scope="prototype">
 		<property name="gateway" ref="smsGateway" />
 		<property name="velocityEngine" ref="velocityEngine" />
+		<property name="hours" value="2" />
 	</bean>
 	
 	<bean id="noMoreMoneyReminderServce" 
@@ -115,7 +118,7 @@
 		<property name="host" value="mail.bregnvig.dk" />
 		<property name="username" value="flemming@bregnvig.dk" />
 		<property name="password" value="Indy.500" />
-		<property name="defaultEncoding" value="ISO-8859-1"/>
+		<property name="defaultEncoding" value="UTF-8"/>
 	</bean>
 
 	<bean id="velocityEngine"

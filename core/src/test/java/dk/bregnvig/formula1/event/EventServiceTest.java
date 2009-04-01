@@ -31,7 +31,7 @@ public class EventServiceTest extends AbstractDaoTest {
 		
 		private boolean monzaInvoked;
 
-		public int getDelay(Race race) {
+		public long getDelay(Race race) {
 			if (race.getName().equals(monza.getName())) return 300;
 			return -1;
 		}
