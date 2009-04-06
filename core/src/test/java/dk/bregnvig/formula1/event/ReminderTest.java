@@ -1,5 +1,6 @@
 package dk.bregnvig.formula1.event;
 
+import dk.bregnvig.formula1.dao.GameDao;
 import dk.bregnvig.formula1.util.AbstractDaoTest;
 import dk.bregnvig.formula1.util.DummyMailServiceImpl;
 import dk.bregnvig.formula1.util.DummySMSGatewayImpl;
@@ -10,6 +11,7 @@ public class ReminderTest extends AbstractDaoTest {
 	private RaceTimer twoHoursService;
 	private DummyMailServiceImpl mailService;
 	private DummySMSGatewayImpl gateway;
+	private GameDao dao;
 	
 	public ReminderTest() {
 		setAutowireMode(AUTOWIRE_BY_NAME);
@@ -24,6 +26,7 @@ public class ReminderTest extends AbstractDaoTest {
 	public void testLetterSending() {
 		mailService.players.clear();
 		monza.addBid(ttpMonzaBid);
+		getEntityManager().flush();
 		oneWeekService.invoke(monza);
 		assertEquals(2, mailService.players.size());
 		assertEquals(true, mailService.players.contains(flb));
@@ -34,6 +37,7 @@ public class ReminderTest extends AbstractDaoTest {
 		gateway.getNumbers().clear();
 		gateway.getMessages().clear();
 		monza.addBid(ttpMonzaBid);
+		getEntityManager().flush();
 		twoHoursService.invoke(monza);
 		assertEquals(2, gateway.getNumbers().size());
 		assertEquals(true, gateway.getNumbers().contains(flb.getSms()));
@@ -54,5 +58,9 @@ public class ReminderTest extends AbstractDaoTest {
 
 	public void setSmsGateway(DummySMSGatewayImpl gateway) {
 		this.gateway = gateway;
+	}
+
+	public void setSeasonDao(GameDao dao) {
+		this.dao = dao;
 	}
 }
