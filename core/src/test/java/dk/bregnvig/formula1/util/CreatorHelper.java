@@ -28,6 +28,7 @@ public class CreatorHelper {
 		player.setFirstName("first"+playername);
 		player.setLastName("last"+playername);
 		player.setEmailAddress("flemming.bregnvig@gmail.com");
+		player.setReminderWanted(true);
 		if (playername.equals("mba")) {
 			player.setSms("20896003");
 		} else {
