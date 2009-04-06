@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -141,8 +142,11 @@ public class AdminPlayerPanel extends ContentPanel {
 		private TextBox smsNumber;
 		
 		private PlayerListBox players;
+		private CheckBox reminderWanted;
 		private CheckBox wbcParticipant;
 		private CheckBox partOfSeason;
+		
+		private ListBox lastYearWBC;
 		private Button updatePersonalInfo;
 		
 		private ClientPlayer player;
@@ -189,11 +193,20 @@ public class AdminPlayerPanel extends ContentPanel {
 			setWidget(row, 0, smsNumberLabel = new FormLabel("Mobilnummer"));
 			setWidget(row++, 1, smsNumber = new TextBox());
 
+			setWidget(row, 0, new FormLabel("Modtag påmindelse?"));
+			setWidget(row++, 1, reminderWanted = new CheckBox());
 			if (isAdminMode()) {
 				setWidget(row, 0, new FormLabel("Deltager i sæsonen"));
 				setWidget(row++, 1, partOfSeason = new CheckBox());
 				setWidget(row, 0, new FormLabel("Med i WBC?"));
 				setWidget(row++, 1, wbcParticipant = new CheckBox());
+				setWidget(row, 0, new FormLabel("Sidste års WBC"));
+				lastYearWBC = new ListBox();
+				lastYearWBC.addItem("Ingen");
+				lastYearWBC.addItem("1");
+				lastYearWBC.addItem("2");
+				lastYearWBC.addItem("3");
+				setWidget(row++, 1, lastYearWBC);
 			}
 
 			updatePersonalInfo = new Button(isPlayerMode() ? "Opdater" : "Opret", new ClickListener() {
@@ -204,11 +217,13 @@ public class AdminPlayerPanel extends ContentPanel {
 							player.setPlayername(playerName.getText());
 							player.setWbcParticipant(wbcParticipant.isChecked());
 							player.setPartOfSeason(partOfSeason.isChecked());
+							player.setLastYearWBC(lastYearWBC.getSelectedIndex());
 						}
 						player.setFirstName(firstName.getText());
 						player.setLastName(lastName.getText());
 						player.setEmailAddress(emailAddress.getText());
 						player.setSms(smsNumber.getText());
+						player.setReminderWanted(reminderWanted.isChecked());
 						AsyncCallback callback = new AsyncCallback() {
 
 							public void onFailure(Throwable exception) {
@@ -274,7 +289,9 @@ public class AdminPlayerPanel extends ContentPanel {
 			emailAddress.setText("");
 			smsNumber.setText("");
 			updatePersonalInfo.setText("Opret");
+			reminderWanted.setChecked(false);
 			wbcParticipant.setChecked(false);
+			lastYearWBC.setSelectedIndex(0);
 			players.setSelectedIndex(0);
 			createMode = true;
 		}
@@ -285,10 +302,12 @@ public class AdminPlayerPanel extends ContentPanel {
 			lastName.setText(player.getLastName());
 			emailAddress.setText(player.getEmailAddress());
 			smsNumber.setText(player.getSms());
+			reminderWanted.setChecked(player.isReminderWanted());
 			if (isAdminMode()) {
 				playerName.setText(player.getPlayername());
 				wbcParticipant.setChecked(player.isWbcParticipant());
 				partOfSeason.setChecked(player.isPartOfSeason());
+				lastYearWBC.setSelectedIndex(player.getLastYearWBC());
 			}
 			updatePersonalInfo.setText("Opdater");
 			createMode = false;

@@ -20,6 +20,8 @@ public class ClientPlayer extends Object implements IsSerializable {
 	private boolean wbcParticipant;
 	private boolean partOfSeason;
 	private boolean bettingMoneyAvailable;
+	private boolean reminderWanted;
+	private int lastYearWBC;
 
 	public String getPlayername() {
 		return playername;
@@ -123,5 +125,17 @@ public class ClientPlayer extends Object implements IsSerializable {
 	}
 	public void setBettingMoneyAvailable(boolean bidMoneyAvailable) {
 		this.bettingMoneyAvailable = bidMoneyAvailable;
+	}
+	public boolean isReminderWanted() {
+		return reminderWanted;
+	}
+	public void setReminderWanted(boolean reminderWanted) {
+		this.reminderWanted = reminderWanted;
+	}
+	public int getLastYearWBC() {
+		return lastYearWBC >= 1 && lastYearWBC  <= 3 ? lastYearWBC : 0;
+	}
+	public void setLastYearWBC(int lastYearWBC) {
+		this.lastYearWBC = lastYearWBC;
 	}
 }
