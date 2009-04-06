@@ -35,6 +35,8 @@ public class Player {
 	private String emailAddress;
 	private String smsNumber;
 	private boolean wbcParticipant;
+	private boolean reminderWanted;
+	private int lastYearWBC;
 	private Account account = new Account();
 	
 	private Set<PersistentRole> roles = new HashSet<PersistentRole>();
@@ -205,5 +207,22 @@ public class Player {
 
 	public void setWbcParticipant(boolean wbcMember) {
 		this.wbcParticipant = wbcMember;
+	}
+
+	@Column(name="reminder", nullable=false)
+	public boolean isReminderWanted() {
+		return reminderWanted;
+	}
+
+	public void setReminderWanted(boolean reminderWanted) {
+		this.reminderWanted = reminderWanted;
+	}
+
+	public int getLastYearWBC() {
+		return lastYearWBC;
+	}
+
+	public void setLastYearWBC(int lastYearWBC) {
+		this.lastYearWBC = lastYearWBC;
 	}
 }

@@ -74,9 +74,11 @@
 		class="dk.bregnvig.formula1.event.EmailReminderService"
 		scope="prototype" parent="mailerTemplate">
 		<property name="days" value="3" />
+		<property name="dao" ref="seasonDao" />
 	</bean>
 
 	<bean id="smsReminderService" class="dk.bregnvig.formula1.event.SmsReminderService" scope="prototype">
+		<property name="dao" ref="seasonDao" />
 		<property name="gateway" ref="smsGateway" />
 		<property name="velocityEngine" ref="velocityEngine" />
 		<property name="hours" value="2" />
