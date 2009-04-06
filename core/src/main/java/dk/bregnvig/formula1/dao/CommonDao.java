@@ -4,7 +4,7 @@ public interface CommonDao {
 	
 	void persist(Object object);
 	
-	void merge(Object object);
+	<T> T merge(T object);
 	
 	void flush();
 }

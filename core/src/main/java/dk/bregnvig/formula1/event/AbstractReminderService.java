@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import dk.bregnvig.formula1.Bid;
 import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.Race;
+import dk.bregnvig.formula1.dao.GameDao;
 
 public abstract class AbstractReminderService implements RaceTimer {
 
@@ -20,19 +21,23 @@ public abstract class AbstractReminderService implements RaceTimer {
 	private VelocityEngine velocityEngine;
 	private int hours;
 	private int days;
+	private GameDao dao;
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-	public void invoke(Race race) {
-		log.info(this.getClass().getName() + " started");
+	public final void invoke(Race race) {
+		log.info(this.getClass().getName() + " started.");
+		race = dao.merge(race);
 		Collection<Player> players = getNonplayingPlayers(race);
 		for (Player player : players) {
-			sendReminder(race, player);
+			if (player.isReminderWanted()) {
+				sendReminder(race, player);
+			}
 		}
 	}
 	
 	abstract void sendReminder(Race race, Player player);
 	
-	Collection<Player> getNonplayingPlayers(Race race) {
+	private Collection<Player> getNonplayingPlayers(Race race) {
 		Collection<Player> result = new HashSet<Player>();
 		result.addAll(race.getSeason().getPlayers());
 
@@ -61,6 +66,10 @@ public abstract class AbstractReminderService implements RaceTimer {
 	
 	long getInternalDelay() {
 		return RaceTimer.DAY * days + RaceTimer.HOUR * hours;
+	}
+
+	public void setDao(GameDao dao) {
+		this.dao = dao;
 	}
 
 }
