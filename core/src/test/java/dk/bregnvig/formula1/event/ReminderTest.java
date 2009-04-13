@@ -1,6 +1,5 @@
 package dk.bregnvig.formula1.event;
 
-import dk.bregnvig.formula1.dao.GameDao;
 import dk.bregnvig.formula1.util.AbstractDaoTest;
 import dk.bregnvig.formula1.util.DummyMailServiceImpl;
 import dk.bregnvig.formula1.util.DummySMSGatewayImpl;
@@ -11,7 +10,6 @@ public class ReminderTest extends AbstractDaoTest {
 	private RaceTimer twoHoursService;
 	private DummyMailServiceImpl mailService;
 	private DummySMSGatewayImpl gateway;
-	private GameDao dao;
 	
 	public ReminderTest() {
 		setAutowireMode(AUTOWIRE_BY_NAME);
@@ -58,9 +56,5 @@ public class ReminderTest extends AbstractDaoTest {
 
 	public void setSmsGateway(DummySMSGatewayImpl gateway) {
 		this.gateway = gateway;
-	}
-
-	public void setSeasonDao(GameDao dao) {
-		this.dao = dao;
 	}
 }

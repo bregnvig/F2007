@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.gwtwidgets.server.spring.ServletUtils;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +14,9 @@ import dk.bregnvig.formula1.Driver;
 import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.PlayerRole;
 import dk.bregnvig.formula1.Race;
+import dk.bregnvig.formula1.RaceResult;
 import dk.bregnvig.formula1.Season;
+import dk.bregnvig.formula1.autoresult.AutomaticResult;
 import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
@@ -35,6 +38,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	private ObjectFactory objectFactory;
 
 	private dk.bregnvig.formula1.service.GameService service;
+	private AutomaticResult automaticResult;
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public String getSeasonName() {
@@ -132,10 +136,19 @@ public class GameServiceImpl extends AbstractService implements GameService {
 
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public ClientRace setResult(ClientResult result) {
-		Race race = getContext().getSeason().getCurrentRace();
+	public void setResult(ClientRace clientRace, ClientResult result) {
+		Race race = getContext().getSeason().getRaceById(clientRace.getId());
 		race.completeRace(objectFactory.create(result));
-		return objectFactory.createFull(race);
+	}
+
+	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void setAutoResult(ClientRace clientRace, String url) {
+		Race race = getContext().getSeason().getRaceById(clientRace.getId());
+		automaticResult.setURL(url);
+		RaceResult result = automaticResult.getRaceResult(race);
+		result.setPlayer(getContext().getPlayer());
+		race.completeRace(result);
 	}
 
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
@@ -146,6 +159,12 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		getContext().getSeason().addRace(race);
 		clientRace.setId(race.getId());
 		return clientRace;
+	}
+
+	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void rollbackRace(ClientRace clientRace) {
+		getContext().getSeason().getRaceById(clientRace.getId()).rollbackRace();
 	}
 
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
@@ -235,5 +254,10 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	public void accountWithdraw(ClientPlayer clientPlayer, String message, int amount) {
 		Player player = getContext().getSeason().getPlayer(clientPlayer.getPlayername());
 		player.getAccount().withdraw(message, new BigDecimal(amount));
+	}
+
+	@Required
+	public void setAutomaticResult(AutomaticResult automaticResult) {
+		this.automaticResult = automaticResult;
 	}
 }

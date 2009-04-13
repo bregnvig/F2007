@@ -85,4 +85,8 @@ public class NoMoreMoneyReminderService implements RaceListener {
 			return player;
 		}
 	}
+
+	@Override
+	public void raceRolledBack(Race race) {
+	}
 }

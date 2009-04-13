@@ -15,6 +15,12 @@ public interface EventService {
 	 * @param race
 	 */
 	void raceCompleted(Race race);
+
+	/**
+	 * Races calls this method if they are rolled back
+	 * @param race
+	 */
+	void raceRolledBack(Race race);
 	
 	List<RaceListener> getListeners();
 	void setListeners(List<RaceListener> listeners);

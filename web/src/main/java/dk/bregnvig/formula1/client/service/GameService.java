@@ -93,7 +93,18 @@ public interface GameService extends RemoteService {
 	 * Sets the result for the closed race
 	 * @param result
 	 */
-	ClientRace setResult(ClientResult result);
+	void setResult(ClientRace clientRace, ClientResult result);
+	
+	/**
+	 * Sets the URL that the result will be fetched by
+	 * @param url
+	 */
+	void setAutoResult(ClientRace clientRace, String url);
+	
+	/**
+	 * Rolls back the result of the race
+	 */
+	void rollbackRace(ClientRace race);
 	
 	/**
 	 * Adds a race to the current season

@@ -89,6 +89,23 @@ public class WBCTest extends AbstractDaoTest {
    		assertEquals(ttp, entries.get(2).getPlayer());
 	}
 	
+	public void testRollback() throws Exception {
+		testStanding();
+		
+		season.getWBC().raceRolledBack(spa);
+		
+		List<WBC.Entry> entries = season.getWBC().getStanding();
+   		assertEquals(10, entries.get(0).getPoints());
+   		assertEquals(8, entries.get(1).getPoints());
+   		assertEquals(6, entries.get(2).getPoints());
+   		
+   		assertEquals(flb, entries.get(0).getPlayer());
+   		assertEquals(mba, entries.get(1).getPlayer());
+   		assertEquals(ttp, entries.get(2).getPlayer());
+   		
+   		assertEquals(3, season.getWBC().getRaceEntries(monza).size());
+	}
+	
 	public void testSMSSending() throws Exception {
 
 		DummySMSGatewayImpl service = new DummySMSGatewayImpl();

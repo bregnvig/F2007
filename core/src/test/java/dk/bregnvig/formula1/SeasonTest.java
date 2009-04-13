@@ -33,9 +33,9 @@ public class SeasonTest extends AbstractDaoTest {
 
 		season = getEntityManager().find(Season.class, season.getId());
 		
-		assertTrue(season.getDrivers().contains(kimi));
-		assertTrue(season.getDrivers().contains(massa));
-		assertTrue(season.getDrivers().contains(hamilton));
+		assertTrue(season.getDrivers().contains(driver1));
+		assertTrue(season.getDrivers().contains(driver2));
+		assertTrue(season.getDrivers().contains(driver3));
 	}
 	
 	public void testFindPlayer() {
@@ -79,11 +79,11 @@ public class SeasonTest extends AbstractDaoTest {
 	public void testRacesCreated() {
 		
 		Race montreal = helper.getRace("Montreal");
-		montreal.setSelectedDriver(kimi);
+		montreal.setSelectedDriver(driver1);
 		Race indianpolis = helper.getRace("Indianpolis");
-		indianpolis.setSelectedDriver(massa);
+		indianpolis.setSelectedDriver(driver2);
 		Race brazil = helper.getRace("Brazil");
-		brazil.setSelectedDriver(hamilton);
+		brazil.setSelectedDriver(driver3);
 		
 		getEntityManager().persist(season);
 		getEntityManager().flush();

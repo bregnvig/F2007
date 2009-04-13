@@ -15,4 +15,11 @@ public class WBCListener implements RaceListener {
 
 	public void raceOpened(Race race) {
 	}
+
+	@Override
+	public void raceRolledBack(Race race) {
+		WBC wbc = race.getSeason().getWBC();
+		wbc.raceRolledBack(race);
+	}
 }
+

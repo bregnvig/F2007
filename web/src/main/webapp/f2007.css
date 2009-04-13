@@ -48,6 +48,7 @@ a:active {
 .gwt-Label-over {
 	color: #FFFF99;
 	font-weight: bold;
+	cursor: hand;
 }
 
 
@@ -79,6 +80,7 @@ a:active {
 .gwt-Label-title {
 	font-weight: bold;
 	font-size: 40px;
+	cursor: hand;
 }
 
 .gwt-Label-mini {
@@ -114,10 +116,12 @@ a:active {
 	font-weight: bold;
 	background-color: #C3D9FF;
 	border: 1px dotted #FFFFFF;
+	cursor: hand;
 	/*	border: 1px solid #87B3FF; */
 }
 .gwt-MenuBar .gwt-MenuItem-selected {
-	background-color: #9FC4FF; 
+	background-color: #9FC4FF;
+	cursor: hand; 
 }
 
 .southBorder {

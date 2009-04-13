@@ -110,8 +110,16 @@ public class Account {
 	
 	public void winnings(Race race, int winners) {
 		Player bookie = dao.findPlayerByName("bookie");
-		int amount = race.getBids().size() * bettingAmount.intValue() / winners; 
-		bookie.getAccount().transfer("Gevinst " + race.getName(), new BigDecimal(amount), this);
+		bookie.getAccount().transfer("Gevinst " + race.getName(), new BigDecimal(getWinningsAmount(race, winners)), this);
+	}
+
+	public void rollback(Race race, int winners) {
+		Player bookie = dao.findPlayerByName("bookie");
+		transfer("Fejl i afgørelse " + race.getName(), new BigDecimal(getWinningsAmount(race, winners)), bookie.getAccount());
+	}
+
+	private int getWinningsAmount(Race race, int winners) {
+		return race.getBids().size() * bettingAmount.intValue() / winners;
 	}
 
 	private void addEntry(Entry entry, String message, BigDecimal amount) {

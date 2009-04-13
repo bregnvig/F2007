@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import dk.bregnvig.formula1.client.F2007;
 import dk.bregnvig.formula1.client.domain.ClientDriver;
+import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.widget.control.BigLabel;
 import dk.bregnvig.formula1.client.widget.control.SpacerImage;
@@ -205,15 +206,18 @@ public class BidOverviewPanel extends ContentPanel {
 		Panel panel = new FlowPanel();
 		
 		for (int i = 0; i < drivers.length; i++) {
-			panel.add(getBidEntry(i+1, drivers[i]));
+			if (drivers[i] != null) {
+				panel.add(getBidEntry(i+1, drivers[i]));
+			}
 		}
 		return panel;
 	}
 	
 	private Label getBidEntry(int position, ClientDriver driver) {
+		ClientRace race = getMediator().getSelectedRace();
 		Label label = new BidEntrylabel(Integer.toString(position) + ". " + driver.getName());
 		label.setTitle(Integer.toString(driver.getPoints()) + " points");
-		if  (driver.getPoints() != 0) {
+		if  (driver.getPoints() != 0 && race.isCompleted()) {
 			label.addStyleName("gwt-Label-bidEntry-" +driver.getPoints() + "points");
 		}
 		return label;

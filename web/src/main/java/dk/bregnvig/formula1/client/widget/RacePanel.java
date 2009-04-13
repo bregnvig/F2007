@@ -2,6 +2,7 @@ package dk.bregnvig.formula1.client.widget;
 
 import java.util.Iterator;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -39,6 +40,7 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 	
 	private Button commandButton;
 	private Button seeButton;
+	private Button resultViaURLButton;
 	
 	private WizardPanel wizard;
 	private SelectGridPanel selectGrid;
@@ -89,7 +91,54 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 		});
 		addButton(commandButton);
 	}
-	
+
+	private void addRollbackButton() {
+		commandButton = new Button("Rollback", new ClickListener() {
+			public void onClick(Widget arg0) {
+				AsyncCallback callback = new AsyncCallback() {
+
+					public void onFailure(Throwable exception) {
+						getMediator().reportError(exception.getMessage());
+					}
+
+					public void onSuccess(Object arg0) {
+						getMediator().forceReloadSelectedRace(RacePanel.this);
+						getMainPanel().setCenterPanel(RacePanel.this);
+					}
+
+				};
+				if (Window.confirm("Er du sikker på du vil rulle resultatet tilbage?")) {
+					getMediator().getGameService().rollbackRace(getMediator().getSelectedRace(), callback);
+				}
+			}
+		});
+		addButton(commandButton);
+	}
+
+	private void addResultViaURLButton() {
+		resultViaURLButton = new Button("Indtast resultat via URL", new ClickListener() {
+			public void onClick(Widget arg0) {
+				AsyncCallback callback = new AsyncCallback() {
+
+					public void onFailure(Throwable exception) {
+						getMediator().reportError(exception.getMessage());
+					}
+
+					public void onSuccess(Object arg0) {
+						getMediator().forceReloadSelectedRace(RacePanel.this);
+						getMainPanel().setCenterPanel(RacePanel.this);
+					}
+
+				};
+				String url = Window.prompt("URL til resultat siden på formula1.com", getMediator().isTesting() ? "http://www.formula1.com/results/season/2009/806/6609/" : ""); 
+				if (url != null) {
+					getMediator().getGameService().setAutoResult(getMediator().getSelectedRace(), url, callback);
+				}
+			}
+		});
+		addButton(resultViaURLButton);
+	}
+
 	private void addSeeBidButton() {
 		seeButton = new Button(getMediator().getSelectedRace().isCompleted() ? "Se resultat" : "Se bud", new ClickListener() {
 			public void onClick(Widget arg0) {
@@ -109,6 +158,12 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 		if (commandButton != null) {
 			rightSide.remove(commandButton);
 		}
+		if (seeButton != null) {
+			rightSide.remove(seeButton);
+		}
+		if (resultViaURLButton != null) {
+			rightSide.remove(resultViaURLButton);
+		}
 	}
 	
 	
@@ -123,10 +178,7 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 			}
 
 			public void onSuccess(Object arg0) {
-				getMediator().getSelectedRace().participant();
-				getMediator().getSelectedRace().addBid(bid);
-				participants.reset();
-				removeCommandButton();
+				getMediator().forceReloadSelectedRace(RacePanel.this);
 				getMainPanel().setCenterPanel(RacePanel.this);
 			}
 
@@ -145,13 +197,11 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 			}
 
 			public void onSuccess(Object _race) {
-				ClientRace race = (ClientRace) _race;
-				race.setFullyLoaded(false);
-				getMediator().setSelectedRace(race, RacePanel.this);
+				getMediator().forceReloadSelectedRace(RacePanel.this);
 				getMainPanel().setCenterPanel(RacePanel.this);
 			}
 		};
-		getMediator().getGameService().setResult(result, callback);
+		getMediator().getGameService().setResult(getMediator().getSelectedRace(), result, callback);
 	}
 	
 	private ClientBid mapCommonInformation(ClientBid bid) {
@@ -257,10 +307,14 @@ public class RacePanel extends ContentPanel implements WizardCompletedListener, 
 			addSeeBidButton();
 			if (getMediator().getPlayer().isGameAdministrator() == true) {
 				addCommandButton("Indtast resultat");
+				addResultViaURLButton();
 			}
 			createWizard();
 		} else if (race.isCompleted()) {
 			addSeeBidButton();
+			if (getMediator().getPlayer().isGameAdministrator() == true) {
+				addRollbackButton();
+			}
 		} 
 	}
 }

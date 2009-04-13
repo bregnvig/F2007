@@ -103,6 +103,12 @@ public class EventServiceTest extends AbstractDaoTest {
 		public void raceOpened(Race race) {
 			opened = Calendar.getInstance();
 		}
+
+		@Override
+		public void raceRolledBack(Race race) {
+			// TODO Auto-generated method stub
+			
+		}
 		
 	}
 

@@ -280,8 +280,32 @@ public class Race {
 	 		eventService.raceCompleted(this);
 		}
 	}
+
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+	public void rollbackRace() {
+		validateCompleted();
+		rollbackWinnings();
+		setRaceResult(null);
+		setCompleted(false);
+		eventService.raceRolledBack(this);
+	}
 	
 	private void transferWinnings() {
+		List<Bid> winners = getWinners();
+		for (Bid winner : winners) {
+			winner.getPlayer().getAccount().winnings(this, winners.size());
+		}
+	}
+
+	private void rollbackWinnings() {
+		List<Bid> winners = getWinners();
+		for (Bid winner : winners) {
+			winner.getPlayer().getAccount().rollback(this, winners.size());
+		}
+	}
+	
+	@Transient
+	private List<Bid> getWinners() {
 		List<Bid> result = getResult();
 		List<Bid> winners = new ArrayList<Bid>(3);
 		int winningPoints = result.get(0).getPoints(); 
@@ -292,9 +316,7 @@ public class Race {
 				break;
 			}
 		}
-		for (Bid winner : winners) {
-			winner.getPlayer().getAccount().winnings(this, winners.size());
-		}
+		return winners;
 	}
 	
 	/**
