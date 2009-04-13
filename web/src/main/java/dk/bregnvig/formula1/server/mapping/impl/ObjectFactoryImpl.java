@@ -112,6 +112,9 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	}
 	
 	public ClientDriver create(Driver driver) {
+		if (driver == null) {
+			return null;
+		}
 		ClientDriver clientDriver = new ClientDriver();
 		BeanUtils.copyProperties(driver, clientDriver);
 		return clientDriver;

@@ -81,6 +81,11 @@ public class WBC {
 		setPreviousRace(race);
 	}
 	
+	public void raceRolledBack(Race race) {
+		entries.removeAll(getRaceEntries(race));
+		setPreviousRace(null);
+	}
+	
 	private void addEntry(Entry entry) {
 		entries.add(entry);
 	}
@@ -108,7 +113,7 @@ public class WBC {
 	}
 	
 	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(name="wbc_id", nullable=false)	
+	@JoinColumn(name="wbc_id")	
 	public Set<Entry> getEntries() {
 		return entries;
 	}

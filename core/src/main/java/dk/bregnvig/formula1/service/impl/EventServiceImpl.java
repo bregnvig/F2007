@@ -90,12 +90,22 @@ public class EventServiceImpl implements EventService {
 		return Collections.unmodifiableList(listeners);
 	}
 
+	@Override
+	@Transactional(readOnly = false, propagation=Propagation.REQUIRED)
 	public void raceCompleted(Race race) {
 		for (RaceListener listener : listeners) {
 			listener.raceCompleted(race);
 		}
 	}
-	
+
+	@Override
+	@Transactional(readOnly = false, propagation=Propagation.REQUIRED)
+	public void raceRolledBack(Race race) {
+		for (RaceListener listener : listeners) {
+			listener.raceRolledBack(race);
+		}
+	}
+
 	private Timer createTimer() {
 		if (timer != null) timer.cancel();
 		return timer = new Timer(true);

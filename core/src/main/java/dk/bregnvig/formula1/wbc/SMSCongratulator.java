@@ -27,9 +27,11 @@ public class SMSCongratulator implements RaceListener {
 		this.velocityEngine = velocityEngine;
 	}
 
+	@Override
 	public void raceClosed(Race race) {
 	}
 
+	@Override
 	public void raceCompleted(Race race) {
 		WBC wbc = race.getSeason().getWBC();
 		
@@ -42,6 +44,11 @@ public class SMSCongratulator implements RaceListener {
 		}
 	}
 
+	@Override
 	public void raceOpened(Race race) {
+	}
+
+	@Override
+	public void raceRolledBack(Race race) {
 	}
 }

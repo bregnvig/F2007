@@ -14,12 +14,12 @@ public class GridBidTest extends AbstractDaoTest {
 		super.onSetUpInTransaction();
 		bid = new GridBid();
 		
-		bid.setPosition1(kimi);
-		bid.setPosition2(kimi);
-		bid.setPosition3(kimi);
-		bid.setPosition4(kimi);
-		bid.setPosition5(kimi);
-		bid.setPosition6(kimi);
+		bid.setPosition1(driver1);
+		bid.setPosition2(driver1);
+		bid.setPosition3(driver1);
+		bid.setPosition4(driver1);
+		bid.setPosition5(driver1);
+		bid.setPosition6(driver1);
 	}
 	
 	public void testCreated() {
@@ -40,16 +40,16 @@ public class GridBidTest extends AbstractDaoTest {
 		getEntityManager().persist(bid);
 		GridBid other = new GridBid();
 		
-		other.setPosition1(kimi);
-		other.setPosition2(kimi);
-		other.setPosition3(kimi);
-		other.setPosition4(kimi);
-		other.setPosition5(kimi);
-		other.setPosition6(kimi);
+		other.setPosition1(driver1);
+		other.setPosition2(driver1);
+		other.setPosition3(driver1);
+		other.setPosition4(driver1);
+		other.setPosition5(driver1);
+		other.setPosition6(driver1);
 		
 		assertEquals(bid.hashCode(), other.hashCode());
 		
-		other.setPosition1(massa);
+		other.setPosition1(driver2);
 		assertFalse(bid.hashCode() == other.hashCode());
 	}
 
@@ -57,16 +57,16 @@ public class GridBidTest extends AbstractDaoTest {
 		getEntityManager().persist(bid);
 		GridBid other = new GridBid();
 		
-		other.setPosition1(kimi);
-		other.setPosition2(kimi);
-		other.setPosition3(kimi);
-		other.setPosition4(kimi);
-		other.setPosition5(kimi);
-		other.setPosition6(kimi);
+		other.setPosition1(driver1);
+		other.setPosition2(driver1);
+		other.setPosition3(driver1);
+		other.setPosition4(driver1);
+		other.setPosition5(driver1);
+		other.setPosition6(driver1);
 		
 		assertEquals(bid, other);
 		
-		other.setPosition1(massa);
+		other.setPosition1(driver2);
 		assertFalse(bid.equals(other));
 	}
 }

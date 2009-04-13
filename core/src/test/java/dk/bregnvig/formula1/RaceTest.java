@@ -36,7 +36,7 @@ public class RaceTest extends AbstractDaoTest {
 	}
 	
 	public void testAddBid() {
-		Bid bid = helper.getBid(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, 1, 1, 100000);
+		Bid bid = helper.getBid(flb, driver1, driver2, driver3, driver4, driver5, driver6, 1, 1, 100000);
 		monza.addBid(bid);
 		getEntityManager().flush();
 		assertNotNull(bid.getId());
@@ -53,7 +53,7 @@ public class RaceTest extends AbstractDaoTest {
 		
 		assertNotNull(player.getId());
 		
-		Bid bid = helper.getBid(player, kimi, massa, hamilton, alonso, heidfeld, kubica, 1, 1, 100000);
+		Bid bid = helper.getBid(player, driver1, driver2, driver3, driver4, driver5, driver6, 1, 1, 100000);
 		try {
 			monza.addBid(bid);
 			fail("Player not part of the game");
@@ -64,7 +64,7 @@ public class RaceTest extends AbstractDaoTest {
 	
 	public void addBidToNonOpenGame() {
 		try {
-			spa.addBid(helper.getBid(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, 1, 1, 100000));
+			spa.addBid(helper.getBid(flb, driver1, driver2, driver3, driver4, driver5, driver6, 1, 1, 100000));
 			fail("Game is not open");
 		} catch (IllegalStateException expected) {
 			
@@ -74,7 +74,7 @@ public class RaceTest extends AbstractDaoTest {
 	public void addBidToClosedGame() {
 		try {
 			Race australia = new Race();
-			australia.setSelectedDriver(massa);
+			australia.setSelectedDriver(driver2);
 			australia.setName("Spa");
 			Calendar begin = Calendar.getInstance();
 			begin.add(Calendar.MINUTE, -7);
@@ -83,7 +83,7 @@ public class RaceTest extends AbstractDaoTest {
 			close2.add(Calendar.MINUTE, -5);
 			australia.setClose(close2);
 			season.addRace(australia);
-			australia.addBid(helper.getBid(flb, kimi, massa, hamilton, alonso, heidfeld, kubica, 1, 1, 100000));
+			australia.addBid(helper.getBid(flb, driver1, driver2, driver3, driver4, driver5, driver6, 1, 1, 100000));
 			fail("Game is not open");
 		} catch (IllegalStateException expected) {
 			
@@ -91,12 +91,12 @@ public class RaceTest extends AbstractDaoTest {
 	}
 	
 	public void testDoubleAddBid() {
-		Bid bid = helper.getBid(flb, massa, kimi, hamilton, alonso, heidfeld, kubica, 1, 1, 100000);
+		Bid bid = helper.getBid(flb, driver2, driver1, driver3, driver4, driver5, driver6, 1, 1, 100000);
 		monza.addBid(bid);
 		getEntityManager().flush();
 		assertNotNull(bid.getId());
 		try {
-			bid = helper.getBid(flb, massa, kimi, hamilton, heidfeld, alonso, kubica, 1, 1, 100000);
+			bid = helper.getBid(flb, driver2, driver1, driver3, driver5, driver4, driver6, 1, 1, 100000);
 			monza.addBid(bid);
 			fail("Double bid from same player should fail");
 		} catch (IllegalStateException expected) {
@@ -105,7 +105,7 @@ public class RaceTest extends AbstractDaoTest {
 	}
 	
 	public void testGetPointsForNonClosedRace() {
-		Bid bid = helper.getBid(flb, massa, kimi, hamilton, alonso, heidfeld, kubica, 1, 1, 100000);
+		Bid bid = helper.getBid(flb, driver2, driver1, driver3, driver4, driver5, driver6, 1, 1, 100000);
 		monza.addBid(bid);
 		getEntityManager().flush();
 		assertNotNull(bid.getId());
@@ -199,11 +199,32 @@ public class RaceTest extends AbstractDaoTest {
     	assertEquals(new BigDecimal(80), ttp.getAccount().getBalance());
     }
     
+    public void testResultRolledback() throws Exception{
+    	testResult();
+    	
+    	monza.rollbackRace();
+    	
+    	assertFalse(monza.isCompleted());
+    	
+    	try {
+    		monza.getResult();
+    		fail("Result should not have been available");
+    	} catch (IllegalStateException e) {
+    		// Since race is not completed the result should not be available
+    	}
+    	
+    	assertEquals(new BigDecimal(60), bookie.getAccount().getBalance());
+    	assertEquals(new BigDecimal(80), flb.getAccount().getBalance());
+    	assertEquals(new BigDecimal(80), mba.getAccount().getBalance());
+    	assertEquals(new BigDecimal(80), ttp.getAccount().getBalance());
+    	
+    }
+    
 	
 
     public void testResultBetterPole() throws Exception{
     	monza.addBid(flbMonzaBid);
-    	mbaMonzaBid = helper.getBid(mba, kimi, massa, hamilton, alonso, heidfeld, kubica, 1, 1, 11000);
+    	mbaMonzaBid = helper.getBid(mba, driver1, driver2, driver3, driver4, driver5, driver6, 1, 1, 11000);
 		
     	monza.addBid(mbaMonzaBid);
     	monza.addBid(ttpMonzaBid);

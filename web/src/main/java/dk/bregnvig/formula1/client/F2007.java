@@ -143,6 +143,11 @@ public class F2007 implements EntryPoint, GWT.UncaughtExceptionHandler {
 		}
 		return selectedRace;
 	}
+	
+	public void forceReloadSelectedRace(final Callback callback) {
+		getSelectedRace().setFullyLoaded(false);
+		setSelectedRace(getSelectedRace(), callback);
+	}
 
 	public void setSelectedRace(final ClientRace selectedRace, final Callback callback) {
 		

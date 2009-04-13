@@ -36,5 +36,6 @@
 			<ref local="mapper"/> 
 		</property>
 		<property name="service" ref="gameService"/>
+		<property name="automaticResult" ref="autoResult"/>
 	</bean>
 </beans>

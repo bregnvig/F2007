@@ -21,4 +21,10 @@ public interface RaceListener {
 	 * @param race
 	 */
 	void raceCompleted(Race race);
+
+	/**
+	 * Is being called if a race is being rolled back.
+	 * @param race
+	 */
+	void raceRolledBack(Race race);
 }

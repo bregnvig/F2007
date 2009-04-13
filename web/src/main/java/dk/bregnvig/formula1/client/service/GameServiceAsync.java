@@ -36,11 +36,15 @@ public interface GameServiceAsync {
 	
 	void addBid(ClientBid bid, AsyncCallback callback);
 	
-	void setResult(ClientResult result, AsyncCallback callback);
+	void setResult(ClientRace clientRace, ClientResult result, AsyncCallback callback);
+
+	void setAutoResult(ClientRace clientRace, String url, AsyncCallback callback);
 
 	void createRace(ClientRace race, AsyncCallback callback);
 
 	void updateRace(ClientRace race, AsyncCallback callback);
+
+	void rollbackRace(ClientRace race, AsyncCallback callback);
 
 	void createDriver(ClientDriver driver, AsyncCallback callback);
 
