@@ -74,8 +74,8 @@ public class EmailReminderService extends AbstractReminderService {
 			model.put("race", race);
 			model.put("weekday", weekday.format(race.getClose().getTime()));
 			model.put("time", hours.format(race.getClose().getTime()));
-			message.setSubject(VelocityEngineUtils.mergeTemplateIntoString(getVelocityEngine(), "templates/emailReminderSubject.vm", model));
-			message.setText(VelocityEngineUtils.mergeTemplateIntoString(getVelocityEngine(), "templates/emailReminderBody.vm", model), true);
+			message.setSubject(VelocityEngineUtils.mergeTemplateIntoString(getVelocityEngine(), "templates/emailReminderSubject.vm", "UTF-8", model));
+			message.setText(VelocityEngineUtils.mergeTemplateIntoString(getVelocityEngine(), "templates/emailReminderBody.vm", "UTF-8", model), true);
 		}
 
 		public Player getPlayer() {
