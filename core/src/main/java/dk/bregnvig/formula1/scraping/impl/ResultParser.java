@@ -1,4 +1,4 @@
-package dk.bregnvig.formula1.autoresult.impl;
+package dk.bregnvig.formula1.scraping.impl;
 
 import java.util.ArrayList;
 import java.util.List;

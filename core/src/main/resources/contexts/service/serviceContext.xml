@@ -15,7 +15,7 @@
 	<aop:spring-configured />
 
 	<bean id="autoResult"
-		class="dk.bregnvig.formula1.autoresult.impl.AutomaticResultImpl" />
+		class="dk.bregnvig.formula1.scraping.impl.AutomaticResultImpl" />
 
 	<bean id="smsGateway" class="dk.bregnvig.formula1.sms.impl.CPSMSGatewayImpl">
 		<property name="from" value="${season.name}" />
