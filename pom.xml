@@ -58,14 +58,14 @@
 	<repositories>
 		<repository>
 			<id>central</id>
-			<url>http://codeweasels.net/artifactory/repo</url>
+			<url>http://service.iportalen.dk/artifactory/repo</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 		<repository>
 			<id>snapshots</id>
-			<url>http://codeweasels.net/artifactory/repo</url>
+			<url>http://service.iportalen.dk/artifactory/repo</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -74,14 +74,14 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>central</id>
-			<url>http://codeweasels.net/artifactory/repo</url>
+			<url>http://service.iportalen.dk/artifactory/repo</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
 		<pluginRepository>
 			<id>snapshots</id>
-			<url>http://codeweasels.net/artifactory/repo</url>
+			<url>http://service.iportalen.dk/artifactory/repo</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
