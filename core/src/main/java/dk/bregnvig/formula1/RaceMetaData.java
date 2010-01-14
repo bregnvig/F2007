@@ -25,7 +25,7 @@ class RaceMetaData {
 	private String name;
 	@Column(name="result_url")
 	private String previousResultURL;
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable=false)
 	private Calendar closeTime;
 	
