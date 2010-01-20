@@ -61,7 +61,7 @@ public class EventServiceTest extends AbstractDaoTest {
     	eventService.setListeners(listeners);
     	eventService.initialize();
     	
-    	Thread.sleep(1000);
+    	Thread.sleep(1100);
     	spa.addBid(flbSpaBid);
     	Thread.sleep(3000);
     	spa.completeRace(raceResultSpa);

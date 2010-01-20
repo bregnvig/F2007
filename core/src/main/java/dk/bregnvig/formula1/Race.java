@@ -40,6 +40,7 @@ import dk.bregnvig.formula1.service.EventService;
  */
 @Entity
 @Table(name="race")
+@Transactional(readOnly=true)
 @Configurable
 public class Race {
 	

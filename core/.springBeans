@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beansProjectDescription>
 	<version>1</version>
-	<pluginVersion><![CDATA[2.2.0.v200809261800]]></pluginVersion>
+	<pluginVersion><![CDATA[2.3.0.200912170948-RELEASE]]></pluginVersion>
 	<configSuffixes>
 		<configSuffix><![CDATA[xml]]></configSuffix>
 	</configSuffixes>
@@ -25,8 +25,8 @@
 			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
 			<incomplete>false</incomplete>
 			<configs>
-				<config>src/main/resources/contexts/service/serviceContext.xml</config>
 				<config>src/main/resources/contexts/data/dataLayerContext.xml</config>
+				<config>src/main/resources/contexts/service/serviceContext.xml</config>
 			</configs>
 		</configSet>
 	</configSets>
