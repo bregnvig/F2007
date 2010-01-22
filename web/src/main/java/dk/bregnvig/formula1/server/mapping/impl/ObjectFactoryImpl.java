@@ -74,7 +74,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	}
 	
 	private void map(Race source, ClientRace target) {
-		BeanUtils.copyProperties(source, target, new String[] {"selectedDriver", "raceResult"});
+		BeanUtils.copyProperties(source, target, new String[] {"selectedDriver", "raceResult", "bids"});
 		target.setSelectedDriver(create(source.getSelectedDriver()));
 		target.setOpenDate(source.getOpen().getTime());
 		target.setCloseDate(source.getClose().getTime());

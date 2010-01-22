@@ -3,8 +3,9 @@ package dk.bregnvig.formula1.server.context;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.gwtwidgets.server.spring.ServletUtils;
 import org.springframework.core.annotation.Order;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import dk.bregnvig.formula1.Player;
 
@@ -21,7 +22,8 @@ public class WebContextAspect {
 
 	@Before("execution(* dk.bregnvig.formula1.server.*ServiceImpl.*(..))")
 	public void storeContext() {
-		context.setPlayer((Player) ServletUtils.getRequest().getSession().getAttribute(SessionAttributes.PLAYER));
+		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		context.setPlayer((Player) requestAttributes.getRequest().getSession().getAttribute(SessionAttributes.PLAYER));
 	}
 
 

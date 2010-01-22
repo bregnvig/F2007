@@ -89,6 +89,10 @@ public class ClientRace implements IsSerializable{
 		return bids;
 	}
 	
+	public void setBids(List<ClientBid> bids) {
+		this.bids = bids;
+	}
+	
 	public void addBid(ClientBid bid) {
 		bids.add(bid);
 	}

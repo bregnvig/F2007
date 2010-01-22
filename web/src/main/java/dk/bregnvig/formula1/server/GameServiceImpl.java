@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.gwtwidgets.server.spring.ServletUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import dk.bregnvig.formula1.Driver;
 import dk.bregnvig.formula1.Player;
@@ -52,7 +53,8 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		if (player == null || player.getPassword().equals(password) == false) {
 			throw new CredentialException("Player name and or password is correct");
 		}
-		ServletUtils.getRequest().getSession().setAttribute(SessionAttributes.PLAYER, player);
+		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		requestAttributes.getRequest().getSession().setAttribute(SessionAttributes.PLAYER, player);
 		return objectFactory.create(player);
 	}
 
