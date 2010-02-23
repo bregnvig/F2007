@@ -74,6 +74,10 @@ public class ClientRace implements IsSerializable{
 	 * Returns true if this player currently logged in  is already a participant
 	 * @return
 	 */
+	public void setParticipant(boolean participant) {
+		//Ignore it. Only created for flex
+	}
+	
 	public boolean isParticipant() {
 		return participant;
 	}
