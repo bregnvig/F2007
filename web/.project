@@ -44,17 +44,17 @@
 		<link>
 			<name>src/main/webapp/drivers</name>
 			<type>2</type>
-			<locationURI>IMAGES/drivers</locationURI>
+			<locationURI>DOCUMENTS/F2007/web/src/main/resources/dk/bregnvig/formula1/public/drivers</locationURI>
 		</link>
 		<link>
 			<name>src/main/webapp/other</name>
 			<type>2</type>
-			<locationURI>IMAGES/other</locationURI>
+			<locationURI>DOCUMENTS/F2007/web/src/main/resources/dk/bregnvig/formula1/public/other</locationURI>
 		</link>
 		<link>
 			<name>src/main/webapp/tracks</name>
 			<type>2</type>
-			<location>C:/develop/loopitWorkspace/F2007/web/src/main/resources/dk/bregnvig/formula1/public/tracks</location>
+			<locationURI>DOCUMENTS/F2007/web/src/main/resources/dk/bregnvig/formula1/public/tracks</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
