@@ -91,10 +91,16 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		target.setClose(close);
 		
 		target.setSelectedDriver(getDriver(source.getSelectedDriver()));
+		if (source.getId() == 0) { //Flex related
+			target.setId(null);
+		}	
 	}
 	
 	public void map(ClientDriver source, Driver target) {
 		BeanUtils.copyProperties(source, target);
+		if (source.getId() == 0) { //Flex related
+			target.setId(null);
+		}
 	}
 
 	public ClientPlayer create(Player player) {

@@ -180,7 +180,11 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	@Transactional(readOnly = true)
 	public List<ClientDriver> findAllDrivers() {
 		List<Driver> drivers = service.findAllDrivers();
+		ClientSeason clientSeason = objectFactory.create(getContext().getSeason());
 		List<ClientDriver> clientDrivers = new ArrayList<ClientDriver>(objectFactory.getClientDrivers(drivers));
+		for (ClientDriver clientDriver : clientDrivers) {
+			clientDriver.setPartOfSeason(clientSeason.getDrivers().contains(clientDriver));
+		}
 		Collections.sort(clientDrivers, new ClientDriver.NumberComparator());
 		return clientDrivers;
 	}
