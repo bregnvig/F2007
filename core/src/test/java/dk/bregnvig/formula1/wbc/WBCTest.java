@@ -108,6 +108,12 @@ public class WBCTest extends AbstractDaoTest {
 	
 	public void testSMSSending() throws Exception {
 
+		List<Integer> points = new ArrayList<Integer>(3);
+		points.add(10);
+		points.add(8);
+		points.add(6);
+		season.getWBC().setPoints(points);
+		
 		DummySMSGatewayImpl service = new DummySMSGatewayImpl();
 		congratulator.setSMSGateway(service);
 		

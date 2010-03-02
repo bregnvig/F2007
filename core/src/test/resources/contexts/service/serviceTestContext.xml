@@ -10,4 +10,5 @@
 	
 	<bean id="smsGateway" class="dk.bregnvig.formula1.util.DummySMSGatewayImpl"/>
 	<bean id="mailSender" class="dk.bregnvig.formula1.util.DummyMailServiceImpl"/>
+	
 </beans>
