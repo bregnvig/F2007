@@ -120,8 +120,8 @@ a:active {
 	/*	border: 1px solid #87B3FF; */
 }
 .gwt-MenuBar .gwt-MenuItem-selected {
-	background-color: #9FC4FF;
-	cursor: hand; 
+	background-color: #9FC4FF; 
+	cursor: hand;
 }
 
 .southBorder {

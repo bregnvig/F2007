@@ -42,7 +42,7 @@
 		</servlet-mapping -->
 
 	<welcome-file-list>
-		<welcome-file>F2007.html</welcome-file>
+		<welcome-file>F2010.html</welcome-file>
 	</welcome-file-list>
 
 
