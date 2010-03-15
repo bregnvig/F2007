@@ -55,6 +55,8 @@ public interface GameServiceAsync {
 	void findAllPlayers(AsyncCallback callback);
 	
 	void fetchWBCStanding(AsyncCallback callback);
+	
+	void getHistory(AsyncCallback callback);
 
 	void fetchWBCStanding(ClientRace race, AsyncCallback callback);
 	

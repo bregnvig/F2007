@@ -1,6 +1,7 @@
 package dk.bregnvig.formula1.wbc;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -41,8 +42,26 @@ public class WBC {
 	private List<Integer> points;
 	private Set<Entry> entries = new HashSet<Entry>();
 	
-	private Comparator<Entry> entryComparator = new Comparator<Entry>() {
+	private Comparator<Entry> entryPointsComparator = new Comparator<Entry>() {
 		public int compare(Entry entry0, Entry entry1) {
+			if (entry0.getPoints() < entry1.getPoints()) {
+				return 1;
+			}
+			if (entry0.getPoints() > entry1.getPoints()) {
+				return -1;
+			}
+			return 0;
+		}
+	};
+
+	private Comparator<Entry> entryRaceDateComparator = new Comparator<Entry>() {
+		public int compare(Entry entry0, Entry entry1) {
+			return entry0.race.getOpen().compareTo(entry1.race.getOpen());
+		}
+	};
+
+	private Comparator<PlayerPosition> historyPointsComparator = new Comparator<PlayerPosition>() {
+		public int compare(PlayerPosition entry0, PlayerPosition entry1) {
 			if (entry0.getPoints() < entry1.getPoints()) {
 				return 1;
 			}
@@ -108,7 +127,7 @@ public class WBC {
 				result.add(entry);
 			}
 		}
-		Collections.sort(result, entryComparator); 
+		Collections.sort(result, entryPointsComparator); 
 		return result;
 	}
 	
@@ -160,8 +179,59 @@ public class WBC {
 		}
 		List<Entry> result = new ArrayList<Entry>(resultMap.size());
 		result.addAll(resultMap.values());
-		Collections.sort(result, entryComparator);
+		Collections.sort(result, entryPointsComparator);
 		return result;
+	}
+	
+	@Transient
+	public List<History> getHistory() {
+		List<History> result = new ArrayList<History>();
+		List<Entry> entries = new ArrayList<Entry>(getEntries());
+		Collections.sort(entries, entryRaceDateComparator);
+		
+		Map<Player, PlayerPosition> players = new HashMap<Player, PlayerPosition>();
+		
+		Race previousRace = null;
+		for (Entry entry : entries) {
+			if (previousRace == null || previousRace.equals(entry.getRace()) == false) {
+				if (previousRace != null) {
+					result.add(getHistory(previousRace, players.values()));
+				}
+				previousRace = entry.getRace();
+			}
+			//Do the add
+			if (players.containsKey(entry.getPlayer()) == false) {
+				players.put(entry.getPlayer(), new PlayerPosition(entry.player));
+			}
+			PlayerPosition position = players.get(entry.getPlayer());
+			position.addPoints(entry.getPoints());
+		}
+		result.add(getHistory(previousRace, players.values()));
+		return result;
+	}
+	
+	private History getHistory(Race race, Collection<PlayerPosition> positions) {
+		if (positions == null || positions.isEmpty()) return null;
+		List<PlayerPosition> sorted = new ArrayList<PlayerPosition>(positions);
+		Collections.sort(sorted, historyPointsComparator);
+		int lastPoint = 0;
+		int wbcPosition = 1;
+
+		History history = new History(race);
+		for (int i = 0; i < sorted.size(); i++) {
+			PlayerPosition position = new PlayerPosition(sorted.get(i));
+			if (i == 0) {
+				lastPoint = position.getPoints();
+			}
+			if (lastPoint == position.getPoints()) {
+				position.setPosition(wbcPosition);
+			} else {
+				lastPoint = position.getPoints();
+				position.setPosition(++wbcPosition);
+			}
+			history.addPosition(position);
+		}
+		return history; 
 	}
 	
 	@Entity
@@ -249,6 +319,109 @@ public class WBC {
 				.append("Player", player)
 				.append("Points", points)
 				.toString();
+		}
+	}
+	
+	public static class PlayerPosition {
+		
+		private int position;
+		private Player player;
+		private int points;
+		
+		public PlayerPosition() {
+			
+		}
+		
+		public PlayerPosition(Player player) {
+			this.player = player;
+		}
+		
+		public PlayerPosition(PlayerPosition source) {
+			this(source.player);
+			this.points = source.points;
+			this.position = source.position;
+		}
+		
+		public void addPoints(int points) {
+			this.points += points; 
+		}
+
+		public int getPoints() {
+			return points;
+		}
+
+		public void setPoints(int points) {
+			this.points = points;
+		}
+
+		public int getPosition() {
+			return position;
+		}
+
+		public void setPosition(int position) {
+			this.position = position;
+		}
+	
+		public Player getPlayer() {
+			return player;
+		}
+	
+		public void setPlayer(Player player) {
+			this.player = player;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			PlayerPosition other = (PlayerPosition) obj;
+			if (player == null) {
+				if (other.player != null)
+					return false;
+			} else if (!player.equals(other.player))
+				return false;
+			return true;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result
+					+ ((player == null) ? 0 : player.hashCode());
+			return result;
+		}
+		
+		
+	}
+	
+	public static class History {
+		private Race race;
+		private List<PlayerPosition> positions = new ArrayList<PlayerPosition>();
+		
+		public History(Race race) {
+			this.race = race;
+		}
+		
+		void addPosition(PlayerPosition position) {
+			positions.add(position);
+		}
+		
+		public Race getRace() {
+			return race;
+		}
+		public void setRace(Race race) {
+			this.race = race;
+		}
+		public List<PlayerPosition> getPositions() {
+			return positions;
+		}
+		public void setPositions(List<PlayerPosition> positions) {
+			this.positions = positions;
 		}
 	}
 }

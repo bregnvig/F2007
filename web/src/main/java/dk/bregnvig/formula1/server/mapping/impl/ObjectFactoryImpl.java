@@ -35,14 +35,18 @@ import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
-import dk.bregnvig.formula1.client.domain.ClientWBCEntry;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.account.ClientAccountEntry;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.domain.bid.ClientResult;
+import dk.bregnvig.formula1.client.domain.wbc.ClientHistory;
+import dk.bregnvig.formula1.client.domain.wbc.ClientPlayerPosition;
+import dk.bregnvig.formula1.client.domain.wbc.ClientWBCEntry;
 import dk.bregnvig.formula1.server.context.WebContext;
 import dk.bregnvig.formula1.server.mapping.ObjectFactory;
 import dk.bregnvig.formula1.wbc.WBC;
+import dk.bregnvig.formula1.wbc.WBC.History;
+import dk.bregnvig.formula1.wbc.WBC.PlayerPosition;
 
 public class ObjectFactoryImpl implements ObjectFactory{
 	
@@ -389,6 +393,23 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		clientEntry.setPlayer(create(entry.getPlayer()));
 		clientEntry.setPoints(entry.getPoints());
 		return clientEntry;
+	}
+
+	public ClientHistory create(History history) {
+		ClientHistory target = new ClientHistory();
+		target.race = create(history.getRace());
+		for (PlayerPosition position : history.getPositions()) {
+			target.positions.add(create(position));
+		}
+		return target;
+	}
+	
+	private ClientPlayerPosition create(PlayerPosition position) {
+		ClientPlayerPosition target = new ClientPlayerPosition();
+		target.player = create(position.getPlayer());
+		target.points = position.getPoints();
+		target.position = position.getPosition();
+		return target;
 	}
 
 }

@@ -89,6 +89,47 @@ public class WBCTest extends AbstractDaoTest {
    		assertEquals(ttp, entries.get(2).getPlayer());
 	}
 	
+	public void testHistory() throws Exception {
+		testWBC();
+		
+		spa.setOpen(Calendar.getInstance());
+		Thread.sleep(100);
+		
+		spa.addBid(flbSpaBid);
+		spa.addBid(mbaSpaBid);
+		spa.addBid(ttpSpaBid);
+		
+		Thread.sleep(200);
+		spa.setClose(Calendar.getInstance());
+		Thread.sleep(200);
+		spa.completeRace(raceResultSpa);
+		getEntityManager().flush();
+		
+		assertEquals(season.getWBC().getPreviousRace(), spa);
+		assertEquals(2, season.getWBC().getHistory().size());
+		
+		assertEquals(3, season.getWBC().getHistory().get(0).getPositions().size());
+		assertEquals(3, season.getWBC().getHistory().get(1).getPositions().size());
+
+		List<WBC.PlayerPosition> positions = season.getWBC().getHistory().get(0).getPositions();
+		
+		assertEquals(10, positions.get(0).getPoints());
+		assertEquals(8, positions.get(1).getPoints());
+		assertEquals(6, positions.get(2).getPoints());
+		assertEquals(1, positions.get(0).getPosition());
+		assertEquals(2, positions.get(1).getPosition());
+		assertEquals(3, positions.get(2).getPosition());
+		
+		positions = season.getWBC().getHistory().get(1).getPositions();
+		
+		assertEquals(20, positions.get(0).getPoints());
+		assertEquals(16, positions.get(1).getPoints());
+		assertEquals(12, positions.get(2).getPoints());
+		assertEquals(1, positions.get(0).getPosition());
+		assertEquals(2, positions.get(1).getPosition());
+		assertEquals(3, positions.get(2).getPosition());
+	}
+	
 	public void testRollback() throws Exception {
 		testStanding();
 		

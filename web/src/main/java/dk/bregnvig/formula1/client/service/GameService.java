@@ -8,10 +8,11 @@ import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
-import dk.bregnvig.formula1.client.domain.ClientWBCEntry;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.domain.bid.ClientResult;
+import dk.bregnvig.formula1.client.domain.wbc.ClientHistory;
+import dk.bregnvig.formula1.client.domain.wbc.ClientWBCEntry;
 import dk.bregnvig.formula1.client.exception.CredentialException;
 
 /**
@@ -147,7 +148,8 @@ public interface GameService extends RemoteService {
 	List<ClientPlayer> findAllPlayers();
 	
 	List<ClientWBCEntry> fetchWBCStanding();
-
+	
+	List<ClientHistory> getHistory();
 	
 	List<ClientWBCEntry> fetchWBCStanding(ClientRace race);
 }

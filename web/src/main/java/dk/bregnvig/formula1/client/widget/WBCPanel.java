@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Widget;
 import dk.bregnvig.formula1.client.F2007;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
-import dk.bregnvig.formula1.client.domain.ClientWBCEntry;
+import dk.bregnvig.formula1.client.domain.wbc.ClientWBCEntry;
 import dk.bregnvig.formula1.client.widget.control.BigLabel;
 import dk.bregnvig.formula1.client.widget.control.ContentTitleLabel;
 import dk.bregnvig.formula1.client.widget.control.PlayerLabel;

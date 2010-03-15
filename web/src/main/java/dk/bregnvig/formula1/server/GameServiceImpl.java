@@ -21,16 +21,18 @@ import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
-import dk.bregnvig.formula1.client.domain.ClientWBCEntry;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.domain.bid.ClientResult;
+import dk.bregnvig.formula1.client.domain.wbc.ClientHistory;
+import dk.bregnvig.formula1.client.domain.wbc.ClientWBCEntry;
 import dk.bregnvig.formula1.client.exception.CredentialException;
 import dk.bregnvig.formula1.client.service.GameService;
 import dk.bregnvig.formula1.scraping.AutomaticResult;
 import dk.bregnvig.formula1.server.context.SessionAttributes;
 import dk.bregnvig.formula1.server.mapping.ObjectFactory;
 import dk.bregnvig.formula1.server.security.Authorization;
+import dk.bregnvig.formula1.wbc.WBC.History;
 
 public class GameServiceImpl extends AbstractService implements GameService {
 
@@ -265,5 +267,16 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	@Required
 	public void setAutomaticResult(AutomaticResult automaticResult) {
 		this.automaticResult = automaticResult;
+	}
+
+	@Authorization(roles = { PlayerRole.PLAYER })
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public List<ClientHistory> getHistory() {
+		List<History> histories = getContext().getSeason().getWBC().getHistory();
+		List<ClientHistory> result = new ArrayList<ClientHistory>(histories.size());
+		for (History history : histories) {
+			result.add(objectFactory.create(history));
+		}
+		return result;
 	}
 }

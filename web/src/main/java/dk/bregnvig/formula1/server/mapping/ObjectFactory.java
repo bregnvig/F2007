@@ -15,11 +15,13 @@ import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
-import dk.bregnvig.formula1.client.domain.ClientWBCEntry;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.domain.bid.ClientResult;
+import dk.bregnvig.formula1.client.domain.wbc.ClientHistory;
+import dk.bregnvig.formula1.client.domain.wbc.ClientWBCEntry;
 import dk.bregnvig.formula1.wbc.WBC;
+import dk.bregnvig.formula1.wbc.WBC.History;
 
 public interface ObjectFactory {
 	
@@ -28,6 +30,8 @@ public interface ObjectFactory {
 	ClientPlayer create(Player player);
 	
 	ClientRace create(Race source);
+	
+	ClientHistory create(History history);
 	
 	ClientRace createFull(Race source);
 	

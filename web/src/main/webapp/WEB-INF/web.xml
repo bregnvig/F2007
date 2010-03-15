@@ -35,6 +35,10 @@
 		<servlet-name>spring-flex</servlet-name>
 		<url-pattern>/spring-flex/*</url-pattern>
 	</servlet-mapping>
+	
+	<session-config>
+		<session-timeout>40</session-timeout>
+	</session-config>
 
 	<!-- servlet-mapping>
 		<servlet-name>spring</servlet-name>

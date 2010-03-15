@@ -1,6 +1,8 @@
-package dk.bregnvig.formula1.client.domain;
+package dk.bregnvig.formula1.client.domain.wbc;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+
+import dk.bregnvig.formula1.client.domain.ClientPlayer;
 
 public class ClientWBCEntry implements IsSerializable {
 	
