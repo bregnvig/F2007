@@ -42,7 +42,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<argLine>
-						-javaagent:"${user.home}/.m2/repository/org/aspectj/aspectjweaver/1.6.6/aspectjweaver-1.6.6.jar"
+						-javaagent:${user.home}/.m2/repository/org/aspectj/aspectjweaver/1.6.6/aspectjweaver-1.6.6.jar
 					</argLine>
 					<systemProperties>
 						<property>
