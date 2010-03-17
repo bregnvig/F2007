@@ -391,6 +391,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	private ClientWBCEntry create(WBC.Entry entry) {
 		ClientWBCEntry clientEntry = new ClientWBCEntry();
 		clientEntry.setPlayer(create(entry.getPlayer()));
+		clientEntry.setRace(create(entry.getRace()));
 		clientEntry.setPoints(entry.getPoints());
 		return clientEntry;
 	}

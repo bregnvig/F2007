@@ -153,5 +153,5 @@ public interface GameService extends RemoteService {
 	
 	List<ClientWBCEntry> fetchWBCStanding(ClientRace race);
 	
-	List<ClientWBCEntry> fetchWBCStanding(ClientPlayer player);
+	List<ClientWBCEntry> fetchWBCPlayerEntries(ClientPlayer player);
 }

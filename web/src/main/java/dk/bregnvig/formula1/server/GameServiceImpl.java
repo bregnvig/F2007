@@ -236,7 +236,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-	public List<ClientWBCEntry> fetchWBCStanding(ClientPlayer clientPlayer) {
+	public List<ClientWBCEntry> fetchWBCPlayerEntries(ClientPlayer clientPlayer) {
 		Season season = getContext().getSeason();
 		Player player = season.getPlayer(clientPlayer.getPlayername());
 		return objectFactory.create(getContext().getSeason().getWBC().getPlayerEntries(player));
