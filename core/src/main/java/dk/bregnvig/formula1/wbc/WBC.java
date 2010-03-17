@@ -131,6 +131,18 @@ public class WBC {
 		return result;
 	}
 	
+	@Transient
+	public List<Entry> getPlayerEntries(Player player) {
+		List<Entry> result = new ArrayList<Entry>(21);
+		for (Entry entry : entries) {
+			if (entry.getPlayer().equals(player)) {
+				result.add(entry);
+			}
+		}
+		Collections.sort(result, entryRaceDateComparator); 
+		return result;
+	}
+	
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="wbc_id")	
 	public Set<Entry> getEntries() {
