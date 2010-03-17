@@ -154,13 +154,13 @@ public class F2007 implements EntryPoint, GWT.UncaughtExceptionHandler {
 		int index = season.getRaces().indexOf(selectedRace);
 		this.selectedRace = (ClientRace) season.getRaces().get(index);
 		if (this.selectedRace.isFullyLoaded() == false) {
-			AsyncCallback gwtCallback = new AsyncCallback() {
+			AsyncCallback<ClientRace> gwtCallback = new AsyncCallback<ClientRace>() {
 
 				public void onFailure(Throwable caught) {
 					reportError("Failure - could not load " + selectedRace.getName() + " fully");
 				}
 
-				public void onSuccess(Object result) {
+				public void onSuccess(ClientRace result) {
 					int index = season.getRaces().indexOf(selectedRace);
 					season.getRaces().remove(index);
 					season.getRaces().add(index, result);

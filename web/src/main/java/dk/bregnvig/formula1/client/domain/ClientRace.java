@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
@@ -60,12 +59,9 @@ public class ClientRace implements IsSerializable{
 		this.openDate = opens;
 	}
 	
-	public static class OpensComparator implements Comparator, IsSerializable {
+	public static class OpensComparator implements Comparator<ClientRace>, IsSerializable {
 
-		public int compare(Object arg0, Object arg1) {
-			ClientRace race0 = (ClientRace) arg0;
-			ClientRace race1 = (ClientRace) arg1;
-			
+		public int compare(ClientRace race0, ClientRace race1) {
 			return race0.getOpenDate().compareTo(race1.getOpenDate());
 		}
 	}
@@ -153,7 +149,7 @@ public class ClientRace implements IsSerializable{
 			return true;
 		if (obj == null)
 			return false;
-		if (GWT.getTypeName(this).equals(GWT.getTypeName(obj)) == false)
+		if (this.getClass().equals(obj.getClass()) == false)
 			return false;
 		final ClientRace other = (ClientRace) obj;
 		if (id == null) {

@@ -92,12 +92,9 @@ public class ClientPlayer extends Object implements IsSerializable {
 		return true;
 	}
 	
-	public static class NameComparator implements Comparator, IsSerializable {
+	public static class NameComparator implements Comparator<ClientPlayer>, IsSerializable {
 
-		public int compare(Object arg0, Object arg1) {
-			ClientPlayer player0 = (ClientPlayer) arg0;
-			ClientPlayer player1 = (ClientPlayer) arg1;
-			
+		public int compare(ClientPlayer player0, ClientPlayer player1) {
 			return (player0.getFirstName()+player0.getLastName()).compareTo(player1.getFirstName()+player1.getLastName());
 		}
 	}

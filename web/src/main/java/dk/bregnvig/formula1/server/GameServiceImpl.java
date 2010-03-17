@@ -233,6 +233,14 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		Race race = season.getRaceById(clientRace.getId());
 		return objectFactory.create(getContext().getSeason().getWBC().getRaceEntries(race));
 	}
+	
+	@Authorization(roles = { PlayerRole.PLAYER })
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public List<ClientWBCEntry> fetchWBCStanding(ClientPlayer clientPlayer) {
+		Season season = getContext().getSeason();
+		Player player = season.getPlayer(clientPlayer.getPlayername());
+		return objectFactory.create(getContext().getSeason().getWBC().getPlayerEntries(player));
+	}
 
 	public void setObjectFactory(ObjectFactory objectFactory) {
 		this.objectFactory = objectFactory;

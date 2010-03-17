@@ -152,4 +152,6 @@ public interface GameService extends RemoteService {
 	List<ClientHistory> getHistory();
 	
 	List<ClientWBCEntry> fetchWBCStanding(ClientRace race);
+	
+	List<ClientWBCEntry> fetchWBCStanding(ClientPlayer player);
 }

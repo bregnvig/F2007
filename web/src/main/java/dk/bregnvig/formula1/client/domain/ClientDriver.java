@@ -38,12 +38,9 @@ public class ClientDriver implements IsSerializable {
 		this.active = active;
 	}
 	
-	public static class NumberComparator implements Comparator, IsSerializable {
+	public static class NumberComparator implements Comparator<ClientDriver>, IsSerializable {
 
-		public int compare(Object arg0, Object arg1) {
-			ClientDriver driver0 = (ClientDriver) arg0;
-			ClientDriver driver1 = (ClientDriver) arg1;
-			
+		public int compare(ClientDriver driver0, ClientDriver driver1) {
 			return new Integer(driver0.getNumber()).compareTo(new Integer(driver1.getNumber()));
 		}
 	}

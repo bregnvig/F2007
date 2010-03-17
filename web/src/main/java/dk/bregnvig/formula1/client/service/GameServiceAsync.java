@@ -22,7 +22,7 @@ public interface GameServiceAsync {
 	
 	void getCurrentRace(AsyncCallback callback);
 
-	void getRace(Long id, AsyncCallback callback);
+	void getRace(Long id, AsyncCallback<ClientRace> callback);
 
 	void getAccount(AsyncCallback callback);
 
@@ -59,6 +59,7 @@ public interface GameServiceAsync {
 	void getHistory(AsyncCallback callback);
 
 	void fetchWBCStanding(ClientRace race, AsyncCallback callback);
+	void fetchWBCStanding(ClientPlayer player, AsyncCallback callback);
 	
 	void accountTransfer(ClientPlayer fromPlayer, ClientPlayer toPlayer, String message, int amount, AsyncCallback callback);
 	void accountDeposit(ClientPlayer player, String message, int amount, AsyncCallback callback);

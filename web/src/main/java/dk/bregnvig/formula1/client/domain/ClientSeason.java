@@ -24,11 +24,11 @@ public class ClientSeason implements IsSerializable{
 		this.name = name;
 	}
 
-	public List getPlayers() {
+	public List<ClientPlayer> getPlayers() {
 		return players;
 	}
 
-	public void setPlayers(List players) {
+	public void setPlayers(List<ClientPlayer> players) {
 		this.players = players;
 	}
 	
@@ -42,11 +42,11 @@ public class ClientSeason implements IsSerializable{
 		return null;
 	}
 
-	public List getRaces() {
+	public List<ClientRace> getRaces() {
 		return races;
 	}
 
-	public void setRaces(List races) {
+	public void setRaces(List<ClientRace> races) {
 		this.races = races;
 	}
 
@@ -55,10 +55,10 @@ public class ClientSeason implements IsSerializable{
 	}
 	
 	public List<ClientDriver> getActiveDriver() {
-		List activeDrivers = new ArrayList();
-		Iterator i = getDrivers().iterator();
+		List<ClientDriver> activeDrivers = new ArrayList<ClientDriver>();
+		Iterator<ClientDriver> i = getDrivers().iterator();
 		while (i.hasNext()) {
-			ClientDriver driver = (ClientDriver) i.next();
+			ClientDriver driver = i.next();
 			if (driver.isActive()) {
 				activeDrivers.add(driver);
 			}
