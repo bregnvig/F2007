@@ -40,6 +40,7 @@ public class DatePicker extends FlowPanel {
 		add(year);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void setDate(Date date) {
 		if (date == null) {
 			date = new Date();
@@ -50,6 +51,7 @@ public class DatePicker extends FlowPanel {
 		day.setSelectedIndex(date.getDate()-1);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public Date getDate() {
 		int year = Integer.parseInt(this.year.getItemText(this.year.getSelectedIndex()));
 		Date date = new Date(year-1900, month.getSelectedIndex(), this.day.getSelectedIndex()+1);
@@ -59,6 +61,7 @@ public class DatePicker extends FlowPanel {
 		return date;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void initYear() {
 		year.clear();
 		for(int i = 0; i < 3; i++) {
@@ -66,9 +69,10 @@ public class DatePicker extends FlowPanel {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void initMonth() {
 		month.clear();
-		months = new ArrayList(12);
+		months = new ArrayList<Month>(12);
 		for (int i = 0; i < 12; i ++) {
 			Month month = new Month(Integer.parseInt(year.getItemText(year.getSelectedIndex())), i);
 			months.add(month);
@@ -128,7 +132,7 @@ public class DatePicker extends FlowPanel {
 		}
 
 		
-		private static List<String> names = new ArrayList(12);
+		private static List<String> names = new ArrayList<String>(12);
 		static {
 			names.add("Januar");
 			names.add("Februar");

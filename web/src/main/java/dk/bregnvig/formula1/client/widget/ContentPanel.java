@@ -41,8 +41,8 @@ public abstract class ContentPanel extends VerticalPanel {
 
 	protected void unmarkFields(Rule[] rules) {
 		for (int i = 0; i < rules.length; i++) {
-			for (Iterator iterator = rules[i].getFields().iterator(); iterator.hasNext();) {
-				Widget widget = (Widget) iterator.next();
+			for (Iterator<Widget> iterator = rules[i].getFields().iterator(); iterator.hasNext();) {
+				Widget widget = iterator.next();
 				if (widget.getStylePrimaryName().equals("error") == false) {
 					widget.removeStyleDependentName("error");
 				} else {

@@ -6,13 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.google.gwt.user.client.ui.TextBoxBase;
+import com.google.gwt.user.client.ui.Widget;
 
 public class CompositeRule implements Rule {
 
-	private Set<TextBoxBase> fields = new HashSet(5); 
+	private Set<Widget> fields = new HashSet<Widget>(5); 
 	
-	private List<Rule> rules = new ArrayList();
+	private List<Rule> rules = new ArrayList<Rule>();
 	
 	public CompositeRule addRule(Rule rule) {
 		rules.add(rule);
@@ -25,16 +25,16 @@ public class CompositeRule implements Rule {
 	 */
 	public List<Issue> validate() {
 		
-		List issues = new ArrayList();
+		List<Issue> issues = new ArrayList<Issue>();
 		
-		for (Iterator iterator = rules.iterator(); iterator.hasNext();) {
-			Rule rule = (Rule) iterator.next();
+		for (Iterator<Rule> iterator = rules.iterator(); iterator.hasNext();) {
+			Rule rule = iterator.next();
 			issues.addAll(rule.validate());
 		}
 		return issues;
 	}
 
-	public Set getFields() {
+	public Set<Widget> getFields() {
 		return fields;
 	}
 

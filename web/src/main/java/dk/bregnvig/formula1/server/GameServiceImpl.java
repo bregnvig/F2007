@@ -195,7 +195,12 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	@Transactional(readOnly = true)
 	public List<ClientPlayer> findAllPlayers() {
 		List<Player> players = service.findAllPlayers();
-		return objectFactory.getClientPlayers(players);
+		ClientSeason clientSeason = objectFactory.create(getContext().getSeason());
+		List<ClientPlayer> clientPlayers = objectFactory.getClientPlayers(players);
+		for (ClientPlayer clientPlayer : clientPlayers) {
+			clientPlayer.setPartOfSeason(clientSeason.getPlayers().contains(clientPlayer));
+		}
+		return clientPlayers;
 	}
 	
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })

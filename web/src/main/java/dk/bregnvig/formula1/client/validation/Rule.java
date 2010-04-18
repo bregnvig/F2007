@@ -3,7 +3,7 @@ package dk.bregnvig.formula1.client.validation;
 import java.util.List;
 import java.util.Set;
 
-import com.google.gwt.user.client.ui.TextBoxBase;
+import com.google.gwt.user.client.ui.Widget;
 
 public interface Rule {
 	
@@ -16,6 +16,6 @@ public interface Rule {
 	 */
 	boolean supendValidation();
 	
-	Set<TextBoxBase> getFields();
+	Set<Widget> getFields();
 	
 }

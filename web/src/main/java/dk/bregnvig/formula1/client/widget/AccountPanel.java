@@ -66,14 +66,14 @@ public class AccountPanel extends ContentPanel {
 	 * Fetches all the races from the server
 	 */
 	private void loadAccount() {
-		AsyncCallback callback = new AsyncCallback() {
+		AsyncCallback<ClientAccount> callback = new AsyncCallback<ClientAccount>() {
 
 			public void onFailure(Throwable caught) {
 				getMediator().reportError(caught.getMessage());
 			}
 
-			public void onSuccess(Object result) {
-				account = (ClientAccount) result;
+			public void onSuccess(ClientAccount result) {
+				account = result;
 				amount.setText(Integer.toString(account.getBalance()));
 				table.resizeRows(1);
 				fillTable();

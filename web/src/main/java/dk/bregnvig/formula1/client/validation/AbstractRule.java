@@ -58,16 +58,16 @@ public abstract class AbstractRule implements Rule {
 		return property;
 	}
 	
-	protected List getIssue() {
+	protected List<Issue> getIssue() {
 		String issueText = getErrorMessage().replaceAll("\\{0\\}", getProperty());
 		Issue issue = new Issue(field, issueText, labelProperty, property);
-		List issues = new ArrayList(1);
+		List<Issue> issues = new ArrayList<Issue>(1);
 		issues.add(issue);
 		return issues;
 	}
 	
-	public Set getFields() {
-		Set fields = new HashSet(2);
+	public Set<Widget> getFields() {
+		Set<Widget> fields = new HashSet<Widget>(2);
 		fields.add(field);
 		return fields;
 	}
