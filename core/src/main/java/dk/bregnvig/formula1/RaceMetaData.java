@@ -9,11 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.springframework.beans.factory.annotation.Configurable;
-
-import dk.bregnvig.formula1.scraping.BettingHelp;
 
 @Entity(name="race_meta_data")
 @Configurable
@@ -28,9 +25,6 @@ class RaceMetaData {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable=false)
 	private Calendar closeTime;
-	
-	@Transient
-	private BettingHelp helper;
 	
 	public Long getId() {
 		return id;
@@ -60,10 +54,4 @@ class RaceMetaData {
 		
 		return 0;
 	}
-	
-	public void setHelper(BettingHelp helper) {
-		this.helper = helper;
-	}
-	
-	
 }
