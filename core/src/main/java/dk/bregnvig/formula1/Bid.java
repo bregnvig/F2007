@@ -14,6 +14,8 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import dk.bregnvig.formula1.bid.FastestLapBid;
 import dk.bregnvig.formula1.bid.FirstCrashBid;
@@ -24,6 +26,8 @@ import dk.bregnvig.formula1.bid.SelectedDriverBid;
 @Entity
 @Table(name = "bid")
 public class Bid {
+	
+	private Log log = LogFactory.getLog(Bid.class);
 
 	private Long id;
 	private Player player;
@@ -142,6 +146,9 @@ public class Bid {
 
 	@Override
 	public int hashCode() {
+		if (player == null || player.getPlayername() == null) {
+			log.warn(String.format("Bid : %d player was sick. Player: %s", getId(), player));
+		}
 		return new HashCodeBuilder()
 			.append(player)
 			.append(grid)

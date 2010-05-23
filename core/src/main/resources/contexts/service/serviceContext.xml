@@ -126,17 +126,17 @@
 	</bean>
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="mail.bregnvig.dk" />
+		<property name="host" value="localhost" /><!--
 		<property name="username" value="flemming@bregnvig.dk" />
 		<property name="password" value="Indy.500" />
-		<property name="protocol" value="smtp" />
-		<property name="defaultEncoding" value="UTF-8" />
+		--><property name="protocol" value="smtp" />
+		<property name="defaultEncoding" value="UTF-8" /><!--
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.smtp.auth">true</prop>
 			</props>
 		</property>
-	</bean>
+	--></bean>
 
 	<bean id="velocityEngine"
 		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
