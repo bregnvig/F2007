@@ -53,7 +53,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		Player player = getContext().getSeason().getPlayer(playerName);
 		player.getRoles(); // Just to load them.
 		if (player == null || player.getPassword().equals(password) == false) {
-			throw new CredentialException("Player name and or password is correct");
+			throw new CredentialException("Player name and or password is incorrect");
 		}
 		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		requestAttributes.getRequest().getSession().setAttribute(SessionAttributes.PLAYER, player);
