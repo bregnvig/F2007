@@ -218,7 +218,9 @@ public class WBC {
 			PlayerPosition position = players.get(entry.getPlayer());
 			position.addPoints(entry.getPoints());
 		}
-		result.add(getHistory(previousRace, players.values()));
+		if (previousRace != null) {
+			result.add(getHistory(previousRace, players.values()));
+		}
 		return result;
 	}
 	
