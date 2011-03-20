@@ -1,10 +1,9 @@
 package dk.bregnvig.formula1.client.domain.account;
 
+import java.io.Serializable;
 import java.util.Date;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-public class ClientAccountEntry implements IsSerializable {
+public class ClientAccountEntry implements Serializable {
 
 	private int amount;
 	private Date date;

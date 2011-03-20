@@ -1,10 +1,11 @@
 package dk.bregnvig.formula1.client.domain;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class ClientPlayer extends Object implements IsSerializable {
+public class ClientPlayer implements Serializable {
 
 	
 	private static final long serialVersionUID = 1L;
@@ -14,6 +15,13 @@ public class ClientPlayer extends Object implements IsSerializable {
 	private String lastName;
 	private String emailAddress;
 	private String smsNumber;
+	private String token;
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
 	private int balance;
 	private boolean gameAdministrator;
 	private boolean bankAdministrator;

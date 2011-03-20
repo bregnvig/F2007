@@ -1,5 +1,6 @@
 package dk.bregnvig.formula1.client.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -10,7 +11,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.domain.bid.ClientResult;
 
-public class ClientRace implements IsSerializable{
+public class ClientRace implements Serializable{
 
 	private Long id;
 

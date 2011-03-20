@@ -1,10 +1,9 @@
 package dk.bregnvig.formula1.client.domain.account;
 
+import java.io.Serializable;
 import java.util.List;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-public class ClientAccount implements IsSerializable {
+public class ClientAccount implements Serializable {
 
 	private int balance;
 	

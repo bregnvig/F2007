@@ -1,10 +1,11 @@
 package dk.bregnvig.formula1.client.domain;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class ClientDriver implements IsSerializable {
+public class ClientDriver implements Serializable {
 
 	private Long id;
 	private int number;

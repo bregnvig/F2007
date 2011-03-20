@@ -1,12 +1,13 @@
 package dk.bregnvig.formula1.client.domain.bid;
 
+import java.io.Serializable;
+
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.client.rpc.IsSerializable;
 
 import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 
-public class ClientBid implements IsSerializable {
+public class ClientBid implements Serializable {
 
 	private ClientPlayer player;
 	private ClientDriver[] grid;

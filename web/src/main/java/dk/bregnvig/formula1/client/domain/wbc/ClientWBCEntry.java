@@ -1,11 +1,11 @@
 package dk.bregnvig.formula1.client.domain.wbc;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+import java.io.Serializable;
 
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 
-public class ClientWBCEntry implements IsSerializable {
+public class ClientWBCEntry implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	

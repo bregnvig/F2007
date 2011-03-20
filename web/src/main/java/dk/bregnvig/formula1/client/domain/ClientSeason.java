@@ -1,20 +1,20 @@
 package dk.bregnvig.formula1.client.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-public class ClientSeason implements IsSerializable{
+public class ClientSeason implements Serializable {
 
 	private String name;
 	
 	private List<ClientPlayer> players;
 	private List<ClientRace> races;
 	private Set<ClientDriver> drivers;
+	private ClientRace currentRace;
 
 	public String getName() {
 		return name;
@@ -69,5 +69,13 @@ public class ClientSeason implements IsSerializable{
 
 	public void setDrivers(Set<ClientDriver> drivers) {
 		this.drivers = drivers;
+	}
+
+	public ClientRace getCurrentRace() {
+		return currentRace;
+	}
+
+	public void setCurrentRace(ClientRace currentRace) {
+		this.currentRace = currentRace;
 	}
 }
