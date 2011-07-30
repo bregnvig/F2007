@@ -2,8 +2,6 @@ package dk.bregnvig.formula1.client.domain.bid;
 
 import java.io.Serializable;
 
-import com.google.gwt.i18n.client.NumberFormat;
-
 import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 
@@ -93,13 +91,18 @@ public class ClientBid implements Serializable {
 	}
 
 	public String getPolePositionTimeInText() {
-		NumberFormat secondFormatter = NumberFormat.getFormat("00");
-		NumberFormat milliSecondFormatter = NumberFormat.getFormat("000");
-		
 		String result = Integer.toString((int) getPolePositionTime() / (1000*60));
-		result += ":" + secondFormatter.format(((int)getPolePositionTime() % (1000*60)) / 1000);
-		result += "." + milliSecondFormatter.format(getPolePositionTime() % 1000); 
+		result += ":" + prefixZero(Integer.toString(((int)getPolePositionTime() % (1000*60)) / 1000), 2);
+		result += "." + prefixZero(Integer.toString(getPolePositionTime() % 1000), 3); 
 		return result;
 	}
+	
+	private String prefixZero(String text, int length) {
+		for (int i = text.length(); i < length; i++) {
+			text = "0" + text;
+		}
+		return text;
+	}
+	
 	
 }

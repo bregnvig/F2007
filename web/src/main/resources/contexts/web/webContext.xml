@@ -16,10 +16,12 @@
 	
 	<bean id="authorizationAspect" class="dk.bregnvig.formula1.server.security.AuthorizationAspect">
 		<property name="context" ref="webContext"/>
+		
 	</bean>
 
 	<bean id="webContextAspect" class="dk.bregnvig.formula1.server.context.WebContextAspect">
 		<property name="context" ref="webContext"/>
+		<property name="tokenSecurity" ref="tokenSecurity" />
 	</bean>
 
 	<bean id="webContext" class="dk.bregnvig.formula1.server.context.impl.WebContextImpl">
@@ -29,6 +31,10 @@
 	<bean id="mapper" class="dk.bregnvig.formula1.server.mapping.impl.ObjectFactoryImpl">
 		<property name="context" ref="webContext"/>
 	</bean> 
+	
+	<bean id="tokenSecurity" class="dk.bregnvig.formula1.server.security.TokenSecurityImpl">
+		<property name="context" ref="webContext"/>
+	</bean>
 
 	<bean id="gameRPCService" class="dk.bregnvig.formula1.server.GameServiceImpl">
 		<property name="context" ref="webContext"/>
@@ -37,5 +43,6 @@
 		</property>
 		<property name="service" ref="gameService"/>
 		<property name="automaticResult" ref="autoResult"/>
+		<property name="tokenSecurity" ref="tokenSecurity" />
 	</bean>
 </beans>

@@ -32,6 +32,7 @@ import dk.bregnvig.formula1.scraping.AutomaticResult;
 import dk.bregnvig.formula1.server.context.SessionAttributes;
 import dk.bregnvig.formula1.server.mapping.ObjectFactory;
 import dk.bregnvig.formula1.server.security.Authorization;
+import dk.bregnvig.formula1.server.security.TokenSecurity;
 import dk.bregnvig.formula1.wbc.WBC.History;
 
 public class GameServiceImpl extends AbstractService implements GameService {
@@ -42,6 +43,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 
 	private dk.bregnvig.formula1.service.GameService service;
 	private AutomaticResult automaticResult;
+	private TokenSecurity tokenSecurity;
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public String getSeasonName() {
@@ -57,7 +59,9 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		}
 		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		requestAttributes.getRequest().getSession().setAttribute(SessionAttributes.PLAYER, player);
-		return objectFactory.create(player);
+		ClientPlayer clientPlayer =  objectFactory.create(player);
+		clientPlayer.setToken(tokenSecurity.newToken(player));
+		return clientPlayer;
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
@@ -291,5 +295,9 @@ public class GameServiceImpl extends AbstractService implements GameService {
 			result.add(objectFactory.create(history));
 		}
 		return result;
+	}
+
+	public void setTokenSecurity(TokenSecurity tokenSecurity) {
+		this.tokenSecurity = tokenSecurity;
 	}
 }

@@ -20,7 +20,7 @@ public class AuthorizationAspect {
 	
 	private Log log = LogFactory.getLog(AuthorizationAspect.class);
 	private WebContext context;
-
+	
 	//@Before("this(dk.bregnvig.formula1.client.SeasonService)")
 	@Before("execution(* dk.bregnvig.formula1.server.*ServiceImpl.*(..))")
 	public void enforceAuthorization(JoinPoint joinpoint) throws CredentialException {
@@ -85,4 +85,5 @@ public class AuthorizationAspect {
 	public void setContext(WebContext context) {
 		this.context = context;
 	}
+
 }

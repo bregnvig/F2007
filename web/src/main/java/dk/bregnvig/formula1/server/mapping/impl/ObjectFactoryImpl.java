@@ -145,6 +145,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	public ClientSeason create(Season season) {
 		ClientSeason clientSeason = new ClientSeason();
 		clientSeason.setName(season.getName());
+		clientSeason.setCurrentRace(createFull(season.getCurrentRace()));
 		
 		clientSeason.setRaces(getClientRaces(season));
 		clientSeason.setPlayers(getClientPlayers(season));

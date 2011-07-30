@@ -8,6 +8,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import dk.bregnvig.formula1.Player;
+import dk.bregnvig.formula1.client.exception.CredentialException;
+import dk.bregnvig.formula1.server.security.TokenSecurity;
 
 /**
  * This aspect makes sure that items store in the thread local are removed when the call has completed.
@@ -19,11 +21,22 @@ import dk.bregnvig.formula1.Player;
 public class WebContextAspect {
 	
 	private WebContext context;
+	private TokenSecurity tokenSecurity;
 
 	@Before("execution(* dk.bregnvig.formula1.server.*ServiceImpl.*(..))")
 	public void storeContext() {
 		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-		context.setPlayer((Player) requestAttributes.getRequest().getSession().getAttribute(SessionAttributes.PLAYER));
+		String authorizationHeader = requestAttributes.getRequest().getHeader("Authorization");
+		if (authorizationHeader == null) {
+			context.setPlayer((Player) requestAttributes.getRequest().getSession().getAttribute(SessionAttributes.PLAYER));
+		} else {
+			try {
+				String token = authorizationHeader.replace("Basic", "").trim();
+				context.setPlayer(tokenSecurity.validate(token));
+			} catch (CredentialException e) {
+				//Ignore
+			}
+		}
 	}
 
 
@@ -35,5 +48,9 @@ public class WebContextAspect {
 	
 	public void setContext(WebContext context) {
 		this.context = context;
+	}
+
+	public void setTokenSecurity(TokenSecurity tokenSecurity) {
+		this.tokenSecurity = tokenSecurity;
 	}
 }
