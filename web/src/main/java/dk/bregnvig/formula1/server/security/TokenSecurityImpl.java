@@ -23,7 +23,7 @@ public class TokenSecurityImpl implements TokenSecurity {
 		if (tokenizer.countTokens() != 2) throw new CredentialException("The specified token does the required format. Token: " + new Base64().decode(token.getBytes()));
 		Player player = context.getSeason().getPlayer(tokenizer.nextToken());
 		if (player == null) throw new CredentialException("Token not valid");
-		if (SimpleMD5.MD5(player.getPassword() + SECRET_KEY).equals(tokenizer.nextToken()) == false) throw new CredentialException("Token not valid");
+		if (SimpleMD5.MD5(player.getPassword() + SECRET_KEY).equals(tokenizer.nextToken().trim()) == false) throw new CredentialException("Token not valid");
 		player.getRoles();
 		return player; 
 	}

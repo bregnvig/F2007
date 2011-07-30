@@ -2,8 +2,11 @@ package dk.bregnvig.formula1.server.restful;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +27,11 @@ public class GameRestfulController {
 	
 	@Autowired private GameService service;
  	@Autowired private TokenSecurity tokenSecurity; 
+ 	private Log log = LogFactory.getLog(GameRestfulController.class);
+ 	
+ 	public GameRestfulController() {
+ 		log.info("GameRestController has started");
+ 	}
  	
 	@RequestMapping(value="/login/{playerName}/{password}", method=RequestMethod.GET)
 	public @ResponseBody ClientPlayer login(@PathVariable String playerName, @PathVariable String password) throws CredentialException {
