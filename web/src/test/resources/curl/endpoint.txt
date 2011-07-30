@@ -1,1 +1,1 @@
-localhost:8080/web/ws
+http://localhost:8080/f2007/ws
