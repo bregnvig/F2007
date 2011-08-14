@@ -3,8 +3,6 @@ package dk.bregnvig.formula1.client.domain;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
 public class ClientDriver implements Serializable {
 
 	private Long id;
@@ -39,7 +37,7 @@ public class ClientDriver implements Serializable {
 		this.active = active;
 	}
 	
-	public static class NumberComparator implements Comparator<ClientDriver>, IsSerializable {
+	public static class NumberComparator implements Comparator<ClientDriver>, Serializable {
 
 		public int compare(ClientDriver driver0, ClientDriver driver1) {
 			return new Integer(driver0.getNumber()).compareTo(new Integer(driver1.getNumber()));

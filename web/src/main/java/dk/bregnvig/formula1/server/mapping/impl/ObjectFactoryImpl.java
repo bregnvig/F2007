@@ -53,7 +53,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	private WebContext context;
 
 	public ClientRace create(Race race) {
-		ClientRace clientRace = new ClientRace(false);
+		ClientRace clientRace = new ClientRace(context.getPlayer() != null ? race.isParticipant(context.getPlayer()) : false);
 		map(race, clientRace);
 		return clientRace;
 	}

@@ -1,8 +1,8 @@
 package dk.bregnvig.formula1.server.restful;
 
 import java.io.IOException;
+import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
@@ -11,22 +11,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
+import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.exception.CredentialException;
 import dk.bregnvig.formula1.client.service.GameService;
-import dk.bregnvig.formula1.server.security.TokenSecurity;
 
 @Controller
 public class GameRestfulController {
 	
 	@Autowired private GameService service;
- 	@Autowired private TokenSecurity tokenSecurity; 
  	private Log log = LogFactory.getLog(GameRestfulController.class);
  	
  	public GameRestfulController() {
@@ -44,11 +45,21 @@ public class GameRestfulController {
 		return service.getSeason();
 	}
 	
-	@RequestMapping(value="/current-race", method=RequestMethod.GET)
+	@RequestMapping(value="/race", method=RequestMethod.GET)
 	public @ResponseBody ClientRace currentRace() throws CredentialException {
 		return service.getCurrentRace();
 	}
 	
+	@RequestMapping(value="/race/drivers", method=RequestMethod.GET)
+	public @ResponseBody List<ClientDriver> activeDrivers() throws CredentialException {
+		ClientSeason season  = service.getSeason();
+		return season.getActiveDriver();
+	}
+	
+	@RequestMapping(value="/race", method=RequestMethod.POST)
+	public @ResponseBody void addBid(@RequestBody ClientBid bid) throws CredentialException {
+		service.addBid(bid);
+	}
 	
 	@RequestMapping(value="/season-name", method=RequestMethod.GET)
 	public @ResponseBody String getSeasonName() {

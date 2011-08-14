@@ -37,8 +37,6 @@ import dk.bregnvig.formula1.wbc.WBC.History;
 
 public class GameServiceImpl extends AbstractService implements GameService {
 
-	private static final long serialVersionUID = 3283834885586579712L;
-
 	private ObjectFactory objectFactory;
 
 	private dk.bregnvig.formula1.service.GameService service;
@@ -65,6 +63,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Authorization(roles = { PlayerRole.PLAYER })
 	public ClientRace getCurrentRace() {
 		Race race = getContext().getSeason().getCurrentRace();
 		if (race != null) {

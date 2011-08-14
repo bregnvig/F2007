@@ -1,4 +1,4 @@
 #!/bin/bash
-endpoint=`cat endpoint.txt`/current-race
+endpoint=`cat endpoint.txt`/race
 token=`cat token.txt`
-curl -D - -H "Accept: application/json" -H "Content-Type: application/json" -u $token  $endpoint
+curl -D - -H "Accept: application/json" -H "Content-Type: application/json"  -H "Authorization: Basic $token"  $endpoint
