@@ -143,4 +143,7 @@ public class ClientPlayer implements Serializable {
 	public void setLastYearWBC(int lastYearWBC) {
 		this.lastYearWBC = lastYearWBC;
 	}
+	public String toString() {
+		return playername+":"+getFirstName() + " " + getLastName();
+	}
 }

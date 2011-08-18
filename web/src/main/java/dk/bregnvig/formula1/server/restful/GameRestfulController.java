@@ -56,7 +56,7 @@ public class GameRestfulController {
 		return season.getActiveDriver();
 	}
 	
-	@RequestMapping(value="/race", method=RequestMethod.POST)
+	@RequestMapping(value="/bid", method=RequestMethod.POST)
 	public @ResponseBody void addBid(@RequestBody ClientBid bid) throws CredentialException {
 		service.addBid(bid);
 	}

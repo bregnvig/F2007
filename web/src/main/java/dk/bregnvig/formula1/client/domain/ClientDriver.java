@@ -78,6 +78,8 @@ public class ClientDriver implements Serializable {
 		this.partOfSeason = partOfSeason;
 	}
 
-	
+	public String toString() {
+		return Integer.toString(getNumber()) + ":" + name;
+	}
 
 }

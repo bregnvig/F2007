@@ -1,7 +1,5 @@
 package dk.bregnvig.formula1.server.context;
 
-import java.util.Enumeration;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.annotation.After;
