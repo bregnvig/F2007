@@ -2,7 +2,7 @@ package dk.bregnvig.formula1.client.exception;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class CredentialException extends Exception implements IsSerializable {
+public class CredentialException extends RuntimeException implements IsSerializable {
 	
 	private static final long serialVersionUID = 4544564940923666651L;
 

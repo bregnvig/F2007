@@ -111,6 +111,7 @@ public class ClientRace implements Serializable{
 	}
 	
 	public boolean isWaiting() {
+		if (openDate == null) return false; // For the super light weight
 		return new Date().before(openDate);
 	}
 

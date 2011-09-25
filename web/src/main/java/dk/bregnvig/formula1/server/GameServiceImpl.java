@@ -63,7 +63,6 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-	@Authorization(roles = { PlayerRole.PLAYER })
 	public ClientRace getCurrentRace() {
 		Race race = getContext().getSeason().getCurrentRace();
 		if (race != null) {

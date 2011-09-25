@@ -58,6 +58,12 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		return clientRace;
 	}
 	
+	public ClientRace createSuperLightWeight(Race race) {
+		ClientRace clientRace = new ClientRace(context.getPlayer() != null ? race.isParticipant(context.getPlayer()) : false);
+		clientRace.setName(race.getName());
+		return clientRace;
+	}
+	
 	public ClientRace createFull(Race race) {
 		ClientRace clientRace = new ClientRace(race.isParticipant(context.getPlayer()));
 		map(race, clientRace);
@@ -118,6 +124,14 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		}
 		clientPlayer.setBalance(player.getAccount().getBalance().intValue());
 		clientPlayer.setBettingMoneyAvailable(player.getAccount().isBettingMoneyAvailable());
+		return clientPlayer;
+	}
+	
+	public ClientPlayer createSuperLightWeight(Player player) {
+		ClientPlayer clientPlayer = new ClientPlayer();
+		clientPlayer.setPlayername(player.getPlayername());
+		clientPlayer.setFirstName(player.getFirstName());
+		clientPlayer.setLastName(player.getLastName());
 		return clientPlayer;
 	}
 	
