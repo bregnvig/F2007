@@ -65,6 +65,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	}
 	
 	public ClientRace createFull(Race race) {
+		if (race == null) return null;
 		ClientRace clientRace = new ClientRace(race.isParticipant(context.getPlayer()));
 		map(race, clientRace);
 		if (race.isWaiting() == false) {
