@@ -1,6 +1,7 @@
 package dk.bregnvig.formula1.server.restful;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -46,9 +47,27 @@ public class GameRestfulController {
 		return service.getSeason();
 	}
 	
-	@RequestMapping(value="/race", method=RequestMethod.GET)
+	@RequestMapping(value="/race", method=RequestMethod.GET, params="!players")
 	public @ResponseBody ClientRace currentRace() throws CredentialException {
 		return service.getCurrentRace();
+	}
+	
+	@RequestMapping(value="/race/{id}", method=RequestMethod.GET)
+	public @ResponseBody ClientRace getRace(@PathVariable Long id) throws CredentialException {
+		return service.getRace(id);
+	}
+	
+	@RequestMapping(value="/race", method=RequestMethod.GET, params="players")
+	public @ResponseBody List<ClientPlayer> getPlayers() throws CredentialException {
+		
+		ClientRace race = service.getCurrentRace();
+		race = service.getRace(race.getId());
+		
+		List<ClientPlayer> players = new ArrayList<ClientPlayer>();
+		for (ClientBid bid : race.getBids()) {
+			players.add(bid.getPlayer());
+		}
+		return players;
 	}
 	
 	@RequestMapping(value="/race/drivers", method=RequestMethod.GET)
