@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import dk.bregnvig.formula1.account.NotEnoughMoneyException;
 import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
@@ -88,8 +89,12 @@ public class GameRestfulController {
 	}
 	
 	@RequestMapping(value="/bid", method=RequestMethod.POST)
-	public @ResponseBody void addBid(@RequestBody ClientBid bid) throws CredentialException {
-		service.addBid(bid);
+	public @ResponseBody void addBid(@RequestBody ClientBid bid, HttpServletResponse response) throws CredentialException, IOException {
+		try {
+			service.addBid(bid);
+		} catch (NotEnoughMoneyException e) {
+			response.sendError(HttpServletResponse.SC_PAYMENT_REQUIRED, e.getMessage());
+		}
 	}
 	
 	@RequestMapping(value="/wbc", method=RequestMethod.GET)
