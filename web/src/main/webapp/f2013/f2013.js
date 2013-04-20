@@ -9,7 +9,7 @@ var bid = new Bid();
 var error = "";
 var forceReload = false;
 var testMode = window.location.search.replace( "?", "" ) == "test";
-var gameHost = location.host == "m.loopit.eu" ? "http://formel1.loopit.eu/" : "../";
+var gameHost = location.host == "m.formel1.loopit.eu" ? "http://formel1.loopit.eu/" : "../";
 
 $(document).on("pageshow", "#home", function(event, ui) {
 	if (user.isValid() == false) {
