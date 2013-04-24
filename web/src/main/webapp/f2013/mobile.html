@@ -8,8 +8,7 @@
 	  	<link rel=stylesheet href="f2013.css" />
 		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 		<script>
-	 		$(document).bind("mobileinit", function ()
-	 		{
+	 		$(document).bind("mobileinit", function () {
 				$.mobile.defaultPageTransition = 'slide'
 	   			$.mobile.page.prototype.options.backBtnText = 'Tilbage'
 	 		});
@@ -41,13 +40,29 @@
 				</h1>
 			</div>
 		</div>
-		<div data-role=page id=no-support>
+		<div data-role=page id=no-support-local-storage>
   			<div data-role=header data-position=fixed>
-    			<h1 id=title>Ikke understøttet</h1>
+    			<h1 id=title>Local storage</h1>
   			</div>
   			<div data-role=content>
 				<p>
-					Din browser understøtter ikke de nødvendige funktioner. Du kan derfor ikke benytte denne applikation
+					Din browser understøtter ikke local storage funktioner
+				</p>
+				<p>
+					Du kan derfor ikke benytte denne applikation
+				</p>
+  			</div>
+		</div>
+		<div data-role=page id=no-support-xhr>
+  			<div data-role=header data-position=fixed>
+    			<h1 id=title>XHR 2.0</h1>
+  			</div>
+  			<div data-role=content>
+				<p>
+					Din browser understøtter ikke XHR 2.0
+				</p>
+				<p>
+					Du kan derfor ikke benytte denne applikation
 				</p>
   			</div>
 		</div>
@@ -71,6 +86,7 @@
 		<script src="players.js"></script>
 		<script src="submitted-bid.js"></script>
 		<script src="wbc.js"></script>
+		<script src="races.js"></script>
 		<script src="wbc-player.js"></script>
 	</body>
 </html>

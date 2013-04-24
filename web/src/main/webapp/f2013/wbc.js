@@ -1,4 +1,4 @@
-$(document).on("pageinit", "#wbc", function() {
+$(document).on("pageshow", "#wbc", function() {
 	if (window.wbcPlayers == undefined) {
 		$.mobile.loading("show", {text: "Henter WBC...", textVisible: true, textonly: false, theme: "a"});
 		$.getJSON(gameHost+"ws/wbc").done(function(data, textStatus, jqXHR) {

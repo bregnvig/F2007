@@ -5,7 +5,7 @@ $(document).on("pageinit", "#login", function() {
 	$('#login #login-btn').click(function() {
 		user.playername($('#login #playername').val());
 
-		$.ajax(gameHost+'ws/login/'+user.playername()+"/"+$('#login #password').val(), {crossDomain: true, type: "GET"}).done(function(data) {
+		$.ajax({url: gameHost+'ws/login/'+user.playername()+"/"+$('#login #password').val(), crossDomain: true, dataType: "json"}).done(function(data) {
 			user.name(data.name);
 			user.token(data.token);
 			forceReload = true;

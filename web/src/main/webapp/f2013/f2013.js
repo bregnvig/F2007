@@ -11,31 +11,33 @@ var forceReload = false;
 var testMode = window.location.search.replace( "?", "" ) == "test";
 var gameHost = location.host == "m.formel1.loopit.eu" ? "http://formel1.loopit.eu/" : "../";
 
-$(document).on("pageshow", "#home", function(event, ui) {
-	if (user.isValid() == false) {
-		setTimeout(function() {
-			$.mobile.changePage("login.html", {transition: "slidedown"});
-		}, 500);
-		//
-	} 
-	if (forceReload || ui.prevPage.length == 0) loadHome();
-});
-$(document).bind('pageinit', function(event) {
+$(document).on('pageinit', function(event) {
+	$.ajaxSetup({
+		beforeSend: function(jqXHR){
+			if (user.isValid()) jqXHR.setRequestHeader("Authorization", user.authorizationValue());
+		},
+		cache: false
+	});
 	if (Modernizr.localstorage == false) {
-		document.location.href="mobile.html#no-support"
+		$.mobile.changePage($("#no-support-local-storage"));
 		return;
-	}
-	if (user.isValid()) {
-		$.ajaxSetup({
-			beforeSend: function(jqXHR){
-				jqXHR.setRequestHeader("Authorization", user.authorizationValue());
-			},
-			cache: false
+	} else if ('withCredentials' in new XMLHttpRequest()) == false) {
+		$.mobile.changePage($("#no-support-xhr"));
+		return;
+	} else {
+		$(document).on("pageshow", "#home", function(event, ui) {
+			if (user.isValid() == false) {
+				setTimeout(function() {
+					$.mobile.changePage("login.html", {transition: "slidedown"});
+				}, 500);
+				//
+			} 
+			if (forceReload || ui.prevPage.length == 0) loadHome();
 		});
 	}
 	switch (event.target.id) {
 	case "home":
-		$.ajax(gameHost + "ws/season-name", {crossDomain: true, type: "GET"}).done(function(data) {
+		$.ajax({url: gameHost + "ws/season-name", crossDomain: true, type: "GET", dataType: 'text'}).done(function(data) {
 			$('#title').text(data);
 			document.title = data;
 		}).fail(function(jqxhr, textStatus, error) {
@@ -58,13 +60,13 @@ function loadHome() {
 
 	if (user.isValid()) {
 		$.mobile.loading("show", {text: "Henter løbet...", textVisible: true, textonly: false, theme: "a"});
-		$.ajax(gameHost+'ws/race', {crossDomain: true, type: "GET"}).done(function(data, textStatus, jqXHR) {
+		$.ajax({url: gameHost+'ws/race', dataType: 'json'}).done(function(data, textStatus, jqXHR) {
 			race = new Race(data);
 			$("#race-name").text(race.name());
 			$("#race-status").text(race.status());
 			if (race.open()) {
 				$("#participate").parent().show();
-				$.ajax(gameHost+"ws/race/drivers", {crossDomain: true, type: "GET"}).done(function(data) {
+				$.ajax({url: gameHost+"ws/race/drivers", dataType: 'json'}).done(function(data) {
 					drivers = new Drivers(data);
 					$.mobile.loading("hide");
 				}).fail(function(jqxhr, textStatus, error) {
