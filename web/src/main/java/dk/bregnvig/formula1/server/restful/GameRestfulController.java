@@ -58,6 +58,11 @@ public class GameRestfulController {
 		return service.getRace(id);
 	}
 	
+	@RequestMapping(value="/races", method=RequestMethod.GET)
+	public @ResponseBody List<ClientRace> getRaces() throws CredentialException {
+		return service.getSeason().getRaces();
+	}
+	
 	@RequestMapping(value="/race/{id}/bid/{player}", method=RequestMethod.GET)
 	public @ResponseBody ClientBid getBid(@PathVariable Long id, @PathVariable String player) throws CredentialException {
 		ClientRace race = service.getRace(id);
@@ -65,6 +70,15 @@ public class GameRestfulController {
 			for (ClientBid bid : race.getBids()) {
 				if (bid.getPlayer().getPlayername().equals(player)) return bid;
 			}
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="/race/{id}", method=RequestMethod.GET, params="players")
+	public @ResponseBody List<ClientBid> getPlayers(@PathVariable Long id) throws CredentialException {
+		ClientRace race = service.getRace(id);
+		if (race != null) {
+			return race.getBids();
 		}
 		return null;
 	}
