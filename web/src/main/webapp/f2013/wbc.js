@@ -1,7 +1,7 @@
-$(document).on("pageshow", "#wbc", function() {
+function loadWBC() {
 	if (window.wbcPlayers == undefined) {
 		$.mobile.loading("show", {text: "Henter WBC...", textVisible: true, textonly: false, theme: "a"});
-		$.getJSON(gameHost+"ws/wbc").done(function(data, textStatus, jqXHR) {
+		$.getJSON(F2013.gameHost+"ws/wbc").done(function(data, textStatus, jqXHR) {
 			loadPlayers(window.wbcPlayers = data);
 			$.mobile.loading("hide");
 		}).fail(function(jqxhr, textStatus, error) {
@@ -10,7 +10,7 @@ $(document).on("pageshow", "#wbc", function() {
 	} else loadPlayers(window.wbcPlayers);
 	
 	function loadPlayers(players) {
-		var list = $("#wbc #players");
+		var list = $("#wbc #wbc-players");
 		$.each(players, function() {
 			list.append($("<li>")
 				    .append($("<a>").text(this.player.name).prop("href", "wbc-player.html?"+this.player.playername).append($("<span>").text(this.points).addClass("ui-li-aside"))
@@ -18,4 +18,4 @@ $(document).on("pageshow", "#wbc", function() {
 			})
 		list.listview("refresh");
 	}
-});	
+}

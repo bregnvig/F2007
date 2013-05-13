@@ -9,3 +9,8 @@
 .active {
     background-color: white;
 }
+
+#olmap, #home {
+    height: 100%;
+    width: 100%;
+}

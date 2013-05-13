@@ -48,6 +48,9 @@ var Race = function(data) {
 	} else {
 		localStorage["race"] = JSON.stringify(data);
 	}
+	this.id = function() {
+		return this.json.id;
+	}
 	this.name = function() {
 		return this.json.name;
 	}
@@ -56,6 +59,12 @@ var Race = function(data) {
 	}
 	this.open = function() {
 		return this.json.opened == true && this.json.participant == false; 
+	}
+	this.completed = function() {
+		return this.json.completed == true; 
+	}
+	this.viewable = function() {
+		return this.json.participant || this.json.closed == true;
 	}
 	this.status = function() {
 		if (this.json.participant == true) return "Du har allerede spillet";
@@ -101,7 +110,7 @@ var Drivers = function(data) {
 	
 	var drivers = this.drivers;
 	$.each(data, function(i, driver){
-		drivers.push(new Driver(driver));
+		F2013.drivers.push(new Driver(driver));
 	});
 	
 	this.populateWithDrivers = function(selectElement) {

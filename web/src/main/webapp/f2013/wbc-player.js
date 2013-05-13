@@ -7,7 +7,7 @@ $(document).on("pageshow", "#wbc-player", function() {
 	if (window.wbcPlayer == undefined) window.wbcPlayer = {};
 	
 	if (window.wbcPlayer[userId] == undefined) {
-		$.getJSON(gameHost+"ws/wbc/"+userId)
+		$.getJSON(F2013.gameHost+"ws/wbc/"+userId)
 		.done(function(data, textStatus, jqXHR) {
 			displayWBC(window.wbcPlayer[userId] = data);
 		}).fail(function(jqxhr, textStatus, error) {

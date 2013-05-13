@@ -1,13 +1,13 @@
 $(document).on("pageinit", "#bid", function() {
 	
-	$("#bid #title").text(race.name());
-	$("#bid #selected-driver").find(".ui-btn-text").text(race.selectedDriver());
+	$("#bid #title").text(F2013.race.name());
+	$("#bid #selected-driver").find(".ui-btn-text").text(F2013.race.selectedDriver());
 	
-	drivers.populateWithDrivers($("select[id^=grid]"));
-	drivers.populateWithDrivers($("select[id^=fastest]"));
-	drivers.populateWithDrivers($("select[id^=podium]"));
-	drivers.populateWithDrivers($("select[id^=first-crash]"));
-	drivers.populateWithPositions($("select[id^=selected-driver]"));
+	F2013.drivers.populateWithDrivers($("select[id^=grid]"));
+	F2013.drivers.populateWithDrivers($("select[id^=fastest]"));
+	F2013.drivers.populateWithDrivers($("select[id^=podium]"));
+	F2013.drivers.populateWithDrivers($("select[id^=first-crash]"));
+	F2013.drivers.populateWithPositions($("select[id^=selected-driver]"));
 
 	var seconds = $("#pole-time-seconds");
 	for(var i = 0; i < 60; i++) {
@@ -19,23 +19,23 @@ $(document).on("pageinit", "#bid", function() {
 	}
 	new BidValidator();
 	
-	if (testMode) loadTest();
+	if (F2013.testMode) loadTest();
 	
 	$("#indsend").click(function(event) {
-		setDrivers(bid.grid, $("select[id^=grid]"));
-		setDrivers(bid.podium, $("select[id^=podium]"));
-		bid.fastestLap = getDriver($("select[id^=fastest]"));
-		bid.firstCrash = getDriver($("select[id^=first-crash]"));
-		setPositions(bid.selectedDriver, $("select[id^=selected-driver]"));
-		bid.polePositionTime = getPolePositionTime();
+		setDrivers(F2013.bid.grid, $("select[id^=grid]"));
+		setDrivers(F2013.bid.podium, $("select[id^=podium]"));
+		F2013.bid.fastestLap = getDriver($("select[id^=fastest]"));
+		F2013.bid.firstCrash = getDriver($("select[id^=first-crash]"));
+		setPositions(F2013.bid.selectedDriver, $("select[id^=selected-driver]"));
+		F2013.bid.polePositionTime = getPolePositionTime();
 		$.mobile.loading("show", {text: "Indsender bud...", textVisible: true, textonly: false});
-		$.ajax(gameHost+"ws/bid", {
+		$.ajax(F2013.gameHost+"ws/bid", {
 			type: "POST",
 			contentType: "application/json; charset=UTF-8",
 			data: JSON.stringify(bid)
 		}).done(function() {
 			$.mobile.loading("hide");
-			forceReload = true;
+			F2013.forceReload = true;
 			history.back();
 		}).fail(function(jqxhr, textStatus, error) {
 			gotoErrorPage(error);
@@ -46,11 +46,11 @@ $(document).on("pageinit", "#bid", function() {
 		source.each(function(i) {
 			var select = $(this);
 			if (select.val() == "") return true;
-			target[i] = drivers.getDriver(select.val()).json;
+			target[i] = F2013.drivers.getDriver(select.val()).json;
 		}); 
 	}
 	function getDriver(source) {
-		return source.val() == "" ? null : drivers.getDriver(source.val()).json;
+		return source.val() == "" ? null : F2013.drivers.getDriver(source.val()).json;
 	}
 	function setPositions(target, source) {
 		source.each(function(i) {
