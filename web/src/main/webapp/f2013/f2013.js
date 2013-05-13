@@ -4,7 +4,6 @@
 
 var F2013 = {};
 
-F2013.seasonname = "";
 F2013.user = new User();
 F2013.race = new Race();
 F2013.drivers = null;
@@ -29,7 +28,7 @@ $(document).on('pageinit', function(event) {
 		return;
 	} else {
 		$(document).on("pageshow", "#home", function(event, ui) {
-			if (F2013.user.isValid() == false) {
+			if (F2013.user.isValid() == false && F2013.seasonname != undefined) {
 				setTimeout(function() {
 					$.mobile.changePage("login.html", {transition: "slidedown"});
 				}, 500);
@@ -43,6 +42,7 @@ $(document).on('pageinit', function(event) {
 		$.ajax({url: F2013.gameHost + "ws/season-name", crossDomain: true, type: "GET", dataType: 'text'}).done(function(data) {
 			$('#title').text(F2013.seasonname = data);
 			document.title = data;
+			if (F2013.user.isValid() == false) $.mobile.changePage("login.html", {transition: "slidedown"});
 		}).fail(function(jqxhr, textStatus, error) {
 			gotoErrorPage(error);
 		});
