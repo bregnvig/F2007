@@ -13,7 +13,7 @@ function loadWBC() {
 		var list = $("#wbc #wbc-players");
 		$.each(players, function() {
 			list.append($("<li>")
-				    .append($("<a>").text(this.player.name).prop("href", "wbc-player.html?"+this.player.playername).append($("<span>").text(this.points).addClass("ui-li-aside"))
+				    .append($("<a>").text(this.player.name).prop("href", "wbc-player.html?"+this.player.playername).append($("<span>").text(this.points).addClass("ui-li-count"))
 				    ));
 			})
 		list.listview("refresh");

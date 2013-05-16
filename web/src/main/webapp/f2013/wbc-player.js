@@ -22,9 +22,9 @@ $(document).on("pageshow", "#wbc-player", function() {
 		page.find("#title").text(data[0].player.name);
 		var list = page.find("#wbc");
 		$.each(data, function() {
-			list.append($("<li>").text(this.race.name).append($("<span>").text(this.points).addClass("ui-li-aside")));
-//				    .append($("<span>").text(this.points).addClass("ui-li-aside"))
-//				    ));
+			var link = $("<a>").text(this.race.name).prop("href", "submitted-bid.html?"+this.player.playername+"&"+this.race.id);
+			link.append($("<span>").prop("class", "ui-li-count").text(this.points));
+			list.append($("<li>").append(link));
 		});
 		page.find("#wbc").listview("refresh");
 		$.mobile.loading("hide");

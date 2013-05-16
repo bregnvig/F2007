@@ -108,9 +108,9 @@ var Drivers = function(data) {
 	
 	this.drivers = [];
 	
-	var drivers = this.drivers;
+	var that = this;
 	$.each(data, function(i, driver){
-		F2013.drivers.push(new Driver(driver));
+		that.drivers.push(new Driver(driver));
 	});
 	
 	this.populateWithDrivers = function(selectElement) {

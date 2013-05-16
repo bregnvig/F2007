@@ -31,8 +31,8 @@ $(document).on('pageinit', function(event) {
 			if (F2013.user.isValid() == false && F2013.seasonname != undefined) {
 				setTimeout(function() {
 					$.mobile.changePage("login.html", {transition: "slidedown"});
-				}, 500);
-				//
+				}, 500)
+				;
 			} 
 			if (F2013.forceReload || ui.prevPage.length == 0) loadHome();
 		});
