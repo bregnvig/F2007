@@ -58,13 +58,13 @@ function loadHome() {
 	if (F2013.user.isValid()) {
 		$.mobile.loading("show", {text: "Henter løbet...", textVisible: true, textonly: false, theme: "a"});
 		$.ajax({url: F2013.gameHost+'ws/race', dataType: 'json'}).done(function(data, textStatus, jqXHR) {
-			race = new Race(data);
+			F2013.race = new Race(data);
 			$("#race-name").text(F2013.race.name());
 			$("#race-status").text(F2013.race.status());
 			if (F2013.race.open()) {
 				$("#participate").parent().show();
 				$.ajax({url: F2013.gameHost+"ws/race/drivers", dataType: 'json'}).done(function(data) {
-					drivers = new Drivers(data);
+					F2013.drivers = new Drivers(data);
 					$.mobile.loading("hide");
 				}).fail(function(jqxhr, textStatus, error) {
 					gotoErrorPage(error);

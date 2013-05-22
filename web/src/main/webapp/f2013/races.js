@@ -7,6 +7,8 @@ function loadRaces() {
 				F2013.allRaces.push(new Race(this));
 			});
 			F2013.allRaces.findRace = findRace;
+			F2013.allRaces.replaceRace = replaceRace;
+			F2013.allRaces.replaceRace(F2013.race);
 			displayRaces(F2013.allRaces);
 			$.mobile.loading("hide");
 		}).fail(function(jqxhr, textStatus, error) {
@@ -31,5 +33,14 @@ function loadRaces() {
 		return $.grep(F2013.allRaces, function(race, index) {
 			return race.id() == id;
 		})[0];
+	}
+	function replaceRace(race) {
+		$.each(F2013.allRaces, function(i) {
+			if (this.id() == race.id()) {
+				F2013.allRaces[i] = race;
+				return false;
+			}
+		});
+		return race;
 	}
 }	

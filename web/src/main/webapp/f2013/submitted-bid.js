@@ -1,26 +1,28 @@
 $(document).on("pageshow", "#submitted-bid", function() {
 	
-	$.mobile.loading("show", {text: "Henter bud...", textVisible: true, textonly: false, theme: "a"});
+	//$.mobile.loading("show", {text: "Henter bud...", textVisible: true, textonly: false, theme: "a"});
 	var page = $("#submitted-bid"); 
-	var userId = location.search.replace( "?", "" ).split("&")[0];
+	var playername = location.search.replace( "?", "" ).split("&")[0];
 	var raceId = location.search.replace( "?", "" ).split("&")[1];
-	if (raceId == undefined) raceId = F2013.race.json.id;
-	
-	if (F2013.bids == undefined) F2013.bids = {};
-	
-	if (F2013.bids[userId] == undefined) {
-		$.getJSON(F2013.gameHost+"ws/race/"+raceId+"/bid/"+userId)
-		.done(function(data, textStatus, jqXHR) {
-			displayBid(F2013.bids[userId] = data);
-		}).fail(function(jqxhr, textStatus, error) {
-			gotoErrorPage(error);
+	var race = F2013.race;
+	if (raceId !== undefined) race = F2013.allRaces.findRace(raceId);
+
+	if (race.json.bids === undefined) return;
+
+	if (playername != "result") {
+		var bids = $.grep(race.json.bids, function(bid, index) {
+			return bid.player.playername == playername;
 		});
-	} else {
-		displayBid(F2013.bids[userId]);
+		
+		if (bids.length == 1) displayBid(bids[0]);
+	} else if (race.json.raceResult){
+		displayBid(race.json.raceResult);
 	}
 	
 	function displayBid(data) {
-		page.find("#title").text(data.player.name);
+		var result = data.firstCrashes !== undefined;
+		
+		page.find("#title").text(result ? "Resultat" : data.player.name);
 		jQuery.each(data.grid, function() {
 			page.find("#fastest-lap").before(createLi(this));
 		});
@@ -30,7 +32,13 @@ $(document).on("pageshow", "#submitted-bid", function() {
 		});
 		page.find("#selected-driver").after(createSelectedDriverLi("Slutter som nr.: ", data.selectedDriver[1], data.selectedDriverPoints[1]));
 		page.find("#selected-driver").after(createSelectedDriverLi("Starter som nr.: ", data.selectedDriver[0], data.selectedDriverPoints[0]));
-		page.find("#first-crash").after(createLi(data.firstCrash));
+		if (result) {
+			jQuery.each(data.firstCrashes, function() {
+				page.find("#pole-position-time").before(createLi(this));
+			});
+		} else {
+			page.find("#first-crash").after(createLi(data.firstCrash));
+		}
 		page.find("#pole-position-time").after($("<li>").text(data.polePositionTimeInText));
 		page.find("#bid").listview("refresh");
 		$.mobile.loading("hide");
