@@ -7,16 +7,16 @@ $(document).on("pageshow", "#submitted-bid", function() {
 	var race = F2013.race;
 	if (raceId !== undefined) race = F2013.allRaces.findRace(raceId);
 
-	if (race.json.bids === undefined) return;
+	if (race.bids === undefined) return;
 
 	if (playername != "result") {
-		var bids = $.grep(race.json.bids, function(bid, index) {
+		var bids = $.grep(race.bids, function(bid, index) {
 			return bid.player.playername == playername;
 		});
 		
 		if (bids.length == 1) displayBid(bids[0]);
-	} else if (race.json.raceResult){
-		displayBid(race.json.raceResult);
+	} else if (race.raceResult){
+		displayBid(race.raceResult);
 	}
 	
 	function displayBid(data) {

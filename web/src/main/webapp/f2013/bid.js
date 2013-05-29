@@ -1,7 +1,7 @@
 $(document).on("pageinit", "#bid", function() {
 	
-	$("#bid #title").text(F2013.race.name());
-	$("#bid #selected-driver").find(".ui-btn-text").text(F2013.race.selectedDriver());
+	$("#bid #title").text(F2013.race.name);
+	$("#bid #selected-driver").find(".ui-btn-text").text(F2013.race.selectedDriver.name);
 	
 	F2013.drivers.populateWithDrivers($("select[id^=grid]"));
 	F2013.drivers.populateWithDrivers($("select[id^=fastest]"));

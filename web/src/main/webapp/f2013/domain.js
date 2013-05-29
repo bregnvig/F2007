@@ -37,98 +37,65 @@ var User = function() {
 	}
 }
 
-var Race = function(data) {
-	this.json = data;
-	if (data === undefined) {
-		try {
-			this.json = JSON.parse(localStorage["race"]);
-		} catch (err) {
-			this.json = null;
+raceFunction = {
+		open: function() {
+			return this.opened == true && this.participant == false;
+		},
+		viewable: function() {
+			return this.participant || this.closed == true;
+		},
+		status: function() {
+			if (this.participant == true) return "Du har allerede spillet";
+			if (this.closed == true && this.completed == false) {
+				return "Der kan ikke længere afgives bud";
+			}
+			if (this.opened == true) return "Spillet er åbent for bud";
+			if (this.opened == false && this.completed == false) {
+				return "Spillet er ikke åbent endnu";
+			} 
+			return "Ukendt status";
 		}
-	} else {
-		localStorage["race"] = JSON.stringify(data);
-	}
-	this.id = function() {
-		return this.json.id;
-	}
-	this.name = function() {
-		return this.json.name;
-	}
-	this.selectedDriver = function() {
-		return this.json.selectedDriver.name;
-	}
-	this.open = function() {
-		return this.json.opened == true && this.json.participant == false; 
-	}
-	this.completed = function() {
-		return this.json.completed == true; 
-	}
-	this.viewable = function() {
-		return this.json.participant || this.json.closed == true;
-	}
-	this.status = function() {
-		if (this.json.participant == true) return "Du har allerede spillet";
-		if (this.json.closed == true && this.json.completed == false) {
-			return "Der kan ikke længere afgives bud";
-		}
-		if (this.json.opened == true) return "Spillet er åbent for bud";
-		if (this.json.opened == false && this.json.completed == false) {
-			return "Spillet er ikke åbent endnu";
-		} 
-		return "Ukendt status";
-	}
-	this.isParticipant = function() {
-		return this.json.participant;
-	}
 }
 
-var Driver = function(data) {
-	
-	this.json = data;
-	
-	this.isValid = function() {
-		return this.json != null;
-	}
-	
-	this.name = function() {
-		return this.json.name;
-	}
-	this.id = function() {
-		return this.json.id;
-	}
-	this.active = function() {
-		return this.json.active;
-	}
-	this.option = function() {
-		return $("<option>").prop("value", this.json.id).text(this.json.name);
-	}
+var newRace = function(data) {
+	return $.extend(Object.create(raceFunction), data);
 }
 
-var Drivers = function(data) {
+driverFunction = {
+		option: function() {
+			return $("<option>").prop("value", this.id).text(this.name);
+		}
+}
+
+newDriver = function(data) {
+	return $.extend(Object.create(driverFunction), data);
+}
+
+newDrivers = function(data) {
 	
-	this.drivers = [];
-	
-	var that = this;
+	var drivers = [];
 	$.each(data, function(i, driver){
-		that.drivers.push(new Driver(driver));
+		drivers.push(newDriver(driver));
 	});
 	
-	this.populateWithDrivers = function(selectElement) {
-		$.each(this.drivers, function(i, driver) {
-			selectElement.append(driver.option());
-		});
-		selectElement.selectmenu("refresh");
-	}
-	this.populateWithPositions = function(selectElement) {
-		$.each(this.drivers, function(i, driver) {
-			selectElement.append($("<option>").prop("value", i+1).text(i+1));
-		});
-		selectElement.selectmenu("refresh");
-	}
-	this.getDriver = function(id) {
-		return $.grep(this.drivers, function(driver) {
-			return driver.id() == id;
-		})[0];
+	return {
+		populateWithDrivers: function(selectElement) {
+			$.each(drivers, function(i, driver) {
+				selectElement.append(driver.option());
+			});
+			selectElement.selectmenu("refresh");
+		},
+		populateWithPositions: function(selectElement) {
+			$.each(drivers, function(i, driver) {
+				selectElement.append($("<option>").prop("value", i+1).text(i+1));
+			});
+			selectElement.selectmenu("refresh");
+		},
+		getDriver: function(id) {
+			return $.grep(drivers, function(driver) {
+				return driver.id() == id;
+			})[0];
+		}
 	}
 }
 

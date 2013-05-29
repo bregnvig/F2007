@@ -11,11 +11,9 @@
 	  	<script defer src="swiper/idangerous.swiper-1.9.2.min.js"></script>
 		<script>
 		  window.onload = function() {
-				var mySwiper = new Swiper('.swiper-container',{
-					//Your options here:
+				mySwiper = new Swiper('.swiper-container',{
 					mode:'horizontal',
 					loop: false
-					//etc..
 				});  
   				mySwiper.transitionEnd(pageSwiped, true);
   				mySwiper.swipeTo(1, 0);
