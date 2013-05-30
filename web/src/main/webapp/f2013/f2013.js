@@ -31,7 +31,7 @@ $(document).on('pageinit', function(event) {
 		if (mySwiper.activeIndex != index) {
 			$(".dot").removeClass("active");
 			$("#dot"+index).addClass("active");
-			mySwiper.swipeTo(index, 500);
+			mySwiper.swipeTo(index, Math.abs(index-mySwiper.activeIndex)*300);
 		}
 	});
 	$.ajaxSetup({
