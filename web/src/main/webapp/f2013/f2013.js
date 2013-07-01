@@ -62,6 +62,9 @@ $(document).on('pageinit', function(event) {
 		$.ajax({url: F2013.gameHost + "ws/season-name", crossDomain: true, type: "GET", dataType: 'text'}).done(function(data) {
 			$('#title').text(F2013.seasonname = data);
 			document.title = data;
+			$("#home").height($("#home").height());
+			F2013.homeSize = F2013.graphSize = $("#home").height();
+			mySwiper.resizeFix();
 			if (F2013.user.isValid() == false) $.mobile.changePage("login.html", {transition: "slidedown"});
 		}).fail(function(jqxhr, textStatus, error) {
 			gotoErrorPage(error);
@@ -121,18 +124,30 @@ function pageSwiped(swiper) {
 		$("#dot"+swiper.activeIndex).addClass("active");
 		switch (swiper.activeIndex) {
 		case 0:
+			setHomeSize(F2013.homeSize);
 			$('#title').text('Alle løb');
 			loadRaces();
 			break;
 		case 1:
+			setHomeSize(F2013.homeSize);
 			$('#title').text(F2013.seasonname);
 			break;
 		case 2:
+			setHomeSize(F2013.homeSize);
 			$('#title').text('WBC');
 			loadWBC();
 			break;
+		case 3:
+			setHomeSize(F2013.graphSize);
+			$('#title').text('WBC Samlet graf');
+			F2013.loadGraph();
+			break;
 		}
 	}
+}
+
+function setHomeSize(size) {
+	$("#home").height(size);
 }
 
 function findRace(id) {

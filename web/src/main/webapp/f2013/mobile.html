@@ -28,7 +28,7 @@
 
 	<body> 
 		<div data-role=page id=home>
-			<div data-role=header data-position=fixed data-tab-toggle=true>
+			<div id=home-header data-role=header data-position=fixed data-tab-toggle=true>
 				<a href="login.html" data-transition=slidedown data-icon=gear class=ui-btn-right>Profil</a>
 				<h1 id=title>F1 2013</h1>
 		  	</div>
@@ -36,7 +36,7 @@
 			  	<div class="swiper-container">
 					<div class="swiper-wrapper">
 				  		<div class="swiper-slide" id=races>
-						  	<div data-role=content style="text-align: center;" >
+						  	<div data-role=content id=races-content style="text-align: center; padding-bottom: 0px;" >
 								<ul data-role=listview id=races-list></ul>
 							</div>
 						</div>
@@ -53,18 +53,33 @@
 							</div>
 						</div>
 				  		<div class="swiper-slide" id=wbc>
-						  	<div data-role=content style="text-align: center;" >
+						  	<div data-role=content style="text-align: center;" id=wbc-content>
 								<ol data-role=listview id=wbc-players></ol>
+							</div>
+						</div>
+				  		<div class="swiper-slide" id="wbc-graph-slider">
+				  			<div data-role=content style="text-align: center;" id=wbc-graph>
+								<div data-role="collapsible" data-theme="c" data-content-theme="c">
+									<h2>Spillere</h2>
+									<form>
+										<fieldset data-role="controlgroup" id=wbc-checkboxes>
+									    </fieldset>
+							  		</form>
+					  			</div>
+					  		</div>
+							<div id="graph">
+					  			<canvas id="canvas"></canvas>
 							</div>
 						</div>
 					</div>
 				</div>	
 		  	</div>
-		  	<div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme=c>
+		  	<div id=home-footer data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme=c>
 				<h1>
 					<span id=dot0 class="dot"></span>
 					<span id=dot1 class="dot active"></span>
 					<span id=dot2 class="dot"></span>
+					<span id=dot3 class="dot"></span>
 				</h1>
 			</div>
 		</div>
@@ -107,6 +122,7 @@
 			</div>
 		</div>
 		<script src="modernizr.custom.49780.js"></script>
+		<script src="chart.js/Chart.min.js"></script>
 		<script src="domain.js"></script>
 		<script src="f2013.js"></script>
 		<script src="login.js"></script>
@@ -116,5 +132,6 @@
 		<script src="wbc.js"></script>
 		<script src="races.js"></script>
 		<script src="wbc-player.js"></script>
+		<script src="wbc-graph.js"></script>
 	</body>
 </html>

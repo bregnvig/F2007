@@ -32,7 +32,7 @@ $(document).on("pageinit", "#bid", function() {
 		$.ajax(F2013.gameHost+"ws/bid", {
 			type: "POST",
 			contentType: "application/json; charset=UTF-8",
-			data: JSON.stringify(bid)
+			data: JSON.stringify(F2013.bid)
 		}).done(function() {
 			$.mobile.loading("hide");
 			F2013.forceReload = true;
@@ -46,11 +46,11 @@ $(document).on("pageinit", "#bid", function() {
 		source.each(function(i) {
 			var select = $(this);
 			if (select.val() == "") return true;
-			target[i] = F2013.drivers.getDriver(select.val()).json;
+			target[i] = F2013.drivers.getDriver(select.val());
 		}); 
 	}
 	function getDriver(source) {
-		return source.val() == "" ? null : F2013.drivers.getDriver(source.val()).json;
+		return source.val() == "" ? null : F2013.drivers.getDriver(source.val());
 	}
 	function setPositions(target, source) {
 		source.each(function(i) {

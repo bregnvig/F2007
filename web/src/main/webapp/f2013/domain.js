@@ -93,7 +93,7 @@ newDrivers = function(data) {
 		},
 		getDriver: function(id) {
 			return $.grep(drivers, function(driver) {
-				return driver.id() == id;
+				return driver.id == id;
 			})[0];
 		}
 	}

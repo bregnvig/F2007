@@ -1,5 +1,6 @@
 function loadRaces() {
 	if (F2013.allRaces.loaded == false) {
+		$("#races-content").outerHeight($("#races").height());
 		$.mobile.loading("show", {text: "Henter løb...", textVisible: true, textonly: false, theme: "a"});
 		$.getJSON(F2013.gameHost+"ws/races").done(function(data, textStatus, jqXHR) {
 			F2013.allRaces.length = 0; //empty array
@@ -12,8 +13,6 @@ function loadRaces() {
 		}).fail(function(jqxhr, textStatus, error) {
 			gotoErrorPage(error);
 		});
-	} else {
-		displayRaces(F2013.allRaces);
 	}
 	
 	function displayRaces(races) {
