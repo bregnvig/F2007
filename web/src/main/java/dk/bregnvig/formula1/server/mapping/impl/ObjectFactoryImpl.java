@@ -71,7 +71,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		if (race.isWaiting() == false) {
 			if (race.isCompleted() == false) {
 				for (Bid bid : race.getBids()) {
-					clientRace.addBid(create(clientRace.isParticipant(), bid, race.isCompleted()));
+					clientRace.addBid(create(clientRace.isParticipant() || race.isClosed(), bid, race.isCompleted()));
 				}
 			} else {
 				clientRace.setRaceResult(create(race.getRaceResult()));

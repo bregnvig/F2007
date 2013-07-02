@@ -23,6 +23,7 @@ import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
+import dk.bregnvig.formula1.client.domain.wbc.ClientHistory;
 import dk.bregnvig.formula1.client.domain.wbc.ClientWBCEntry;
 import dk.bregnvig.formula1.client.exception.CredentialException;
 import dk.bregnvig.formula1.client.service.GameService;
@@ -111,7 +112,7 @@ public class GameRestfulController {
 		}
 	}
 	
-	@RequestMapping(value="/wbc", method=RequestMethod.GET)
+	@RequestMapping(value="/wbc", method=RequestMethod.GET, params="!graph")
 	public @ResponseBody List<ClientWBCEntry> getWbc() throws CredentialException {
 		return service.fetchWBCStanding();
 	}
@@ -121,6 +122,11 @@ public class GameRestfulController {
 		ClientPlayer player = new ClientPlayer();
 		player.setPlayername(playerName);
 		return service.fetchWBCPlayerEntries(player);
+	}
+	
+	@RequestMapping(value="/wbc", method=RequestMethod.GET, params="graph")
+	public @ResponseBody List<ClientHistory> getWbcGraph() throws CredentialException {
+		return service.getHistory();
 	}
 	
 	@RequestMapping(value="/season-name", method=RequestMethod.GET)
