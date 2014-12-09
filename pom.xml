@@ -12,6 +12,9 @@
 		This POM file contains the general settings for the F2007
 		project
 	</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>	
 	<inceptionYear>2007</inceptionYear>
 	<developers>
 		<developer>
