@@ -1,23 +1,13 @@
 <web-app xmlns="http://caucho.com/ns/resin">
 	<database>
 		<jndi-name>jdbc/f2007</jndi-name>
-	    <driver>
-	    	<type>com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource</type>
-	        <url>jdbc:mysql://sun.iportalen.dk:3306/f2007</url>
-	        <user>hp.iportalen.dk</user>
-	        <password>athlon64</password>
+		<driver>
+			<type>com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource</type>
+			<url>jdbc:mysql://database.iportalen.dk:3306/f2007</url>
+			<user>toddler</user>
+			<password>brEz4xac</password>
 		</driver>
-	    <max-connections>5</max-connections>
+		<max-connections>5</max-connections>
 	</database>
-	<!-- database>
-		<jndi-name>jdbc/f2007</jndi-name>
-	    <driver>
-	    	<type>com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource</type>
-	        <url>jdbc:mysql://sun.iportalen.dk:3306/f2007-development</url>
-	        <user>hp.iportalen.dk</user>
-	        <password>athlon64</password>
-		</driver>
-	    <max-connections>5</max-connections>
-	</database -->
 </web-app>
 	
