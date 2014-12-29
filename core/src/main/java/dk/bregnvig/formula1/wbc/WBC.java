@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +28,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import dk.bregnvig.formula1.Bid;
 import dk.bregnvig.formula1.Player;
@@ -37,10 +40,12 @@ import dk.bregnvig.formula1.Race;
 public class WBC {
 
 	private Long id;
-	
+	private Date latestJoinDate;
 	private Race previousRace;
+	
 	private List<Integer> points;
 	private Set<Entry> entries = new HashSet<Entry>();
+	
 	
 	private Comparator<Entry> entryPointsComparator = new Comparator<Entry>() {
 		public int compare(Entry entry0, Entry entry1) {
@@ -174,6 +179,14 @@ public class WBC {
 
 	public void setPreviousRace(Race previousRace) {
 		this.previousRace = previousRace;
+	}
+	
+	public Date getLatestJoinDate() {
+		return latestJoinDate;
+	}
+	
+	public void setLatestJoinDate(Date closeDate) {
+		this.latestJoinDate = closeDate;
 	}
 	
 	@Transient
@@ -412,6 +425,18 @@ public class WBC {
 		
 		
 	}
+	
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+	public void joinWBC(Player player) {
+		if (player.isWbcParticipant()) {
+			throw new AlreadyJoinedException(player);
+		}
+		if (getLatestJoinDate().before(new Date())) {
+			throw new WBCClosed();
+		}
+		player.getAccount().joinWBC();
+		player.setWbcParticipant(true);
+	}	
 	
 	public static class History {
 		private Race race;

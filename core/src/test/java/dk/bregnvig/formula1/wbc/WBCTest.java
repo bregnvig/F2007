@@ -1,11 +1,12 @@
 package dk.bregnvig.formula1.wbc;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import dk.bregnvig.formula1.util.AbstractDaoTest;
-import dk.bregnvig.formula1.util.DummySMSGatewayImpl;;
+import dk.bregnvig.formula1.util.DummySMSGatewayImpl;
 
 public class WBCTest extends AbstractDaoTest {
 	
@@ -147,6 +148,32 @@ public class WBCTest extends AbstractDaoTest {
    		assertEquals(8, mbaEntries.get(1).getPoints());
 	}
 	
+	public void testLatestJoinDate() throws Exception {
+		assertNotNull(season.getWBC().getLatestJoinDate());
+	}
+	
+	public void testJoinWBC() {
+		Calendar oneMinute = Calendar.getInstance();
+		oneMinute.add(Calendar.MINUTE, 1);
+		season.getWBC().setLatestJoinDate(oneMinute.getTime());
+		assertEquals(flb.getAccount().getBalance(), new BigDecimal(100));
+		season.getWBC().joinWBC(flb);
+		assertTrue(flb.isWbcParticipant());
+		assertEquals(flb.getAccount().getBalance(), BigDecimal.ZERO);
+		try {			
+			season.getWBC().joinWBC(flb);
+			fail("Should have thrown an exception");
+		} catch(AlreadyJoinedException e) {
+
+		}
+	}	
+	
+	public void testTooLateToJoin() {
+		try {
+			season.getWBC().joinWBC(flb);
+			fail("Should have been closed");
+		} catch(WBCClosed e) {}
+	}
 	public void testRollback() throws Exception {
 		testStanding();
 		

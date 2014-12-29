@@ -41,6 +41,7 @@ import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.domain.bid.ClientResult;
 import dk.bregnvig.formula1.client.domain.wbc.ClientHistory;
 import dk.bregnvig.formula1.client.domain.wbc.ClientPlayerPosition;
+import dk.bregnvig.formula1.client.domain.wbc.ClientWBC;
 import dk.bregnvig.formula1.client.domain.wbc.ClientWBCEntry;
 import dk.bregnvig.formula1.server.context.WebContext;
 import dk.bregnvig.formula1.server.mapping.ObjectFactory;
@@ -62,6 +63,14 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		ClientRace clientRace = new ClientRace(context.getPlayer() != null ? race.isParticipant(context.getPlayer()) : false);
 		clientRace.setName(race.getName());
 		return clientRace;
+	}
+	
+	
+	@Override
+	public ClientWBC create(WBC wbc) {
+		ClientWBC result = new ClientWBC();
+		result.setLatestJoinDate(wbc.getLatestJoinDate());
+		return result;
 	}
 	
 	public ClientRace createFull(Race race) {
@@ -165,7 +174,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		clientSeason.setRaces(getClientRaces(season));
 		clientSeason.setPlayers(getClientPlayers(season));
 		clientSeason.setDrivers(getClientDrivers(season.getDrivers()));
-		
+		clientSeason.setLastestJoinDate(season.getWBC().getLatestJoinDate());
 		return clientSeason;
 	}
 

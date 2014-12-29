@@ -155,7 +155,7 @@ public class Player {
 		this.smsNumber = sms;
 	}
 	
-	@OneToOne(optional = false, cascade= {CascadeType.ALL})
+	@OneToOne(optional = false, cascade= {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST})
 	public Account getAccount() {
 		return account;
 	}

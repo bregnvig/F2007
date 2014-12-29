@@ -19,6 +19,7 @@ import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.domain.bid.ClientResult;
 import dk.bregnvig.formula1.client.domain.wbc.ClientHistory;
+import dk.bregnvig.formula1.client.domain.wbc.ClientWBC;
 import dk.bregnvig.formula1.client.domain.wbc.ClientWBCEntry;
 import dk.bregnvig.formula1.wbc.WBC;
 import dk.bregnvig.formula1.wbc.WBC.History;
@@ -26,6 +27,8 @@ import dk.bregnvig.formula1.wbc.WBC.History;
 public interface ObjectFactory {
 	
 	ClientSeason create(Season season);
+	
+	ClientWBC create(WBC wbc);
 
 	ClientPlayer create(Player player);
 	

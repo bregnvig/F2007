@@ -36,7 +36,6 @@ public class PlayerTest extends AbstractDaoTest {
 		assertFalse(mba.isPlayerInRoles(roles));
 	}
 
-	
 	public void testPassword() {
 		
 		flb.setPassword(null);

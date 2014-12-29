@@ -22,11 +22,14 @@ import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
+import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.domain.wbc.ClientHistory;
+import dk.bregnvig.formula1.client.domain.wbc.ClientWBC;
 import dk.bregnvig.formula1.client.domain.wbc.ClientWBCEntry;
 import dk.bregnvig.formula1.client.exception.CredentialException;
 import dk.bregnvig.formula1.client.service.GameService;
+import dk.bregnvig.formula1.wbc.WBCException;
 
 @Controller
 public class GameRestfulController {
@@ -112,23 +115,53 @@ public class GameRestfulController {
 		}
 	}
 	
-	@RequestMapping(value="/wbc", method=RequestMethod.GET, params="!graph")
-	public @ResponseBody List<ClientWBCEntry> getWbc() throws CredentialException {
+	@RequestMapping(value={"/wbc", "v2/wbc/players"}, method=RequestMethod.GET, params="!graph")
+	public @ResponseBody List<ClientWBCEntry> getWbcPlayers() throws CredentialException {
 		return service.fetchWBCStanding();
 	}
 	
+	@RequestMapping(value="v2/wbc", method=RequestMethod.GET)
+	public @ResponseBody ClientWBC getWbc() throws CredentialException {
+		return service.getWBC();
+	}	
+	
 	@RequestMapping(value="/wbc/{playerName}", method=RequestMethod.GET)
-	public @ResponseBody List<ClientWBCEntry> getPlayersWbc(@PathVariable String playerName) throws CredentialException {
+	public @ResponseBody List<ClientWBCEntry> getPlayerWbc(@PathVariable String playerName) throws CredentialException {
 		ClientPlayer player = new ClientPlayer();
 		player.setPlayername(playerName);
 		return service.fetchWBCPlayerEntries(player);
 	}
 	
-	@RequestMapping(value="/wbc", method=RequestMethod.GET, params="graph")
-	public @ResponseBody List<ClientHistory> getWbcGraph() throws CredentialException {
+	@RequestMapping(value={"/wbc", "v2/wbc/players"}, method=RequestMethod.GET, params="graph")
+	public @ResponseBody List<ClientHistory> getWbcPlayersGraph() throws CredentialException {
 		return service.getHistory();
 	}
 	
+	@RequestMapping(value="/player/account", method=RequestMethod.GET)
+	public @ResponseBody ClientAccount getAccount() throws CredentialException {
+		return service.getAccount();
+	}
+	
+	@RequestMapping(value="/player", method=RequestMethod.POST)
+	public @ResponseBody void updatePlayer(@RequestBody ClientPlayer player, HttpServletResponse response) throws CredentialException, IOException {
+		try {
+			service.updatePlayer(player);
+		} catch (NotEnoughMoneyException e) {
+			response.sendError(HttpServletResponse.SC_PAYMENT_REQUIRED, e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value="/player/wbc", method=RequestMethod.POST)
+	public @ResponseBody void joinWBC(HttpServletResponse response) throws CredentialException, IOException {
+		try {
+			service.joinWBC();
+		} catch (NotEnoughMoneyException e) {
+			response.sendError(HttpServletResponse.SC_PAYMENT_REQUIRED, e.getMessage());
+		} catch (WBCException e) {			
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+		}
+	}
+
 	@RequestMapping(value="/season-name", method=RequestMethod.GET)
 	public @ResponseBody String getSeasonName() {
 		return service.getSeasonName();

@@ -34,7 +34,6 @@ import dk.bregnvig.formula1.wbc.WBC;
 public class Season {
 
 	private Long id;
-
 	private String name;
 
 	private WBC wbc = new WBC();

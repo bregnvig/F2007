@@ -3,8 +3,11 @@ package dk.bregnvig.formula1.client.domain;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+@JsonIgnoreProperties(value="name")
 public class ClientPlayer implements Serializable {
 
 	

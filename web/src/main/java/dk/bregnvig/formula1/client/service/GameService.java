@@ -12,6 +12,7 @@ import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.domain.bid.ClientResult;
 import dk.bregnvig.formula1.client.domain.wbc.ClientHistory;
+import dk.bregnvig.formula1.client.domain.wbc.ClientWBC;
 import dk.bregnvig.formula1.client.domain.wbc.ClientWBCEntry;
 import dk.bregnvig.formula1.client.exception.CredentialException;
 
@@ -27,13 +28,19 @@ public interface GameService extends RemoteService {
 	 * Returns the name of the current season. The current season is defined in the web.xml
 	 * @return
 	 */
-	String getSeasonName(); 
-
+	String getSeasonName();
+	
 	/**
 	 * Returns the the current season. The current season is defined in the web.xml
 	 * @return
 	 */
-	ClientSeason getSeason(); 
+	ClientSeason getSeason();
+	
+	/**
+	 * Returns the current WBC.
+	 * @return
+	 */
+	ClientWBC getWBC();
 
 	/**
 	 * Tries to log the specified user into the system
@@ -77,6 +84,11 @@ public interface GameService extends RemoteService {
 	 * @param player
 	 */
 	void updatePlayer(ClientPlayer player);
+	
+	/**
+	 * The current player join WBC
+	 */
+	void joinWBC();
 
 	/**
 	 * Updates this player information

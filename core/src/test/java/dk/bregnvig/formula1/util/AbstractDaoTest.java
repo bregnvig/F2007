@@ -2,6 +2,7 @@ package dk.bregnvig.formula1.util;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.EntityManager;
 
@@ -14,6 +15,7 @@ import dk.bregnvig.formula1.Race;
 import dk.bregnvig.formula1.RaceResult;
 import dk.bregnvig.formula1.Season;
 import dk.bregnvig.formula1.service.EventService;
+import dk.bregnvig.formula1.wbc.WBC;
 
 
 
@@ -111,6 +113,9 @@ public abstract class AbstractDaoTest extends AbstractJpaTests{
 		ttp.getAccount().deposit("Start money", new BigDecimal(100));
 		
 		season = new Season();
+		WBC wbc = new WBC();
+		wbc.setLatestJoinDate(new Date());
+		season.setWBC(wbc);
 		season.setName("F1 2007");
 		season.addDriver(driver1);
 		season.addDriver(driver2);

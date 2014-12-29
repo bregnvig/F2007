@@ -2,7 +2,6 @@ package dk.bregnvig.formula1.account;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,6 +39,7 @@ import dk.bregnvig.formula1.dao.GameDao;
 public class Account {
 
 	private static BigDecimal bettingAmount = new BigDecimal(20);
+	private static BigDecimal wbcAmount = new BigDecimal(100);
 
 	private Log log = LogFactory.getLog(this.getClass()); 
 
@@ -106,6 +106,12 @@ public class Account {
 	public void participate(Race race) {
 		Player bookie = dao.findPlayerByName("bookie");
 		transfer("Deltagelse " + race.getName(), bettingAmount, bookie.getAccount());
+	}
+	
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
+	public void joinWBC() {
+		Player bookie = dao.findPlayerByName("bookie");
+		transfer("Deltagelse i WBC", wbcAmount, bookie.getAccount());
 	}
 	
 	public void winnings(Race race, int winners) {
@@ -228,7 +234,7 @@ public class Account {
 	@ManyToMany(cascade= {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
 	@JoinTable(name="account_entry_link")
 	public List<Entry> getEntries() {
-		Collections.sort(this.entries, Collections.reverseOrder(new EntryDateComparator()));
+//		Collections.sort(this.entries, Collections.reverseOrder(new EntryDateComparator()));
 		return entries;
 	}
 

@@ -3,6 +3,7 @@ package dk.bregnvig.formula1.client.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,7 @@ public class ClientSeason implements Serializable {
 	private List<ClientRace> races;
 	private Set<ClientDriver> drivers;
 	private ClientRace currentRace;
+	private Date lastestJoinDate;
 
 	public String getName() {
 		return name;
@@ -78,4 +80,14 @@ public class ClientSeason implements Serializable {
 	public void setCurrentRace(ClientRace currentRace) {
 		this.currentRace = currentRace;
 	}
+
+	public Date getLastestJoinDate() {
+		return lastestJoinDate;
+	}
+
+	public void setLastestJoinDate(Date lastestJoinDate) {
+		this.lastestJoinDate = lastestJoinDate;
+	}
+	
+
 }

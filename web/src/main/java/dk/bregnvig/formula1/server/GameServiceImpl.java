@@ -25,6 +25,7 @@ import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
 import dk.bregnvig.formula1.client.domain.bid.ClientResult;
 import dk.bregnvig.formula1.client.domain.wbc.ClientHistory;
+import dk.bregnvig.formula1.client.domain.wbc.ClientWBC;
 import dk.bregnvig.formula1.client.domain.wbc.ClientWBCEntry;
 import dk.bregnvig.formula1.client.exception.CredentialException;
 import dk.bregnvig.formula1.client.service.GameService;
@@ -46,6 +47,12 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public String getSeasonName() {
 		return getContext().getSeason().getName();
+	}
+	
+	@Override
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public ClientWBC getWBC() {
+		return objectFactory.create(getContext().getSeason().getWBC());
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
@@ -140,6 +147,15 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		season.getCurrentRace().addBid(objectFactory.create(bid));
 	}
 
+	@Override
+	@Authorization(roles = { PlayerRole.PLAYER })
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void joinWBC() {
+		Season season = getContext().getSeason();
+		Player player = season.getPlayer(getContext().getPlayer().getPlayername());
+		season.getWBC().joinWBC(player);
+	}
+	
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void setResult(ClientRace clientRace, ClientResult result) {
