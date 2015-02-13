@@ -48,6 +48,7 @@ public class Race {
 
 	private Season season;
 	private String name;
+	private String circuitId;
 	private Calendar open;
 	private Calendar close;
 	private boolean completed;
@@ -226,6 +227,15 @@ public class Race {
 
 	public void setBids(Set<Bid> bids) {
 		this.bids = bids;
+	}
+	
+	@Column(name="circuit_id")
+	public String getCircuitId() {
+		return circuitId;
+	}
+	
+	public void setCircuitId(String circuitId) {
+		this.circuitId = circuitId;
 	}
 	
 	/**

@@ -23,6 +23,7 @@ public class Driver {
 	private Long id;
 	private int number;
 	private String name;
+	private String code;
 	private boolean active = true;
 
 	public boolean isActive() {
@@ -61,6 +62,15 @@ public class Driver {
 		this.number = number;
 	}
 
+	@Column(length=3, nullable=true)
+	public String getCode() {
+		return code;
+	}
+	
+	public void setCode(String code) {
+		this.code = code;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -92,6 +102,7 @@ public class Driver {
 		return new ToStringBuilder(this)
 			.append(number)
 			.append(name)
+			.append(code)
 			.toString();
 	}
 

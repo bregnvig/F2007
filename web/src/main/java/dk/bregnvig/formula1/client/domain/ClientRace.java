@@ -16,6 +16,7 @@ public class ClientRace implements Serializable{
 	private Long id;
 
 	private String name;
+	private String circuitId;;
 	private boolean opened;
 	private boolean completed;
 	private Date openDate;
@@ -46,6 +47,12 @@ public class ClientRace implements Serializable{
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getCircuitId() {
+		return circuitId;
+	}
+	public void setCircuitId(String circuitId) {
+		this.circuitId = circuitId;
 	}
 	public boolean isCompleted() {
 		return completed;

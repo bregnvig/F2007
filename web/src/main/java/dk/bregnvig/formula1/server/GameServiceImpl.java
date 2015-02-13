@@ -129,7 +129,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updatePlayer(ClientPlayer clientPlayer) {
 		Season season = getContext().getSeason();
-		Player player = season.getPlayer(clientPlayer.getPlayername());
+		Player player = getContext().getPlayer().isPlayerInRole(PlayerRole.PLAYER_ADMIN) ? season.getPlayer(clientPlayer.getPlayername()) : getContext().getPlayer();
 		objectFactory.map(clientPlayer, player);
 		
 		service.updatePlayer(player);
@@ -186,7 +186,10 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void rollbackRace(ClientRace clientRace) {
-		getContext().getSeason().getRaceById(clientRace.getId()).rollbackRace();
+		Season season = getContext().getSeason();
+		Race race = season.getRaceById(clientRace.getId()); 
+		race.rollbackRace();
+		season.getWBC().raceRolledBack(race);
 	}
 
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
@@ -262,7 +265,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	public List<ClientWBCEntry> fetchWBCPlayerEntries(ClientPlayer clientPlayer) {
 		Season season = getContext().getSeason();
 		Player player = season.getPlayer(clientPlayer.getPlayername());
-		return objectFactory.create(getContext().getSeason().getWBC().getPlayerEntries(player));
+		return objectFactory.create(season.getWBC().getPlayerEntries(player));
 	}
 
 	public void setObjectFactory(ObjectFactory objectFactory) {

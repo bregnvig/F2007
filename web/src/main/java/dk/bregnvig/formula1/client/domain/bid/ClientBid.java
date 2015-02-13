@@ -2,9 +2,12 @@ package dk.bregnvig.formula1.client.domain.bid;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 
+@JsonIgnoreProperties
 public class ClientBid implements Serializable {
 
 	private ClientPlayer player;

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,14 +17,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import dk.bregnvig.formula1.account.NotEnoughMoneyException;
 import dk.bregnvig.formula1.client.domain.ClientDriver;
+import dk.bregnvig.formula1.client.domain.ClientPassword;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
 import dk.bregnvig.formula1.client.domain.ClientSeason;
 import dk.bregnvig.formula1.client.domain.account.ClientAccount;
 import dk.bregnvig.formula1.client.domain.bid.ClientBid;
+import dk.bregnvig.formula1.client.domain.bid.ClientResult;
 import dk.bregnvig.formula1.client.domain.wbc.ClientHistory;
 import dk.bregnvig.formula1.client.domain.wbc.ClientWBC;
 import dk.bregnvig.formula1.client.domain.wbc.ClientWBCEntry;
@@ -87,6 +91,24 @@ public class GameRestfulController {
 		return null;
 	}
 	
+	@RequestMapping(value="/race/{id}", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public @ResponseBody void setRaceResult(@PathVariable Long id, @RequestBody ClientResult result) throws CredentialException {
+		ClientRace race = service.getRace(id);
+		if (race != null) {
+			service.setResult(race, result);
+		}
+	}
+	
+	@RequestMapping(value="/race/{id}", method=RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public @ResponseBody void rollback(@PathVariable Long id) throws CredentialException {
+		ClientRace race = service.getRace(id);
+		if (race != null) {
+			service.rollbackRace(race);
+		}
+	}
+	
 	@RequestMapping(value="/race", method=RequestMethod.GET, params="players")
 	public @ResponseBody List<ClientPlayer> getPlayers() throws CredentialException {
 		
@@ -125,7 +147,7 @@ public class GameRestfulController {
 		return service.getWBC();
 	}	
 	
-	@RequestMapping(value="/wbc/{playerName}", method=RequestMethod.GET)
+	@RequestMapping(value={"/wbc/{playerName}", "v2/wbc/players/{playerName}"}, method=RequestMethod.GET, params="!graph")
 	public @ResponseBody List<ClientWBCEntry> getPlayerWbc(@PathVariable String playerName) throws CredentialException {
 		ClientPlayer player = new ClientPlayer();
 		player.setPlayername(playerName);
@@ -142,8 +164,8 @@ public class GameRestfulController {
 		return service.getAccount();
 	}
 	
-	@RequestMapping(value="/player", method=RequestMethod.POST)
-	public @ResponseBody void updatePlayer(@RequestBody ClientPlayer player, HttpServletResponse response) throws CredentialException, IOException {
+	@RequestMapping(value="/player/{playerName}", method=RequestMethod.PUT)
+	public @ResponseBody void updatePlayer(@PathVariable String playerName, @RequestBody ClientPlayer player, HttpServletResponse response) throws CredentialException, IOException {
 		try {
 			service.updatePlayer(player);
 		} catch (NotEnoughMoneyException e) {
@@ -151,8 +173,17 @@ public class GameRestfulController {
 		}
 	}
 	
-	@RequestMapping(value="/player/wbc", method=RequestMethod.POST)
-	public @ResponseBody void joinWBC(HttpServletResponse response) throws CredentialException, IOException {
+	@RequestMapping(value="/player/{playerName}/password", method=RequestMethod.PUT)
+	public @ResponseBody void updatePassword(@PathVariable String playerName, @RequestBody ClientPassword password, HttpServletResponse response) throws CredentialException, IOException {
+		try {
+			service.updatePassword(password.getPassword());
+		} catch (NotEnoughMoneyException e) {
+			response.sendError(HttpServletResponse.SC_PAYMENT_REQUIRED, e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value={"/player/wbc", "v2/wbc/players/{playerName}"}, method=RequestMethod.POST)
+	public @ResponseBody void joinWBC(@PathVariable String playerName, HttpServletResponse response) throws CredentialException, IOException {
 		try {
 			service.joinWBC();
 		} catch (NotEnoughMoneyException e) {
@@ -162,7 +193,7 @@ public class GameRestfulController {
 		}
 	}
 
-	@RequestMapping(value="/season-name", method=RequestMethod.GET)
+	@RequestMapping(value="/season-name", method=RequestMethod.GET, produces="text/plain; charset=utf-8")
 	public @ResponseBody String getSeasonName() {
 		return service.getSeasonName();
 	}

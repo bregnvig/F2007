@@ -8,6 +8,7 @@ public class ClientDriver implements Serializable {
 	private Long id;
 	private int number;
 	private String name;
+	private String code;
 	private boolean active = true;
 	private boolean partOfSeason = false;
 	private int points;
@@ -80,6 +81,12 @@ public class ClientDriver implements Serializable {
 
 	public String toString() {
 		return Integer.toString(getNumber()) + ":" + name;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 }

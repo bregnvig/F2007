@@ -62,6 +62,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	public ClientRace createSuperLightWeight(Race race) {
 		ClientRace clientRace = new ClientRace(context.getPlayer() != null ? race.isParticipant(context.getPlayer()) : false);
 		clientRace.setName(race.getName());
+		clientRace.setCircuitId(race.getCircuitId());
 		return clientRace;
 	}
 	
