@@ -42,6 +42,7 @@
 			<ref local="mapper"/> 
 		</property>
 		<property name="service" ref="gameService"/>
+		<property name="resultStrategy" ref="resultStrategy"/>
 		<property name="automaticResult" ref="autoResult"/>
 		<property name="tokenSecurity" ref="tokenSecurity" />
 	</bean>

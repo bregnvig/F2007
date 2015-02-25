@@ -217,6 +217,10 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		Collections.sort(clientPlayers, new ClientPlayer.NameComparator());
 		return clientPlayers;
 	}
+	
+	public ClientBid create(Race race, Bid bid) {
+		return create(false, bid, race.isClosed() || race.isCompleted());
+	}
 
 	private ClientBid create(boolean participant, Bid bid, boolean completed) {
 		ClientBid clientBid = new ClientBid();
@@ -294,6 +298,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	}
 	
 	private Driver getDriver(ClientDriver clientDriver) {
+		if (clientDriver == null) return null;
 		Set<Driver> drivers = context.getSeason().getDrivers();
 		for (Driver driver : drivers) {
 			if (clientDriver.getId().equals(driver.getId())) {
@@ -328,9 +333,12 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	}
 	
 	private SelectedDriverBid getSelectedDriverBid(int[] positions) {
+		if (positions == null || positions.length == 0) return null;
 		SelectedDriverBid bid = new SelectedDriverBid();
 		bid.setStartPosition(positions[0]);
-		bid.setEndPosition(positions[1]);
+		if (positions.length == 2) {
+			bid.setEndPosition(positions[1]);			
+		}
 		return bid;
 	}
 
@@ -340,6 +348,7 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	}
 
 	private PodiumResult getPodiumResult(ClientDriver[] drivers) {
+		if (drivers == null || drivers.length == 0) return null;
 		PodiumResult result = new PodiumResult();
 		mapPodiumBid(drivers, result);
 		result.setPosition4(getDriver(drivers[3]));
@@ -388,6 +397,8 @@ public class ObjectFactoryImpl implements ObjectFactory{
 	}
 	
 	private FirstCrashResult getFirstCrashResult(ClientDriver[] drivers) {
+		if (drivers == null || drivers.length == 0) return null;
+		
 		FirstCrashResult result = new FirstCrashResult();
 		mapFirstCrashBid(drivers[0], result);
 		result.setCrash2(getDriver(drivers[1]));

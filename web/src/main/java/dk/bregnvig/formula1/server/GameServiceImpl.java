@@ -3,7 +3,9 @@ package dk.bregnvig.formula1.server;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
@@ -11,12 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import dk.bregnvig.formula1.Bid;
 import dk.bregnvig.formula1.Driver;
 import dk.bregnvig.formula1.Player;
 import dk.bregnvig.formula1.PlayerRole;
 import dk.bregnvig.formula1.Race;
 import dk.bregnvig.formula1.RaceResult;
 import dk.bregnvig.formula1.Season;
+import dk.bregnvig.formula1.bid.ResultStrategy;
 import dk.bregnvig.formula1.client.domain.ClientDriver;
 import dk.bregnvig.formula1.client.domain.ClientPlayer;
 import dk.bregnvig.formula1.client.domain.ClientRace;
@@ -41,6 +45,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	private ObjectFactory objectFactory;
 
 	private dk.bregnvig.formula1.service.GameService service;
+	private	ResultStrategy resultStrategy;
 	private AutomaticResult automaticResult;
 	private TokenSecurity tokenSecurity;
 
@@ -163,6 +168,35 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		race.completeRace(objectFactory.create(result));
 	}
 
+	@Override
+	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public ClientRace getIntermediateResult(ClientRace clientRace, ClientResult clientRaceResult) {
+		Race race = getContext().getSeason().getRaceById(clientRace.getId());
+		Set<Bid> bids = race.getBids();
+		RaceResult raceResult = objectFactory.create(clientRaceResult);
+		clientRace.getBids().clear();
+		resultStrategy.calculateResult(raceResult, bids);
+		for (Bid bid : bids) {
+			clientRace.addBid(objectFactory.create(race, bid));
+		}
+		Collections.sort(clientRace.getBids(), new Comparator<ClientBid>() {
+
+			@Override
+			public int compare(ClientBid o1, ClientBid o2) {
+				if (o1.getPoints() < o2.getPoints()) {
+					return 1;
+				}
+				if (o1.getPoints() > o2.getPoints()) {
+					return -1;
+				}
+				return 0;
+			}
+		});
+
+		return clientRace;
+	}
+	
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void setAutoResult(ClientRace clientRace, String url) {
@@ -275,6 +309,10 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	public void setService(dk.bregnvig.formula1.service.GameService service) {
 		this.service = service;
 	}
+	
+	public void setResultStrategy(ResultStrategy strategy) {
+		this.resultStrategy = strategy;
+	}
 
 	@Authorization(roles = { PlayerRole.ACCOUNT_ADMIN })
 	@Transactional(readOnly = false)
@@ -317,4 +355,6 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	public void setTokenSecurity(TokenSecurity tokenSecurity) {
 		this.tokenSecurity = tokenSecurity;
 	}
+	
+	
 }

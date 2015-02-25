@@ -38,6 +38,8 @@ public interface ObjectFactory {
 	
 	ClientRace createFull(Race source);
 	
+	ClientBid create(Race race, Bid bid);
+	
 	ClientAccount create(Account account);
 	
 	Set<ClientDriver> getClientDrivers(Collection<Driver> drivers);

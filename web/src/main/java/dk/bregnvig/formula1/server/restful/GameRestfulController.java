@@ -57,8 +57,12 @@ public class GameRestfulController {
 	}
 	
 	@RequestMapping(value="/race", method=RequestMethod.GET, params="!players")
-	public @ResponseBody ClientRace currentRace() throws CredentialException {
-		return service.getCurrentRace();
+	public @ResponseBody ClientRace currentRace(HttpServletResponse response) throws CredentialException {
+		ClientRace race = service.getCurrentRace();
+		if (race == null) {
+			throw new NotFoundException("No current race was found");
+		}
+		return race;
 	}
 	
 	@RequestMapping(value="/race/{id}", method=RequestMethod.GET)
@@ -91,12 +95,22 @@ public class GameRestfulController {
 		return null;
 	}
 	
-	@RequestMapping(value="/race/{id}", method=RequestMethod.POST)
+	@RequestMapping(value="/race/{id}", method=RequestMethod.POST, params="!intermediate")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public @ResponseBody void setRaceResult(@PathVariable Long id, @RequestBody ClientResult result) throws CredentialException {
 		ClientRace race = service.getRace(id);
 		if (race != null) {
 			service.setResult(race, result);
+		}
+	}
+	
+	@RequestMapping(value="/race/{id}", method=RequestMethod.POST, params="intermediate")
+	public @ResponseBody ClientRace getIntermediateResult(@PathVariable Long id, @RequestBody ClientResult result) throws CredentialException {
+		ClientRace race = service.getRace(id);
+		if (race != null) {
+			return  service.getIntermediateResult(race, result);
+		} else {
+			throw new NotFoundException("Race with id: " + id + " was not found");
 		}
 	}
 	

@@ -35,17 +35,25 @@ public class DefaultResultStrategy implements ResultStrategy {
 	}
 	
 	private void calculateSelectedDriverPoints(SelectedDriverBid raceResult, SelectedDriverBid bid) {
+		if (raceResult == null) return;
+		
 		int index = Math.abs(raceResult.getStartPosition()-bid.getStartPosition());
 		if (index < threePoints.length) {
 			bid.setPointsStartPosition(threePoints[index]);
 		}
-		index = Math.abs(raceResult.getEndPosition()-bid.getEndPosition());
-		if (index < threePoints.length) {
-			bid.setPointsEndPosition(threePoints[index]);
+		if (raceResult.getEndPosition() != 0) {
+			index = Math.abs(raceResult.getEndPosition()-bid.getEndPosition());
+			if (index < threePoints.length) {
+				bid.setPointsEndPosition(threePoints[index]);
+			}			
 		}
 	}
 	
 	private void calculatePoints(int[] points, AbstractBid raceResult, AbstractBid bid, int length, String propertyName) {
+		if (raceResult == null) {
+			// To avoid crashing when calculating intermediate results.
+			return;
+		}
 		for (int i = 1; i <= length; i++) {
 			Driver bidDriver = getDriver(bid, propertyName+i);
 			for (int j = 0; j < points.length; j++) {

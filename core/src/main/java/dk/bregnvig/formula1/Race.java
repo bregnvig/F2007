@@ -372,7 +372,7 @@ public class Race {
 		this.eventService = eventService;
 	}
 	
-	private class ResultComparator implements Comparator<Bid> {
+	private static class ResultComparator implements Comparator<Bid> {
 		
 		private RaceResult raceResult;
 		

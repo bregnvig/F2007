@@ -107,7 +107,15 @@ public interface GameService extends RemoteService {
 	 * @param result
 	 */
 	void setResult(ClientRace clientRace, ClientResult result);
-	
+
+	/**
+	 * Returns the result, client result, without changing anything in the database base. 
+	 * @param clientRace
+	 * @param raceResult
+	 * @return
+	 */
+	ClientRace getIntermediateResult(ClientRace clientRace, ClientResult raceResult);
+
 	/**
 	 * Sets the URL that the result will be fetched by
 	 * @param url
