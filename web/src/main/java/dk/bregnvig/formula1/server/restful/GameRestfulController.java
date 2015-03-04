@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -136,10 +137,10 @@ public class GameRestfulController {
 		return players;
 	}
 	
-	@RequestMapping(value="/race/drivers", method=RequestMethod.GET)
-	public @ResponseBody List<ClientDriver> activeDrivers() throws CredentialException {
+	@RequestMapping(value={"/race/drivers", "/drivers"}, method=RequestMethod.GET)
+	public @ResponseBody List<ClientDriver> getDrivers(@RequestParam(required=false) boolean all) throws CredentialException {
 		ClientSeason season  = service.getSeason();
-		return season.getActiveDriver();
+		return all ? new ArrayList<>(season.getDrivers()) : season.getActiveDriver();
 	}
 	
 	@RequestMapping(value="/bid", method=RequestMethod.POST)
@@ -206,6 +207,12 @@ public class GameRestfulController {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
 		}
 	}
+
+	@RequestMapping(value="/drivers", method=RequestMethod.POST)
+	public @ResponseBody void updateDriver(@RequestBody ClientDriver driver) throws CredentialException, IOException {
+		service.updateDriver(driver);
+	}
+	
 
 	@RequestMapping(value="/season-name", method=RequestMethod.GET, produces="text/plain; charset=utf-8")
 	public @ResponseBody String getSeasonName() {
