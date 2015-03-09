@@ -8,7 +8,7 @@ Det er snart tid til at spille på ${race.name}.<br/>
 Spillet lukker ${weekday} klokken ${time}
 </p>
 <p>
-Du kan spille <a href="http://formel1.loopit.eu/?name=${race.name}">her</a>.
+Du kan spille <a href="http://f2015.bregnvig.dk">her</a>.
 </p>
 </div>
 
