@@ -106,7 +106,7 @@ public class Bid {
 
 	@Transient
 	public int getPoints() {
-		if (race != null && race.isCompleted() == false) {
+		if (race != null && (race.isWaiting() || race.isOpened())) {
 			throw new IllegalStateException("Race not completed. Hence points not available");
 		}
 		return grid.getPoints()+fastestLap.getPoints()+podium.getPoints()+selectedDriver.getPoints()+firstCrash.getPoints();

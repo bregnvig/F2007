@@ -400,9 +400,15 @@ public class ObjectFactoryImpl implements ObjectFactory{
 		if (drivers == null || drivers.length == 0) return null;
 		
 		FirstCrashResult result = new FirstCrashResult();
-		mapFirstCrashBid(drivers[0], result);
-		result.setCrash2(getDriver(drivers[1]));
-		result.setCrash3(getDriver(drivers[2]));
+		if (drivers.length >= 1) {
+			mapFirstCrashBid(drivers[0], result);			
+		}
+		if (drivers.length >= 2) {
+			result.setCrash2(getDriver(drivers[1]));
+		}
+		if (drivers.length >= 3) {
+			result.setCrash3(getDriver(drivers[2]));			
+		}
 		return result;
 	}
 
