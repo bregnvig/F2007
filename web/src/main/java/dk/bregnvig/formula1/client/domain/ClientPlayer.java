@@ -33,6 +33,14 @@ public class ClientPlayer implements Serializable {
 	private boolean bettingMoneyAvailable;
 	private boolean reminderWanted;
 	private int lastYearWBC;
+	
+	public ClientPlayer() {
+		
+	}
+	
+	public ClientPlayer(String playerName) {
+		this.playername = playerName;
+	}
 
 	public String getPlayername() {
 		return playername;

@@ -36,6 +36,7 @@ import dk.bregnvig.formula1.client.service.GameService;
 import dk.bregnvig.formula1.scraping.AutomaticResult;
 import dk.bregnvig.formula1.server.context.SessionAttributes;
 import dk.bregnvig.formula1.server.mapping.ObjectFactory;
+import dk.bregnvig.formula1.server.restful.NotFoundException;
 import dk.bregnvig.formula1.server.security.Authorization;
 import dk.bregnvig.formula1.server.security.TokenSecurity;
 import dk.bregnvig.formula1.wbc.WBC.History;
@@ -60,6 +61,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		return objectFactory.create(getContext().getSeason().getWBC());
 	}
 
+	@Override
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientPlayer login(String playerName, String password) throws CredentialException {
 		Player player = getContext().getSeason().getPlayer(playerName);
@@ -74,6 +76,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		return clientPlayer;
 	}
 
+	@Override
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientRace getCurrentRace() {
 		Race race = getContext().getSeason().getCurrentRace();
@@ -83,6 +86,17 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		return null;
 	}
 
+	@Override
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public ClientRace getPreviousRace() {
+		Race race = getContext().getSeason().getPreviousRace();
+		if (race != null) {
+			return objectFactory.createFull(race);
+		}
+		return null;
+	}
+	
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientRace getRace(Long id) {
@@ -93,6 +107,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		return null;
 	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientSeason getSeason() {
@@ -100,18 +115,22 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		return season;
 	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientAccount getAccount() {
 		return objectFactory.create(getContext().getSeason().getPlayer(getContext().getPlayer().getPlayername()).getAccount());
 	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientAccount getAccount(ClientPlayer player) {
-		return objectFactory.create(getContext().getSeason().getPlayer(player.getPlayername()).getAccount());
+		Player internalPlayer = getInternalPlayer(player.getPlayername());
+		return objectFactory.create(internalPlayer.getAccount());
 	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updatePassword(String password) {
@@ -119,6 +138,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		service.updatePlayer(getContext().getPlayer());
 	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void createPlayer(ClientPlayer clientPlayer) {
@@ -129,12 +149,22 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		service.createPlayer(player);
 		getContext().getSeason().addPlayer(player);
 	}
+	
+	@Override
+	@Authorization(roles = { PlayerRole.PLAYER })
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public ClientPlayer getPlayer(String playerName) {
+		ClientPlayer clientPlayer = new ClientPlayer();
+		objectFactory.map(clientPlayer, getInternalPlayer(playerName));
+		return clientPlayer;
+	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updatePlayer(ClientPlayer clientPlayer) {
 		Season season = getContext().getSeason();
-		Player player = getContext().getPlayer().isPlayerInRole(PlayerRole.PLAYER_ADMIN) ? season.getPlayer(clientPlayer.getPlayername()) : getContext().getPlayer();
+		Player player = getInternalPlayer(clientPlayer.getPlayername());
 		objectFactory.map(clientPlayer, player);
 		
 		service.updatePlayer(player);
@@ -145,6 +175,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		}
 	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void addBid(ClientBid bid) {
@@ -161,6 +192,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		season.getWBC().joinWBC(player);
 	}
 	
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void setResult(ClientRace clientRace, ClientResult result) {
@@ -267,6 +299,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		getContext().getSeason().addDriver(driver);
 	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateDriver(ClientDriver clientDriver) {
@@ -280,12 +313,14 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		}
 	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<ClientWBCEntry> fetchWBCStanding() {
 		return objectFactory.create(getContext().getSeason().getWBC().getStanding());
 	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<ClientWBCEntry> fetchWBCStanding(ClientRace clientRace) {
@@ -294,6 +329,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		return objectFactory.create(getContext().getSeason().getWBC().getRaceEntries(race));
 	}
 	
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<ClientWBCEntry> fetchWBCPlayerEntries(ClientPlayer clientPlayer) {
@@ -314,6 +350,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		this.resultStrategy = strategy;
 	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.ACCOUNT_ADMIN })
 	@Transactional(readOnly = false)
 	public void accountDeposit(ClientPlayer clientPlayer, String message, int amount) {
@@ -321,6 +358,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		player.getAccount().deposit(message, new BigDecimal(amount));
 	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.ACCOUNT_ADMIN })
 	@Transactional(readOnly = false)
 	public void accountTransfer(ClientPlayer clientFromPlayer, ClientPlayer clientToPlayer, String message, int amount) {
@@ -329,6 +367,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		fromPlayer.getAccount().transfer(message, new BigDecimal(amount), toPlayer.getAccount());
 	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.ACCOUNT_ADMIN })
 	@Transactional(readOnly = false)
 	public void accountWithdraw(ClientPlayer clientPlayer, String message, int amount) {
@@ -341,6 +380,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 		this.automaticResult = automaticResult;
 	}
 
+	@Override
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<ClientHistory> getHistory() {
@@ -354,6 +394,23 @@ public class GameServiceImpl extends AbstractService implements GameService {
 
 	public void setTokenSecurity(TokenSecurity tokenSecurity) {
 		this.tokenSecurity = tokenSecurity;
+	}
+	
+	/**
+	 * Returns the player identified by the playerName, if the logged in user is the same  as the player name, or if the 
+	 * logged in user is an player administrator
+	 * @param playerName
+	 * @return
+	 */
+	private Player getInternalPlayer(String playerName) {
+		Season season = getContext().getSeason();
+
+		boolean isPlayerAdministrator = getContext().getPlayer().isPlayerInRole(PlayerRole.PLAYER_ADMIN);
+		if (isPlayerAdministrator == false && playerName.equals(getContext().getPlayer().getPlayername()) == false) {
+			throw new NotFoundException(playerName + " was not found");
+		}
+		
+		return isPlayerAdministrator ? season.getPlayer(playerName) : getContext().getPlayer();
 	}
 	
 	

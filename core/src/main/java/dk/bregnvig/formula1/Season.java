@@ -171,6 +171,25 @@ public class Season {
 		}
 		return secondBest;
 	}
+	
+	/** 
+	 * Returns the race with a close date closest to now, that is also completed
+	 * If no races are completed, null is returned. 
+	 * @return
+	 */
+	@Transient
+	public Race getPreviousRace() {
+		long minimumDifference = Long.MAX_VALUE;
+		long now = System.currentTimeMillis();
+		Race result = null;
+		for (Race race : races) {
+			if (race.isCompleted() && now - race.getClose().getTimeInMillis() < minimumDifference) {
+				minimumDifference = now - race.getClose().getTimeInMillis();
+				result = race;
+			}
+		}
+		return result;
+	}
 
 	@Transient
 	public Race getRaceById(Long id) {

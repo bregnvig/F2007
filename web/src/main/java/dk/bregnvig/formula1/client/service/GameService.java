@@ -54,6 +54,12 @@ public interface GameService extends RemoteService {
 	 * @return
 	 */
 	ClientRace getCurrentRace();
+	
+	/**
+	 * Returns the previous race if any
+	 * @return
+	 */
+	ClientRace getPreviousRace();
 
 	/**
 	 * Returns the race specified by the id. This is only because of performance :-(
@@ -84,6 +90,12 @@ public interface GameService extends RemoteService {
 	 * @param player
 	 */
 	void updatePlayer(ClientPlayer player);
+	
+	/**
+	 * Returns the requested player
+	 * @param playerName
+	 */
+	ClientPlayer getPlayer(String playerName);
 	
 	/**
 	 * The current player join WBC

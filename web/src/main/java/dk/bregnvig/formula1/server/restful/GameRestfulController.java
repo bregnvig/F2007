@@ -66,6 +66,15 @@ public class GameRestfulController {
 		return race;
 	}
 	
+	@RequestMapping(value="/race/previous", method=RequestMethod.GET, params="!players")
+	public @ResponseBody ClientRace previousRace(HttpServletResponse response) throws CredentialException {
+		ClientRace race = service.getPreviousRace();
+		if (race == null) {
+			throw new NotFoundException("No previous race was found");
+		}
+		return race;
+	}
+	
 	@RequestMapping(value="/race/{id}", method=RequestMethod.GET)
 	public @ResponseBody ClientRace getRace(@PathVariable Long id) throws CredentialException {
 		return service.getRace(id);
@@ -164,8 +173,7 @@ public class GameRestfulController {
 	
 	@RequestMapping(value={"/wbc/{playerName}", "v2/wbc/players/{playerName}"}, method=RequestMethod.GET, params="!graph")
 	public @ResponseBody List<ClientWBCEntry> getPlayerWbc(@PathVariable String playerName) throws CredentialException {
-		ClientPlayer player = new ClientPlayer();
-		player.setPlayername(playerName);
+		ClientPlayer player = new ClientPlayer(playerName);
 		return service.fetchWBCPlayerEntries(player);
 	}
 	
@@ -174,13 +182,19 @@ public class GameRestfulController {
 		return service.getHistory();
 	}
 	
-	@RequestMapping(value="/player/account", method=RequestMethod.GET)
-	public @ResponseBody ClientAccount getAccount() throws CredentialException {
-		return service.getAccount();
+	@RequestMapping(value={"/player/account", "/v2/player/{playerName}/account"}, method=RequestMethod.GET)
+	public @ResponseBody ClientAccount getAccount(@PathVariable String playerName) throws CredentialException {
+		ClientPlayer player = new ClientPlayer(playerName);
+		return service.getAccount(player);
 	}
 	
-	@RequestMapping(value="/player/{playerName}", method=RequestMethod.PUT)
-	public @ResponseBody void updatePlayer(@PathVariable String playerName, @RequestBody ClientPlayer player, HttpServletResponse response) throws CredentialException, IOException {
+	@RequestMapping(value={"/v2/player/{playerName}"}, method=RequestMethod.GET)
+	public @ResponseBody ClientPlayer getPlayer(@PathVariable String playerName) throws CredentialException, IOException {
+		return service.getPlayer(playerName);
+	}
+	
+	@RequestMapping(value={"/player", "/v2/player"}, method=RequestMethod.POST)
+	public @ResponseBody void updatePlayer(@RequestBody ClientPlayer player, HttpServletResponse response) throws CredentialException, IOException {
 		try {
 			service.updatePlayer(player);
 		} catch (NotEnoughMoneyException e) {
