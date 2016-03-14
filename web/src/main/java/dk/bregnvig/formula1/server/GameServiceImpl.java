@@ -154,9 +154,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientPlayer getPlayer(String playerName) {
-		ClientPlayer clientPlayer = new ClientPlayer();
-		objectFactory.map(clientPlayer, getInternalPlayer(playerName));
-		return clientPlayer;
+		return objectFactory.create(getInternalPlayer(playerName));
 	}
 
 	@Override
