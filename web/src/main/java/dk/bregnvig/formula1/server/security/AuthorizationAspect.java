@@ -40,7 +40,7 @@ public class AuthorizationAspect {
 		}
 		
 		if (context.getPlayer().isPlayerInRoles(roles) == false) {
-			String message = context.getPlayer().getPlayername() + "tried to access restricted material. Method: " + signature.getMethod().getName();
+			String message = context.getPlayer().getPlayername() + " tried to access restricted material. Method: " + signature.getMethod().getName();
 			log.warn(message);
 			throw new CredentialException(message);
 		}

@@ -34,6 +34,8 @@ import dk.bregnvig.formula1.client.domain.wbc.ClientWBC;
 import dk.bregnvig.formula1.client.domain.wbc.ClientWBCEntry;
 import dk.bregnvig.formula1.client.exception.CredentialException;
 import dk.bregnvig.formula1.client.service.GameService;
+import dk.bregnvig.formula1.server.restful.model.AccountOperation;
+import dk.bregnvig.formula1.server.restful.model.AccountOperation.Operation;
 import dk.bregnvig.formula1.wbc.WBCException;
 
 @Controller
@@ -134,7 +136,7 @@ public class GameRestfulController {
 	}
 	
 	@RequestMapping(value="/race", method=RequestMethod.GET, params="players")
-	public @ResponseBody List<ClientPlayer> getPlayers() throws CredentialException {
+	public @ResponseBody List<ClientPlayer> getRacePlayers() throws CredentialException {
 		
 		ClientRace race = service.getCurrentRace();
 		race = service.getRace(race.getId());
@@ -188,9 +190,30 @@ public class GameRestfulController {
 		return service.getAccount(player);
 	}
 	
+	@RequestMapping(value={"/v2/player/{playerName}/account"}, method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public @ResponseBody void accountOperation(@PathVariable String playerName, @RequestBody AccountOperation accountOperation) throws CredentialException {
+		ClientPlayer fromPlayer = new ClientPlayer(playerName);
+		if (accountOperation.getOperation() == Operation.DEPOSIT) {
+			service.accountDeposit(fromPlayer, accountOperation.getMessage(), accountOperation.getAmount());
+		} else if (accountOperation.getOperation() == Operation.WITHDRAW) {
+			service.accountWithdraw(fromPlayer, accountOperation.getMessage(), accountOperation.getAmount());
+		} else if (accountOperation.getOperation() == Operation.TRANSFER) {
+			ClientPlayer toPlayer = new ClientPlayer(accountOperation.getReceiver());
+			service.accountTransfer(fromPlayer, toPlayer, accountOperation.getMessage(), accountOperation.getAmount());
+		} else if (accountOperation.getOperation() == null) {
+			throw new BadRequestException("The operation must be specified");
+		}
+	}
+	
 	@RequestMapping(value={"/v2/player/{playerName}"}, method=RequestMethod.GET)
 	public @ResponseBody ClientPlayer getPlayer(@PathVariable String playerName) throws CredentialException, IOException {
 		return service.getPlayer(playerName);
+	}
+	
+	@RequestMapping(value={"/v2/player"}, method=RequestMethod.GET)
+	public @ResponseBody List<ClientPlayer> getPlayers() throws CredentialException, IOException {
+		return service.findAllPlayers();
 	}
 	
 	@RequestMapping(value={"/player", "/v2/player"}, method=RequestMethod.POST)

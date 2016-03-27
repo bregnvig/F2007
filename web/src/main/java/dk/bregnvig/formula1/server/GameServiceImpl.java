@@ -123,11 +123,15 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	}
 
 	@Override
-	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
+	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientAccount getAccount(ClientPlayer player) {
-		Player internalPlayer = getInternalPlayer(player.getPlayername());
-		return objectFactory.create(internalPlayer.getAccount());
+		Player internalPlayer = null;
+		if (getContext().getPlayer().isPlayerInRole(PlayerRole.PLAYER_ADMIN) || player.getPlayername().equals(getContext().getPlayer().getPlayername())) {
+			internalPlayer = getContext().getSeason().getPlayer(player.getPlayername());
+			return objectFactory.create(internalPlayer.getAccount());
+		}
+		throw new CredentialException(getContext().getPlayer().getPlayername() + " tried to access account: " + player.getPlayername());		
 	}
 
 	@Override
@@ -199,7 +203,7 @@ public class GameServiceImpl extends AbstractService implements GameService {
 	}
 
 	@Override
-	@Authorization(roles = { PlayerRole.PLAYER_ADMIN })
+	@Authorization(roles = { PlayerRole.PLAYER })
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ClientRace getIntermediateResult(ClientRace clientRace, ClientResult clientRaceResult) {
 		Race race = getContext().getSeason().getRaceById(clientRace.getId());
