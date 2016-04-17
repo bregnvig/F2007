@@ -256,15 +256,17 @@ public class ObjectFactoryImpl implements ObjectFactory{
 
 	private ClientDriver[] getDrivers(AbstractBid bid, String propertyName, int numberOfProperties) {
 		ClientDriver[] drivers = new ClientDriver[numberOfProperties];
-		for (int i = 0; i < numberOfProperties; i++) {
-			try {
-				drivers[i] = create((Driver) PropertyUtils.getSimpleProperty(bid, propertyName+(i+1)));
-				if (PropertyUtils.isReadable(bid, getPointsPropertyName(propertyName+(i+1)))) {
-					drivers[i].setPoints((Integer) PropertyUtils.getSimpleProperty(bid, getPointsPropertyName(propertyName+(i+1))));
+		if (bid != null) {
+			for (int i = 0; i < numberOfProperties; i++) {
+				try {
+					drivers[i] = create((Driver) PropertyUtils.getSimpleProperty(bid, propertyName+(i+1)));
+					if (PropertyUtils.isReadable(bid, getPointsPropertyName(propertyName+(i+1)))) {
+						drivers[i].setPoints((Integer) PropertyUtils.getSimpleProperty(bid, getPointsPropertyName(propertyName+(i+1))));
+					}
+				} catch (Exception e) {
+					throw new IllegalArgumentException("The supplied bid could not have property " + propertyName+(i+1) + " extracted", e);
 				}
-			} catch (Exception e) {
-				throw new IllegalArgumentException("The supplied bid could not have property " + propertyName+(i+1) + " extracted", e);
-			}
+			}			
 		}
 		return drivers;
 	}

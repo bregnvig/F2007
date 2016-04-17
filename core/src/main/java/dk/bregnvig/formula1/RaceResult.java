@@ -57,7 +57,7 @@ public class RaceResult {
 		this.fastestLap = fastestLap;
 	}
 
-	@OneToOne(cascade=CascadeType.ALL,optional=false)
+	@OneToOne(cascade=CascadeType.ALL)
 	public FirstCrashResult getFirstCrash() {
 		return firstCrash;
 	}
