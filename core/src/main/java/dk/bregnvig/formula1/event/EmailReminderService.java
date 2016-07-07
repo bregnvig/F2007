@@ -66,7 +66,7 @@ public class EmailReminderService extends AbstractReminderService {
 		}
 		
 		public void prepare(MimeMessage mimeMessage) throws Exception {
-			MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+			MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
 			message.setTo(player.getEmailAddress());
 			message.setFrom(fromAddress);
 			Map<String, Object> model = new HashMap<String, Object>();

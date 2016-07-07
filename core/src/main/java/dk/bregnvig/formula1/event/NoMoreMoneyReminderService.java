@@ -72,13 +72,13 @@ public class NoMoreMoneyReminderService implements RaceListener {
 		}
 
 		public void prepare(MimeMessage mimeMessage) throws Exception {
-			MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+			MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
 			message.setTo(player.getEmailAddress());
 			message.setFrom(fromAddress);
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("player", player);
-			message.setSubject(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "templates/noMoreMoneyReminderSubject.vm", model));
-			message.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "templates/noMoreMoneyReminderBody.vm", model), true);
+			message.setSubject(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "templates/noMoreMoneyReminderSubject.vm", "UTF-8", model));
+			message.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "templates/noMoreMoneyReminderBody.vm", "UTF-8", model), true);
 		}
 		
 		public Player getPlayer() {
